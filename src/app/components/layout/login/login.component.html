@@ -1,0 +1,35 @@
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mt-5">
+          <div class="card-header">
+            <h3 class="text-center">Login</h3>
+          </div>
+          <div class="card-body">
+            <form (ngSubmit)="logar()">
+              
+              <app-input-text
+                [label]="'Usuário'"
+                [inputId]="'login'"
+                [(model)]="login"
+                [required]="true"
+                placeholder="Login de acesso">
+              </app-input-text>
+
+              <app-input-password
+                [label]="'Senha'"
+                [inputId]="'senha'"
+                [(model)]="senha"
+                [required]="true">
+             </app-input-password>
+
+              <button type="submit" class="btn btn-primary btn-block" >Entrar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
