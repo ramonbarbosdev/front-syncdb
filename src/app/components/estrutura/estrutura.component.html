@@ -1,1 +1,32 @@
-<p>estrutura works!aaa</p>
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card mt-5">
+         
+          <div class="card-body">
+
+            <div class="row " >
+                
+                <div class="col">
+                    <select class="form-control" [(ngModel)]="baseSelecionada" >
+                        <option value="" disabled>Selecione uma base</option>
+                        <option  *ngFor="let base of bases"  [value]="base.nm_base" > {{ base.nm_base }} </option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <button type="button" class="btn btn-primary btn-block" (click)="verificarEstrutura()">Verificar Estrutura</button>
+                </div>
+
+            </div>
+
+          
+          
+          
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

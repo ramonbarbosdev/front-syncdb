@@ -11,9 +11,9 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/common": "^19.2.0",
+    "@angular/common": "^19.2.6",
     "@angular/compiler": "^19.2.0",
-    "@angular/core": "^19.2.0",
+    "@angular/core": "^19.2.6",
     "@angular/forms": "^19.2.0",
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
@@ -22,6 +22,7 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "rxjs": "~7.8.0",
+    "socket.io": "^4.8.1",
     "sweetalert2": "^11.17.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

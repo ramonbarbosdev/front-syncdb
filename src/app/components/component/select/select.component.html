@@ -1,0 +1,16 @@
+<div class="form-group">
+    <label [for]="inputId">{{ label }}</label>
+    <select
+      class="form-control"
+      [id]="inputId"
+      [name]="inputId"
+      [value]="model"
+      (change)="onChange($event)"
+      [required]="required"
+    >
+      <option value="" disabled selected>Selecione um tipo</option>
+      <option *ngFor="let item of options" [value]="item[valueField]">
+        {{ item[labelField] }}
+      </option>
+    </select>
+  </div>
