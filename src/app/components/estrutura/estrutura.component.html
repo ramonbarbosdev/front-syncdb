@@ -8,17 +8,27 @@
 
             <div class="row " >
                 
-                <div class="col">
+                <div class="col-md-10 align-items-end">
+                  <label for="">Base de dados: (*)</label>
                     <select class="form-control" [(ngModel)]="baseSelecionada" >
                         <option value="" disabled>Selecione uma base</option>
                         <option  *ngFor="let base of bases"  [value]="base.nm_base" > {{ base.nm_base }} </option>
                     </select>
                 </div>
 
-                <div class="col">
-                    <button type="button" class="btn btn-primary btn-block" (click)="verificarEstrutura()">Verificar Estrutura</button>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-primary btn-block" (click)="verificarEstrutura()">
+                      <i class="bi bi-check"></i>
+                    </button>
                 </div>
-
+                
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="progress-bar">
+                      <div class="progress" [style.width.%]="progressoService.progresso"></div>
+                    </div>
+                    <!-- <p>{{ progressoService.progresso }}%</p> -->
+                </div>
             </div>
 
           

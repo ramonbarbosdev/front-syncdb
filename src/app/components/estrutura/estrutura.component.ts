@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 import { WebsocketService } from '../../services/websocket.service';
+import { HttpClient } from '@angular/common/http';
+import { ProgressoService } from '../../services/progresso.service';
 
 @Component({
   selector: 'app-estrutura',
@@ -12,20 +14,19 @@ import { WebsocketService } from '../../services/websocket.service';
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss'
 })
-export class EstruturaComponent 
+export class EstruturaComponent  
 {
 
-  
   serviceEstrutura =  inject(EstruturaService);
-
+  progressoService =  inject(ProgressoService);
   bases: any[] = [];
   baseSelecionada!: string;
 
-  constructor()
+  constructor( )
   {
     this.carregarBases();
   }
-  
+
 
   carregarBases()
   {
@@ -33,7 +34,7 @@ export class EstruturaComponent
     ({
       next: (item) => {
         this.bases = item.map((base: any) => ({
-          nm_base: base,  // Nome da base
+          nm_base: base,  
         }));
       },
       error: (e: { error: { code: any; error: any; }; }) => {
@@ -50,22 +51,28 @@ export class EstruturaComponent
   verificarEstrutura()
   {
     console.log(this.baseSelecionada);
+    this.progressoService.progresso = 0
 
-    this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe
-    ({
-      next: (item) => {
-        console.log(item)
+    if(this.baseSelecionada)
+    {
+      this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe
+      ({
+        next: (item) => {
+          console.log(item)
+  
+        },
+        error: (e: any) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erro ' +e.status,
+            text: e.error.details || 'Erro ao salvar o objeto.',
+            confirmButtonText: 'OK'
+          });
+        }
+      });
+    }
 
-      },
-      error: (e: any) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Erro ' +e.status,
-          text: e.error.details || 'Erro ao salvar o objeto.',
-          confirmButtonText: 'OK'
-        });
-      }
-    });
+   
   }
 
 
