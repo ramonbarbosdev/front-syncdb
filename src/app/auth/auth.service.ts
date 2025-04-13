@@ -14,9 +14,10 @@ export class AuthService
   
   constructor(private http: HttpClient) { }
 
-  login(credenciais: {login: string, senha: string})
-  {
-      return this.http.post<{token:string}>(`${this.apiUrl}/login`, credenciais);
+  login(credenciais: {login: string, senha: string}) {
+    return this.http.post(`${this.apiUrl}/login`, credenciais, {
+      withCredentials: true // <- permite receber e enviar cookies
+    });
   }
 
   logout()

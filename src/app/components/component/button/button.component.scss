@@ -12,6 +12,10 @@ button {
   transition: background-color 0.3s;
 }
 
+button:focus {
+  background-color: $color-input-focus-bg;
+}
+
 button:disabled {
   background-color: $color-button-disabled;
   cursor: not-allowed;

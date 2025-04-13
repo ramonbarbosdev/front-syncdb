@@ -13,7 +13,6 @@ export class WebsocketService {
 
     this.client = new Client({
       brokerURL: 'ws://localhost:8080/syncdb/ws', 
-      // brokerURL: `ws://localhost:8080/syncdb/ws?Authorization=${token}`,
       connectHeaders: {
         Authorization: `${token}`
       },
