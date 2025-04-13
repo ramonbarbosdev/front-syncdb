@@ -1,6 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
@@ -8,6 +10,7 @@ export class WebsocketService {
   private isConnected = false;
 
   private auth = inject(AuthService);
+  private route = inject(Router);
 
   constructor() {
     this.initializeClient();
@@ -24,13 +27,15 @@ export class WebsocketService {
       heartbeatOutgoing: 4000,
       onConnect: (frame) => {
         console.log('[WebSocket conectado]', frame);
-        this.isConnected = true;
+   
       },
       onStompError: (frame) => {
         console.error('[Erro STOMP]', frame);
+        this.handleDisconnection();
       },
-      onWebSocketError: (event) => {
-        console.error('[Erro WebSocket]', event);
+      onWebSocketError: (error) => {
+        console.error('[Erro WebSocket]', error);
+        this.handleDisconnection();
       },
     });
   }
@@ -58,6 +63,7 @@ export class WebsocketService {
 
       this.client.onWebSocketError = (event) => {
         console.error('[Erro WebSocket]', event);
+        this.handleDisconnection();
         reject(event);
       };
 
@@ -108,5 +114,16 @@ export class WebsocketService {
    */
   get connected(): boolean {
     return this.isConnected;
+  }
+
+  private handleDisconnection() {
+    console.log('[WebSocket desconectado]');
+    this.auth.logout(); 
+    // this.route.navigate(['/login']);
+    Swal.fire({
+                  icon: 'error',
+                  title: 'Erro ao conectar WebSocket',
+                  text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
+                });
   }
 }
