@@ -28,11 +28,11 @@ export class EstruturaComponent
   fl_operacao: boolean = false;
   resultados: any[] = []; 
 
-
-
   constructor( )
   {
     this.carregarBases();
+    this.progressoService.status = 'Verificação da estrutura'
+
   }
 
 
@@ -58,9 +58,8 @@ export class EstruturaComponent
 
   verificarEstrutura()
   {
-    console.log(this.baseSelecionada);
-    this.progressoService.progresso = 0 
-    this.progressoService.mensagem = '' 
+    this.progressoService.progresso = 0   
+    this.progressoService.status = 'Verificação da estrutura'
     
     if(this.baseSelecionada)
     {
@@ -69,15 +68,15 @@ export class EstruturaComponent
       this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe
       ({
         next: (item) => {
-          console.log(item)
           this.fl_operacao = false;
 
-          this.resultados = [
-            { campo1: 'Resultado 1', campo2: 'Valor 1', campo3: 'Outro valor' },
-            { campo1: 'Resultado 2', campo2: 'Valor 2', campo3: 'Outro valor 2' },
-            { campo1: 'Resultado 3', campo2: 'Valor 3', campo3: 'Outro valor 3' }
-          ];
-  
+          this.resultados = item.tabelas_afetadas.map((x: { tabela: any; acao: any; erro: any; querys: any; }) => ({
+            tabela: x.tabela,
+            acao: x.acao,
+            querys: x.querys,
+            erro: x.erro,
+          }));
+    
         },
         error: (e: any) => {
         this.fl_operacao = false;

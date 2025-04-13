@@ -7,6 +7,7 @@ import { WebsocketService } from './websocket.service';
 export class ProgressoService {
   public progresso = 0;
   public mensagem = '';
+  public status = '';
 
   constructor(private ws: WebsocketService) {
     this.initWebSocket();
@@ -18,6 +19,7 @@ export class ProgressoService {
         // console.log('Mensagem recebida:', data.mensagem);
         this.progresso = data.progresso;
         this.mensagem = data.mensagem;
+        this.status = data.status;
       });
     });
   }

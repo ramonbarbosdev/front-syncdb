@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 
 *
 {
@@ -10,5 +10,7 @@ html, body {
     height: 100%;        /* Garante que o corpo ocupe toda a altura da tela */
     overflow: hidden;    /* Remove a barra de rolagem */
     margin: 0;           /* Remove qualquer margem da página */
+    font-family: "Rubik", sans-serif;
+
   }
   
