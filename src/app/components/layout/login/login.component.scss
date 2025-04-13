@@ -6,7 +6,7 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(135deg, $color-bg-body, $color-bg-body-end);
+    background: $color-bg-degrade;
   }
   
   .login-container {

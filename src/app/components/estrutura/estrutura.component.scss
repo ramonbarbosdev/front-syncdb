@@ -1,3 +1,5 @@
+@import '../../../styles/variaveis';
+
 /* Container principal */
 .container {
   display: flex;
@@ -5,7 +7,7 @@
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: #222222; 
+  background: $color-bg-degrade;
   padding: 20px; 
   box-sizing: border-box;
 }
@@ -13,7 +15,7 @@
 /* Cartão */
 .card {
   width: 650px;
-  background-color: #292929;
+  background-color: $color-bg-container;
   border-radius: 10px;
   box-shadow: 0 0 9px 1px rgba(17, 17, 17, 0.62);
   display: flex;
@@ -71,7 +73,7 @@
 .card label {
   font-size: 1rem; 
   margin-bottom: 5px;
-  color: #ccc;
+  color:$color-text-main;
 }
 
 

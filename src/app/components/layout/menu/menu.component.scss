@@ -1,6 +1,8 @@
+@import '../../../../styles/variaveis';
+
 .custom-navbar.dark {
-  background-color: #1f1f1f;
-  color: #fff;
+  background-color:$color-bg-body;
+  color:$color-text-main;
   padding: 12px 20px;
   font-family: "Poetsen One", sans-serif;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.221);
@@ -18,19 +20,17 @@
       align-items: center;
       gap: 10px;
       font-size: 1.5rem;
-      color: white;
+      color:$color-text-main;
       text-decoration: none;
   
-      svg {
-        fill: white;
-      }
+    
     }
   
     .navbar-toggle {
       display: none;
       font-size: 2rem;
       background: none;
-      color: white;
+      color:$color-text-main;
       border: none;
       cursor: pointer;
     }
@@ -59,9 +59,7 @@
             color: #fff;
           }
   
-          svg {
-            fill: currentColor;
-          }
+         
         }
       }
   
@@ -72,22 +70,22 @@
   
         input {
           padding: 5px 10px;
-          background: #333;
-          border: 1px solid #555;
-          color: #fff;
+          border: 1px solid $color-input-bg;
+          color: $color-text-main;
           border-radius: 4px;
+          background-color: $color-input-bg;
         }
   
         button {
-          background-color: #ffffff;
-          color: rgb(0, 0, 0);
+          background-color:$color-button;
+          color: $color-text-main;
           border: none;
           border-radius: 4px;
           padding: 5px 10px;
           cursor: pointer;
   
           &:hover {
-            background-color: #157347;
+            background-color: $color-button-hover;
           }
         }
       }
