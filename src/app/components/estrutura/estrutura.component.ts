@@ -24,6 +24,7 @@ export class EstruturaComponent
   progressoService =  inject(ProgressoService);
   bases: any[] = [];
   baseSelecionada!: string;
+  fl_operacao: boolean = false;
 
   constructor( )
   {
@@ -56,16 +57,21 @@ export class EstruturaComponent
     console.log(this.baseSelecionada);
     this.progressoService.progresso = 0 
     this.progressoService.mensagem = '' 
-
+    
     if(this.baseSelecionada)
     {
+      this.fl_operacao = true;
+
       this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe
       ({
         next: (item) => {
           console.log(item)
+          this.fl_operacao = false;
   
         },
         error: (e: any) => {
+        this.fl_operacao = false;
+
           Swal.fire({
             icon: 'error',
             title: 'Erro ' +e.status,
