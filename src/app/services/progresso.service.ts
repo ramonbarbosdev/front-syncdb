@@ -15,7 +15,7 @@ export class ProgressoService {
   private initWebSocket() {
     this.ws.connect(() => {
       this.ws.subscribe('/topic/sync/progress', (data: any) => {
-        console.log('Mensagem recebida:', data.mensagem);
+        // console.log('Mensagem recebida:', data.mensagem);
         this.progresso = data.progresso;
         this.mensagem = data.mensagem;
       });

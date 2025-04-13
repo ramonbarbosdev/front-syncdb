@@ -11,8 +11,8 @@
             >
             </app-select-basic>
         </div>
-        <div class="col-20">
-          <label>&nbsp;</label> 
+        <div class="col-10">
+          <!-- <label>&nbsp;</label>  -->
           <app-button
           [text]="''"
           [icon]="'bi-check'"  
@@ -33,6 +33,12 @@
          >
 
          </app-progresso-bar>
+      </div>
+
+      <div class="row">
+        <div class="col-100">
+          <app-table-basic [resultados]="resultados"></app-table-basic>
+        </div>
       </div>
     </div>
 

@@ -1,0 +1,17 @@
+<div class="row" *ngIf="resultados.length > 0">
+    <div class="col-100">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th *ngFor="let coluna of colunas">{{ coluna.toUpperCase() }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let resultado of resultados">
+            <td *ngFor="let coluna of colunas">{{ resultado[coluna] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

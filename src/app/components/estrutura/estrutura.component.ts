@@ -10,10 +10,11 @@ import { ProgressoService } from '../../services/progresso.service';
 import { SelectBasicComponent } from '../component/select-basic/select-basic.component';
 import { ButtonComponent } from "../component/button/button.component";
 import { ProgressoBarComponent } from "../component/progresso-bar/progresso-bar.component";
+import { TableBasicComponent } from "../component/table-basic/table-basic.component";
 
 @Component({
   selector: 'app-estrutura',
-  imports: [CommonModule, FormsModule, SelectBasicComponent, ButtonComponent, ButtonComponent, ProgressoBarComponent],
+  imports: [CommonModule, FormsModule, SelectBasicComponent, ButtonComponent, ButtonComponent, ProgressoBarComponent, TableBasicComponent],
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss'
 })
@@ -25,6 +26,9 @@ export class EstruturaComponent
   bases: any[] = [];
   baseSelecionada!: string;
   fl_operacao: boolean = false;
+  resultados: any[] = []; 
+
+
 
   constructor( )
   {
@@ -67,6 +71,12 @@ export class EstruturaComponent
         next: (item) => {
           console.log(item)
           this.fl_operacao = false;
+
+          this.resultados = [
+            { campo1: 'Resultado 1', campo2: 'Valor 1', campo3: 'Outro valor' },
+            { campo1: 'Resultado 2', campo2: 'Valor 2', campo3: 'Outro valor 2' },
+            { campo1: 'Resultado 3', campo2: 'Valor 3', campo3: 'Outro valor 3' }
+          ];
   
         },
         error: (e: any) => {
