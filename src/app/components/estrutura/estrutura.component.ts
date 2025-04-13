@@ -1,98 +1,105 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { SelectComponent } from '../component/select/select.component';
-import { EstruturaService } from '../../services/estrutura.service';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
-import { WebsocketService } from '../../services/websocket.service';
-import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
+
+import { EstruturaService } from '../../services/estrutura.service';
 import { ProgressoService } from '../../services/progresso.service';
+import { EstruturaCacheService } from '../../services/estruturacache.service';
+
 import { SelectBasicComponent } from '../component/select-basic/select-basic.component';
-import { ButtonComponent } from "../component/button/button.component";
-import { ProgressoBarComponent } from "../component/progresso-bar/progresso-bar.component";
-import { TableBasicComponent } from "../component/table-basic/table-basic.component";
+import { ButtonComponent } from '../component/button/button.component';
+import { ProgressoBarComponent } from '../component/progresso-bar/progresso-bar.component';
+import { TableBasicComponent } from '../component/table-basic/table-basic.component';
+
+import { TabelaEstrutura } from '../../models/tabela-estrutura';
 
 @Component({
   selector: 'app-estrutura',
-  imports: [CommonModule, FormsModule, SelectBasicComponent, ButtonComponent, ButtonComponent, ProgressoBarComponent, TableBasicComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    SelectBasicComponent,
+    ButtonComponent,
+    ProgressoBarComponent,
+    TableBasicComponent
+  ],
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss'
 })
-export class EstruturaComponent  
-{
+export class EstruturaComponent {
+  serviceEstrutura = inject(EstruturaService);
+  progressoService = inject(ProgressoService);
+  estruturaCache = inject(EstruturaCacheService);
 
-  serviceEstrutura =  inject(EstruturaService);
-  progressoService =  inject(ProgressoService);
-  bases: any[] = [];
-  baseSelecionada!: string;
-  fl_operacao: boolean = false;
-  resultados: any[] = []; 
+  bases: { nm_base: string }[] = [];
+  baseSelecionada = '';
+  fl_operacao = false;
+  resultados: TabelaEstrutura[] = [];
 
-  constructor( )
-  {
-    this.carregarBases();
-    this.progressoService.status = 'Verificação da estrutura'
-
+  constructor() {
+    this.inicializarComponente();
   }
 
+  inicializarComponente(): void {
+    this.progressoService.progresso = 0;
+    this.progressoService.status = 'Verificação da estrutura';
+    this.carregarBases();
+    this.iniciarTabela();
+  }
 
-  carregarBases()
-  {
-    this.serviceEstrutura.buscarBaseExistente().subscribe
-    ({
-      next: (item) => {
-        this.bases = item.map((base: any) => ({
-          nm_base: base,  
-        }));
+  iniciarTabela(): void {
+    this.resultados = this.estruturaCache.hasCache()
+      ? this.estruturaCache.getTabelas()
+      : [{ tabela: '', acao: '', erro: '', querys: '' }];
+  }
+
+  carregarBases(): void {
+    this.serviceEstrutura.buscarBaseExistente().subscribe({
+      next: (bases) => {
+        this.bases = bases.map((nm_base: string) => ({ nm_base }));
       },
-      error: (e: { error: { code: any; error: any; }; }) => {
+      error: ({ error }) => {
         Swal.fire({
           icon: 'error',
-          title: e.error.code,
-          text: e.error.error || 'Erro ao salvar o objeto.',
+          title: error.code || 'Erro',
+          text: error.error || 'Erro ao carregar as bases.',
           confirmButtonText: 'OK'
         });
       }
     });
   }
 
-  verificarEstrutura()
-  {
-    this.progressoService.progresso = 0   
-    this.progressoService.status = 'Verificação da estrutura'
-    
-    if(this.baseSelecionada)
-    {
-      this.fl_operacao = true;
+  verificarEstrutura(): void {
+    if (!this.baseSelecionada) return;
 
-      this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe
-      ({
-        next: (item) => {
-          this.fl_operacao = false;
+    this.fl_operacao = true;
 
-          this.resultados = item.tabelas_afetadas.map((x: { tabela: any; acao: any; erro: any; querys: any; }) => ({
+    this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe({
+      next: ({ tabelas_afetadas }) => {
+        this.fl_operacao = false;
+
+        if (tabelas_afetadas?.length) {
+          this.resultados = tabelas_afetadas.map((x: TabelaEstrutura) => ({
             tabela: x.tabela,
             acao: x.acao,
             querys: x.querys,
             erro: x.erro,
           }));
-    
-        },
-        error: (e: any) => {
-        this.fl_operacao = false;
-
-          Swal.fire({
-            icon: 'error',
-            title: 'Erro ' +e.status,
-            text: e.error.details || 'Erro ao salvar o objeto.',
-            confirmButtonText: 'OK'
-          });
+          this.estruturaCache.setTabelas(this.resultados);
+        } else {
+          this.iniciarTabela();
         }
-      });
-    }
-
-   
+      },
+      error: (e) => {
+        this.fl_operacao = false;
+        Swal.fire({
+          icon: 'error',
+          title: `Erro ${e.status}`,
+          text: e.error?.details || 'Erro ao verificar estrutura.',
+          confirmButtonText: 'OK'
+        });
+      }
+    });
   }
-
-
 }

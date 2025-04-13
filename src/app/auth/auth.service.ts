@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { WebsocketService } from '../services/websocket.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,12 @@ export class AuthService
   private apiUrl = 'http://localhost:8080/syncdb';
 
   private router = inject(Router);
-  
   constructor(private http: HttpClient) { }
 
-  login(credenciais: {login: string, senha: string}) {
+  login(credenciais: {login: string, senha: string})
+  {
+
+    // this.websocketService
     return this.http.post(`${this.apiUrl}/login`, credenciais, {
       withCredentials: true // <- permite receber e enviar cookies
     });

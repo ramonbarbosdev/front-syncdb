@@ -1,47 +1,91 @@
-import { inject, Inject, Injectable } from '@angular/core';
-import { Client, StompSubscription } from '@stomp/stompjs';
+import { Injectable, inject } from '@angular/core';
+import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
-  private client: Client;
+  private client!: Client;
+  private isConnected = false;
 
-  auth = inject(AuthService);
+  private auth = inject(AuthService);
+
   constructor() {
+    this.initializeClient();
+  }
 
-    const token = this.auth.getToken();
-
+  private initializeClient() {
     this.client = new Client({
-      brokerURL: 'ws://localhost:8080/syncdb/ws', 
+      brokerURL: 'ws://localhost:8080/syncdb/ws',
       connectHeaders: {
-        Authorization: `${token}`
+        Authorization: this.auth.getToken() ?? ''
       },
-      // debug: (msg) => console.log('[STOMP DEBUG]', msg),
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
+      onConnect: (frame) => {
+        console.log('[WebSocket conectado]', frame);
+        this.isConnected = true;
+      },
+      onStompError: (frame) => {
+        console.error('[Erro STOMP]', frame);
+      },
+      onWebSocketError: (event) => {
+        console.error('[Erro WebSocket]', event);
+      },
     });
   }
 
-  connect(callback?: () => void) {
-    this.client.onConnect = (frame) => {
-      console.log('[WebSocket conectado]', frame);
-      if (callback) callback();
-    };
+  /**
+   * Conecta ao servidor WebSocket usando Promise.
+   * Aguarda até o WebSocket estar conectado com sucesso.
+   */
+  connect(): Promise<void> {
+    if (this.isConnected) {
+      return Promise.resolve();
+    }
 
-    this.client.onStompError = (frame) => {
-      console.error('[Erro STOMP]', frame);
-    };
+    return new Promise<void>((resolve, reject) => {
+      this.client.onConnect = (frame) => {
+        console.log('[WebSocket conectado]', frame);
+        this.isConnected = true;
+        resolve();
+      };
 
-    this.client.activate();
+      this.client.onStompError = (frame) => {
+        console.error('[Erro STOMP]', frame);
+        reject(frame);
+      };
+
+      this.client.onWebSocketError = (event) => {
+        console.error('[Erro WebSocket]', event);
+        reject(event);
+      };
+
+      // Atualiza token antes de ativar
+      this.client.connectHeaders = {
+        Authorization: this.auth.getToken() ?? ''
+      };
+
+      try {
+        this.client.activate();
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
 
+  /**
+   * Inscreve em um tópico WebSocket.
+   */
   subscribe(topic: string, callback: (msg: any) => void): StompSubscription {
-    return this.client.subscribe(topic, (message) => {
+    return this.client.subscribe(topic, (message: IMessage) => {
       callback(JSON.parse(message.body));
     });
   }
 
+  /**
+   * Envia uma mensagem via WebSocket.
+   */
   send(destination: string, body: any) {
     this.client.publish({
       destination,
@@ -49,7 +93,20 @@ export class WebsocketService {
     });
   }
 
+  /**
+   * Desconecta do WebSocket.
+   */
   disconnect() {
-    this.client.deactivate();
+    if (this.client && this.isConnected) {
+      this.client.deactivate();
+      this.isConnected = false;
+    }
+  }
+
+  /**
+   * Verifica se o WebSocket está conectado.
+   */
+  get connected(): boolean {
+    return this.isConnected;
   }
 }

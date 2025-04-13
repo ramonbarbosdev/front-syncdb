@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { InputPasswordComponent } from '../../component/input-password/input-password.component';
 import { InputTextComponent } from '../../component/input-text/input-text.component';
 import { ButtonComponent } from '../../component/button/button.component';
+import { WebsocketService } from '../../../services/websocket.service';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent
     senha!:string;
 
     router =  inject(Router);
+    websocketService = inject(WebsocketService);
 
     constructor(private auth: AuthService){}
 
@@ -27,8 +29,23 @@ export class LoginComponent
 
         this.auth.login({login: this.login, senha: this.senha}).subscribe({
           next: (res: any) => {
-            this.auth.setToken(res.Authorization);
-            this.router.navigate(['admin/dashboard'])
+          
+
+            this.websocketService.connect().then(() => {
+              console.log('[Login OK + WebSocket conectado]');
+              this.auth.setToken(res.Authorization);
+              this.router.navigate(['admin/dashboard'])
+
+            }).catch((err) => {
+              console.error('[Erro ao conectar WebSocket após login]', err);
+              Swal.fire({
+                icon: 'error',
+                title: 'Erro de Conexão',
+                text: 'Não foi possível conectar ao WebSocket.',
+              });
+            });
+
+
           },
           error: err =>
           {

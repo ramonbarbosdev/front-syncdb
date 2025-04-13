@@ -1,3 +1,6 @@
+@import '../../../../styles/variaveis';
+
+
 /* Tabela */
 table {
   width: 100%;
@@ -5,7 +8,7 @@ table {
   border-collapse: collapse;
   border-radius: 10px;
   overflow: hidden;
-  background-color: #292929;
+  background-color: $color-bg-body;
   table-layout: fixed; 
 }
 
@@ -13,7 +16,7 @@ table {
 th {
   padding: 15px 10px;
   text-align: left;
-  background-color: #333333;
+  background-color:$color-input-bg;
   color: #fff;
   font-size: 1.1rem;
   font-weight: bold;
@@ -33,17 +36,17 @@ td {
 }
 
 tr:nth-child(even) {
-  background-color: #333333;
+  background-color: $color-bg-body;
 }
 
 tr:hover {
-  background-color: #444444;
+  background-color: $color-input-focus-bg;
   cursor: pointer;
 }
 
 td:focus, th:focus {
   outline: none;
-  background-color: #444444;
+  background-color: $color-bg-body;
   color: #fff;
   border: 1px solid #4CAF50;
 }

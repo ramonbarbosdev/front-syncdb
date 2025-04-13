@@ -9,15 +9,5 @@ import { WebsocketService } from '../../services/websocket.service';
 })
 export class DashboardComponent {
 
-  constructor(private websocketService: WebsocketService) {}
-  ngOnInit(): void {
-    this.websocketService.connect(() => {
-      this.websocketService.subscribe('/topic/sync', (data) => {
-        console.log('Mensagem recebida do WebSocket:', data);
-      });
-  
-      // Enviar exemplo
-      this.websocketService.send('/app/send', { msg: 'Hello Spring!' });
-    });
-  }
+ 
 }
