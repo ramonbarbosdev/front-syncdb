@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ButtonComponent {
   @Input() text: string = 'Clique aqui';
+  @Input() type: string = '';
   @Input() icon: string = '';  
   @Input() color: string = '#4da6ff'; 
   @Input() backgroundColor: string = '#ffffff';  

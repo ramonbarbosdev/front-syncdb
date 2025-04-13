@@ -1,0 +1,31 @@
+
+@import '../../../../styles/variaveis';
+
+.input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  label {
+    margin-bottom: 6px;
+    font-size: 0.9rem;
+  }
+
+  input {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color:  $color-input-bg;
+    color: $color-text-secondary;
+    outline: none;
+    transition: 0.2s;
+  }
+  
+  input:focus {
+    border: 1px solid  #4caf50;
+    background-color: $color-input-focus-bg;
+  }
+  
+  

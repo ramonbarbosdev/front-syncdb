@@ -1,0 +1,25 @@
+  
+@import '../../../../styles/variaveis';
+  
+  :host {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, $color-bg-body, $color-bg-body-end);
+  }
+  
+  .login-container {
+    background-color:  $color-bg-container;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 360px;
+    color:$color-text-main;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 24px;
+  }

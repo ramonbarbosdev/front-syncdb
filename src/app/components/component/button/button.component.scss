@@ -1,23 +1,22 @@
+@import '../../../../styles/variaveis';
 
-*{
-  margin: 0;
-  padding: 0;
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: $color-button;
+  border: none;
+  border-radius: 8px;
+  color:$color-text-main;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
-.custom-button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: background 0.3s, transform 0.2s;
-    height: 100%;
-  }
-  
-  .custom-button:hover {
-    transform: scale(1.03);
-  }
-  
-  .custom-button:active {
-    transform: scale(0.98);
-  }
-  
+
+button:disabled {
+  background-color: $color-button-disabled;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: $color-button-hover;
+}

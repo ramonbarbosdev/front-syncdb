@@ -5,10 +5,11 @@ import { AuthService } from '../../../auth/auth.service';
 import Swal from 'sweetalert2';
 import { InputPasswordComponent } from '../../component/input-password/input-password.component';
 import { InputTextComponent } from '../../component/input-text/input-text.component';
+import { ButtonComponent } from '../../component/button/button.component';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, InputPasswordComponent, InputTextComponent],
+  imports: [FormsModule, InputPasswordComponent, InputTextComponent, ButtonComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
