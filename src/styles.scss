@@ -1,7 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
+*
+{
+    margin: 0;
+}
 
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
-
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
+html, body {
+    height: 100%;        /* Garante que o corpo ocupe toda a altura da tela */
+    overflow: hidden;    /* Remove a barra de rolagem */
+    margin: 0;           /* Remove qualquer margem da página */
+  }
+  

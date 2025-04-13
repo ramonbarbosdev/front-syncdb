@@ -1,0 +1,19 @@
+.custom-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.3s, transform 0.2s;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .custom-button:hover {
+    transform: scale(1.03);
+  }
+  
+  .custom-button:active {
+    transform: scale(0.98);
+  }
+  

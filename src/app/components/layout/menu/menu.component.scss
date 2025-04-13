@@ -1,0 +1,129 @@
+.custom-navbar.dark {
+  background-color: #1f1f1f;
+  color: #fff;
+  padding: 12px 20px;
+  font-family: 'Segoe UI', sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.221);
+  position: sticky;
+
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+      color: white;
+      text-decoration: none;
+  
+      svg {
+        fill: white;
+      }
+    }
+  
+    .navbar-toggle {
+      display: none;
+      font-size: 2rem;
+      background: none;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+  
+      ul {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+  
+        li a {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #ddd;
+          text-decoration: none;
+          font-weight: 500;
+  
+          &:hover {
+            color: #fff;
+          }
+  
+          svg {
+            fill: currentColor;
+          }
+        }
+      }
+  
+      form {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+  
+        input {
+          padding: 5px 10px;
+          background: #333;
+          border: 1px solid #555;
+          color: #fff;
+          border-radius: 4px;
+        }
+  
+        button {
+          background-color: #ffffff;
+          color: rgb(0, 0, 0);
+          border: none;
+          border-radius: 4px;
+          padding: 5px 10px;
+          cursor: pointer;
+  
+          &:hover {
+            background-color: #157347;
+          }
+        }
+      }
+    }
+  
+    @media (max-width: 768px) {
+      .navbar-toggle {
+        display: block;
+      }
+  
+      .navbar-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        margin-top: 10px;
+  
+        ul {
+          flex-direction: column;
+  
+          li {
+            a {
+              padding: 10px 0;
+              width: 100%;
+            }
+          }
+        }
+  
+        form {
+          width: 100%;
+          margin-top: 10px;
+        }
+  
+        &.open {
+          display: flex;
+        }
+      }
+    }
+  }
+  

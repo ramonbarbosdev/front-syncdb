@@ -7,10 +7,13 @@ import { CommonModule } from '@angular/common';
 import { WebsocketService } from '../../services/websocket.service';
 import { HttpClient } from '@angular/common/http';
 import { ProgressoService } from '../../services/progresso.service';
+import { SelectBasicComponent } from '../component/select-basic/select-basic.component';
+import { ButtonComponent } from "../component/button/button.component";
+import { ProgressoBarComponent } from "../component/progresso-bar/progresso-bar.component";
 
 @Component({
   selector: 'app-estrutura',
-  imports: [ CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SelectBasicComponent, ButtonComponent, ButtonComponent, ProgressoBarComponent],
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss'
 })
@@ -51,7 +54,8 @@ export class EstruturaComponent
   verificarEstrutura()
   {
     console.log(this.baseSelecionada);
-    this.progressoService.progresso = 0
+    this.progressoService.progresso = 0 
+    this.progressoService.mensagem = '' 
 
     if(this.baseSelecionada)
     {

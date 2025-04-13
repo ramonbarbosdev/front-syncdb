@@ -1,0 +1,11 @@
+<select
+  id="base-select"
+  class="form-control"
+  [ngModel]="selected"
+  (ngModelChange)="onChange($event)"
+>
+  <option value="" disabled>Selecione uma base</option>
+  <option *ngFor="let base of bases" [value]="base.nm_base">
+    {{ base.nm_base }}
+  </option>
+</select>

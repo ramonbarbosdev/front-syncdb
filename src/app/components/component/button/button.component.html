@@ -1,0 +1,13 @@
+<button
+  class="custom-button"
+  [ngStyle]="{
+    'background-color': backgroundColor,
+    'color': color,
+    'cursor': disabled ? 'not-allowed' : 'pointer'
+  }"
+  (click)="onClick()"
+  [disabled]="disabled"
+>
+  <i *ngIf="icon" class="bi" [ngClass]="icon"></i> <!-- Exibe o ícone -->
+  {{ text }}
+</button>
