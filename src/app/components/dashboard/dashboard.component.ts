@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,5 +10,10 @@ import { WebsocketService } from '../../services/websocket.service';
 })
 export class DashboardComponent {
 
- 
+  router = inject(Router)
+
+  abrirEstrutura()
+  {
+    this.router.navigate(['admin/estrutura'])
+  }
 }
