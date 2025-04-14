@@ -73,7 +73,8 @@ export class EstruturaComponent {
 
   processarBaseDados()
   {
-    this.iniciarTabela();
+    this.inicializarComponente();
+    this.resultados =  [{ tabela: '', acao: '', erro: '', querys: '' }];
   }
 
   permissaoBotao(acao: boolean)
@@ -137,6 +138,9 @@ export class EstruturaComponent {
               text: item.mensagem,
               confirmButtonText: 'OK'
             });
+
+            this.inicializarComponente();
+            this.resultados =  [{ tabela: '', acao: '', erro: '', querys: '' }];
           }
          
         },

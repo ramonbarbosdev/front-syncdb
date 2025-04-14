@@ -27,7 +27,6 @@ export class WebsocketService {
       heartbeatOutgoing: 4000,
       onConnect: (frame) => {
         console.log('[WebSocket conectado]', frame);
-   
       },
       onStompError: (frame) => {
         console.error('[Erro STOMP]', frame);
