@@ -140,7 +140,6 @@ export class EstruturaComponent {
   execultarSincronizacaoEstrutura()
   {
     this.permissaoBotao(true);
-    console.log(this.resultados?.length )
     if(this.resultados?.length > 0 && this.baseSelecionada)
     {
       this.serviceEstrutura.sincronizacaoEstrutura(this.baseSelecionada).subscribe({
@@ -183,7 +182,5 @@ export class EstruturaComponent {
       });
       this.permissaoBotao(false);
     }
-   
-
   }
 }
