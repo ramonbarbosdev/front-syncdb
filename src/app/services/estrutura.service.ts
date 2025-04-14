@@ -10,11 +10,9 @@ export class EstruturaService
 
   http = inject(HttpClient);
 
-  API = 'http://localhost:8080/syncdb/sincronizacao/estrutura';
-
+  API = 'http://localhost:8080/syncdb/estrutura';
 
   constructor() { }
-
   
   buscarBaseExistente(): Observable<any>
   {
@@ -27,6 +25,15 @@ export class EstruturaService
   verificarEstrutura(item: any): Observable<any>
   {
     const url = `${this.API}/verificar/${item}`;
+    
+    return this.http.get<any[]>(url).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
+
+  sincronizacaoEstrutura(item: any): Observable<any>
+  {
+    const url = `${this.API}/${item}`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))

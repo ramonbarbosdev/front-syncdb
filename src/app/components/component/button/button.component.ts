@@ -20,6 +20,7 @@ export class ButtonComponent {
   onClick() {
     if (!this.disabled) {
       this.clickEvent.emit();
+      
     }
   }
 }

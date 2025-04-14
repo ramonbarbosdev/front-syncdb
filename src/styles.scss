@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import './styles/variaveis';
 
 *
 {
@@ -13,4 +14,108 @@ html, body {
     font-family: "Rubik", sans-serif;
 
   }
+
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background: $color-bg-degrade;
+    padding: 20px; 
+    box-sizing: border-box;
+  }
+  
+  /* Cartão */
+  .card {
+    width: 650px;
+    background-color: $color-bg-container;
+    border-radius: 10px;
+    box-shadow: 0 0 9px 1px rgba(17, 17, 17, 0.62);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box; 
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: scale(1.002); 
+  }
+  
+  .card .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 20px; 
+    flex-wrap: wrap; 
+  }
+  
+  .card .row .col-10, .card .row .col-90 {
+    width: calc(100% - 20px); 
+  }
+  
+  .card .row .col-10 { width: 10%; }
+  .card .row .col-20 { width: 20%; }
+  .card .row .col-30 { width: 30%; }
+  .card .row .col-40 { width: 40%; }
+  .card .row .col-50 { width: 50%; }
+  .card .row .col-60 { width: 60%; }
+  .card .row .col-70 { width: 70%; }
+  .card .row .col-80 { width: 80%; }
+  .card .row .col-90 { width: 90%; }
+  .card .row .col-100 { width: 100%; }
+  
+  /* Flexbox dentro das colunas para alinhamento */
+  .card .row .col-10,
+  .card .row .col-20,
+  .card .row .col-30,
+  .card .row .col-40,
+  .card .row .col-50,
+  .card .row .col-60,
+  .card .row .col-70,
+  .card .row .col-80,
+  .card .row .col-90,
+  .card .row .col-100 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    
+  
+  }
+  
+  .card label {
+    font-size: 1rem; 
+    margin-bottom: 5px;
+    color:$color-text-main;
+  }
+  
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .card {
+      width: 100%; 
+      padding: 15px;
+    }
+  
+    .card .row {
+      flex-direction: column; 
+      gap: 10px; 
+    }
+  
+    .card .row .col-10, 
+    .card .row .col-20, 
+    .card .row .col-30, 
+    .card .row .col-40,
+    .card .row .col-50, 
+    .card .row .col-60, 
+    .card .row .col-70, 
+    .card .row .col-80, 
+    .card .row .col-90, 
+    .card .row .col-100 {
+      width: 100%; 
+    }
+
+}
   

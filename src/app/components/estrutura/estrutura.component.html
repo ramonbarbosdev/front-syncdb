@@ -9,6 +9,7 @@
             <app-select-basic
             [bases]="bases"
             [(selected)]="baseSelecionada"
+            (selectedChange)="processarBaseDados()">
             >
             </app-select-basic>
         </div>
@@ -16,10 +17,10 @@
           <!-- <label>&nbsp;</label>  -->
           <app-button
           [text]="''"
-          [icon]="'bi-check'"  
+          [icon]="'bi bi-arrow-repeat'"  
           [color]="''"
           [backgroundColor]="''"
-          [disabled]="fl_operacao"
+          [disabled]="fl_operacaoVerificar"
           (clickEvent)="verificarEstrutura()">
         </app-button>
         </div>
@@ -40,7 +41,21 @@
           </app-progresso-bar>
         </div>
       </div>
-     
+      
+      <div class="row">
+        <div class="col button" >
+          <div >
+            <app-button
+            [text]="'Execultar'"
+            [icon]="'bi bi-upload'"  
+            [color]="''"
+            [backgroundColor]="''"
+            [disabled]="fl_operacaoSincronizar"
+            (clickEvent)="execultarSincronizacaoEstrutura()">
+          </app-button>
+          </div>
+        </div>
+      </div>
 
     </div>
   </div>

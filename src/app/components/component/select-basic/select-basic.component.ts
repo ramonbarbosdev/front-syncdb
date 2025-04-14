@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, input, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -14,7 +14,10 @@ export class SelectBasicComponent {
   @Input() selected: string = '';
   @Output() selectedChange = new EventEmitter<string>();
 
+ 
   onChange(value: string) {
     this.selectedChange.emit(value);
   }
+
+
 }

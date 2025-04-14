@@ -34,7 +34,8 @@ export class EstruturaComponent {
 
   bases: { nm_base: string }[] = [];
   baseSelecionada = '';
-  fl_operacao = false;
+  fl_operacaoVerificar = false;
+  fl_operacaoSincronizar = false;
   resultados: TabelaEstrutura[] = [];
 
   constructor() {
@@ -70,16 +71,28 @@ export class EstruturaComponent {
     });
   }
 
+  processarBaseDados()
+  {
+    this.iniciarTabela();
+  }
+
+  permissaoBotao(acao: boolean)
+  {
+    this.fl_operacaoVerificar = acao;
+    this.fl_operacaoSincronizar = acao
+  }
+
   verificarEstrutura(): void {
     if (!this.baseSelecionada) return;
-
-    this.fl_operacao = true;
+    this.permissaoBotao(true);
 
     this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe({
-      next: ({ tabelas_afetadas }) => {
-        this.fl_operacao = false;
+      next: ({ tabelas_afetadas }) =>
+      {
+        this.permissaoBotao(false);
 
-        if (tabelas_afetadas?.length) {
+        if (tabelas_afetadas?.length)
+        {
           this.resultados = tabelas_afetadas.map((x: TabelaEstrutura) => ({
             tabela: x.tabela,
             acao: x.acao,
@@ -87,12 +100,14 @@ export class EstruturaComponent {
             erro: x.erro,
           }));
           this.estruturaCache.setTabelas(this.resultados);
-        } else {
+        }
+        else
+        {
           this.iniciarTabela();
         }
       },
       error: (e) => {
-        this.fl_operacao = false;
+        this.permissaoBotao(false);
         Swal.fire({
           icon: 'error',
           title: `Erro ${e.status}`,
@@ -101,5 +116,53 @@ export class EstruturaComponent {
         });
       }
     });
+  }
+
+  execultarSincronizacaoEstrutura()
+  {
+    this.permissaoBotao(true);
+    console.log(this.resultados?.length )
+    if(this.resultados?.length > 0 && this.baseSelecionada)
+    {
+      this.serviceEstrutura.sincronizacaoEstrutura(this.baseSelecionada).subscribe({
+        next: (item) =>
+        {
+          this.permissaoBotao(false);
+                 
+          if(item.success)
+          {
+            Swal.fire({
+              icon: 'success',
+              title: `Sucesso`,
+              text: item.mensagem,
+              confirmButtonText: 'OK'
+            });
+          }
+         
+        },
+        error: (e) => {
+          this.permissaoBotao(false);
+          Swal.fire({
+            icon: 'error',
+            title: `Falha na sincronização`,
+            text: e.error.mensagem,
+            confirmButtonText: 'OK'
+          });
+        }
+      });
+      
+    }
+    else
+    {
+      Swal.fire({
+        icon: 'error',
+        title: `Erro de informações`,
+        text: 'Não existe estrutura para sincronizar!',
+        confirmButtonText: 'OK'
+      });
+      this.permissaoBotao(false);
+    }
+   
+
   }
 }
