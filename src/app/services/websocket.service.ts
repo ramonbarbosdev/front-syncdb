@@ -115,7 +115,7 @@ export class WebsocketService {
     return this.isConnected;
   }
 
-  private handleDisconnection() {
+ handleDisconnection() {
     console.log('[WebSocket desconectado]');
     this.auth.logout(); 
     // this.route.navigate(['/login']);

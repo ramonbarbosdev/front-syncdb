@@ -17,22 +17,29 @@ export class ProgressoService {
   }
 
   private async initWebSocket() {
-    try {
-      await this.ws.connect(); // Espera a conexão antes de prosseguir
+    try
+    {
+      await this.ws.connect(); 
       this.ws.subscribe('/topic/sync/progress', (data: any) => {
+        
+        console.log(data)
+        if(!data)  this.ws.handleDisconnection(); 
         this.progresso = data.progresso;
         this.mensagem = data.mensagem;
         this.status = data.status;
+       
       });
-    } catch (error) {
-      console.error('[ProgressoService] Erro ao conectar WebSocket:', error);
-      this.route.navigate(['/login']); 
-       Swal.fire({
-                    icon: 'error',
-                    title: 'Erro ao conectar WebSocket',
-                    text: '[ProgressoService] Não foi possível conectar ao WebSocket.',
-                  });
-
     }
+    catch (error)
+    {
+      console.error('[ProgressoService] Erro ao conectar WebSocket:', error);
+      this.ws.handleDisconnection()
+    }
+  }
+
+
+  desconectar()
+  {
+
   }
 }
