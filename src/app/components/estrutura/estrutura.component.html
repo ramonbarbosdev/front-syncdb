@@ -4,6 +4,17 @@
     <div class="card">
 
       <div class="row">
+        <div class="col-btn">
+          <a [routerLink]="['/admin/dashboard']">
+            <i class="bi bi-arrow-left-short"></i>  
+          </a>
+         </div>
+          <div class="col-titulo">
+            <h3>Sincronização da estrutura</h3>
+          </div>
+      </div>
+
+      <div class="row">
         <div class="col-80">
             <label for="base-select">Base de dados: (*)</label>
             <app-select-basic

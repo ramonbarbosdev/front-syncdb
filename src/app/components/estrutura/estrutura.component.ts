@@ -13,6 +13,7 @@ import { ProgressoBarComponent } from '../component/progresso-bar/progresso-bar.
 import { TableBasicComponent } from '../component/table-basic/table-basic.component';
 
 import { TabelaEstrutura } from '../../models/tabela-estrutura';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-estrutura',
@@ -22,7 +23,8 @@ import { TabelaEstrutura } from '../../models/tabela-estrutura';
     SelectBasicComponent,
     ButtonComponent,
     ProgressoBarComponent,
-    TableBasicComponent
+    TableBasicComponent,
+    RouterModule
   ],
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss'
@@ -50,9 +52,7 @@ export class EstruturaComponent {
   }
 
   iniciarTabela(): void {
-    this.resultados = this.estruturaCache.hasCache()
-      ? this.estruturaCache.getTabelas()
-      : [{ tabela: '', acao: '', erro: '', querys: '' }];
+    this.resultados =  [{ tabela: '', acao: '', erro: '', querys: '' }];
   }
 
   carregarBases(): void {
@@ -74,7 +74,6 @@ export class EstruturaComponent {
   processarBaseDados()
   {
     this.inicializarComponente();
-    this.resultados =  [{ tabela: '', acao: '', erro: '', querys: '' }];
   }
 
   permissaoBotao(acao: boolean)
@@ -83,40 +82,59 @@ export class EstruturaComponent {
     this.fl_operacaoSincronizar = acao
   }
 
-  verificarEstrutura(): void {
-    if (!this.baseSelecionada) return;
-    this.permissaoBotao(true);
+  verificarEstrutura(): void 
+  {
+    if (this.baseSelecionada)
+    {
+      this.permissaoBotao(true);
 
-    this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe({
-      next: ({ tabelas_afetadas }) =>
-      {
-        this.permissaoBotao(false);
-
-        if (tabelas_afetadas?.length)
+      this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe({
+        next: ({ tabelas_afetadas }) =>
         {
-          this.resultados = tabelas_afetadas.map((x: TabelaEstrutura) => ({
-            tabela: x.tabela,
-            acao: x.acao,
-            querys: x.querys,
-            erro: x.erro,
-          }));
-          this.estruturaCache.setTabelas(this.resultados);
+          this.permissaoBotao(false);
+  
+          if (tabelas_afetadas?.length)
+          {
+            this.resultados = tabelas_afetadas.map((x: TabelaEstrutura) => ({
+              tabela: x.tabela,
+              acao: x.acao,
+              querys: x.querys,
+              erro: x.erro,
+            }));
+            // this.estruturaCache.setTabelas(this.resultados);
+          }
+          else
+          {
+            Swal.fire({
+              icon: 'error',
+              title: `Sem resposta`,
+              text: 'Não existe atualização na estrutura das tabelas.',
+              confirmButtonText: 'OK'
+            });
+            this.iniciarTabela();
+          }
+        },
+        error: (e) => {
+          this.permissaoBotao(false);
+          Swal.fire({
+            icon: 'error',
+            title: `Erro ${e.status}`,
+            text: e.error?.details || 'Erro ao verificar estrutura.',
+            confirmButtonText: 'OK'
+          });
         }
-        else
-        {
-          this.iniciarTabela();
-        }
-      },
-      error: (e) => {
-        this.permissaoBotao(false);
-        Swal.fire({
-          icon: 'error',
-          title: `Erro ${e.status}`,
-          text: e.error?.details || 'Erro ao verificar estrutura.',
-          confirmButtonText: 'OK'
-        });
-      }
-    });
+      });
+    }
+    else
+    {
+      Swal.fire({
+        icon: 'error',
+        title: `Falha ao verificar`,
+        text: 'Erro ao verificar estrutura. Nenhuma base selecionada.',
+        confirmButtonText: 'OK'
+      });
+    }
+    
   }
 
   execultarSincronizacaoEstrutura()
@@ -140,7 +158,6 @@ export class EstruturaComponent {
             });
 
             this.inicializarComponente();
-            this.resultados =  [{ tabela: '', acao: '', erro: '', querys: '' }];
           }
          
         },
