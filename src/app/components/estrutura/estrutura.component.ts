@@ -146,21 +146,35 @@ export class EstruturaComponent {
           {
             this.resultados = this.resultados.map(item => {
               let erro = '';
-              for (const tab of resposta.tabelas_afetadas)
-              {
-                if (tab.tabela)
-                {
-                  if ( tab.tabela.toLowerCase() === item.tabela.toLowerCase())
-                  {
+         
+              for (const tab of resposta.tabelas_afetadas) {
+              
+                if (tab.tabela) {
+                  const nomeTabelaResposta = tab.tabela?.toLowerCase();
+            
+                  if (nomeTabelaResposta === item.tabela.toLowerCase()) {
                     erro = tab.erro || '';
                     break; 
                   }
                 }
               }
             
-              return { ...item,  erro   };
+              return {
+                ...item,
+                erro
+              };
             });
-          } 
+          }
+          else
+          {
+            Swal.fire({
+              icon: 'success',
+              title: `Concluido.`,
+              text: resposta.mensagem,
+              confirmButtonText: 'OK'
+            });
+            this.router.navigate(['admin/dashboard'])
+          }
 
         },
         error: (e) => {
