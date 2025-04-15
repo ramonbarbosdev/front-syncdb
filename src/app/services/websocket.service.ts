@@ -117,8 +117,12 @@ export class WebsocketService {
     return this.isConnected;
   }
 
+  getConnected(): boolean {
+    return this.isConnected;
+  }
+
   desconectarWebSocket() {
-    this.disconnect(); // já limpa tudo e desativa
+    this.disconnect(); 
 
     this.auth.logout();
 

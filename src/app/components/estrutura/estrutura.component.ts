@@ -29,7 +29,8 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss'
 })
-export class EstruturaComponent {
+export class EstruturaComponent
+{
   serviceEstrutura = inject(EstruturaService);
   progressoService = inject(ProgressoService);
   estruturaCache = inject(EstruturaCacheService);
@@ -104,7 +105,8 @@ export class EstruturaComponent {
               erro: x.erro,
             }));
             this.estruturaCache.setTabelas(this.resultados);
-          } else {
+          }
+          else {
             Swal.fire({
               icon: 'error',
               title: `Sem resposta`,
