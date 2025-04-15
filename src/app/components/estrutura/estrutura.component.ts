@@ -53,158 +53,148 @@ export class EstruturaComponent
     this.inicializarComponente();
   }
 
-  inicializarComponente(): void {
+  inicializarComponente(): void
+  {
     this.progressoService.progresso = 0;
     this.progressoService.status = 'Verificação da estrutura';
     this.carregarBases();
-    this.iniciarTabela();
+    this.limparTabela();
   }
 
-  iniciarTabela(): void {
+  private limparTabela(): void
+  {
     this.resultados = [{ tabela: '', acao: '', erro: '', querys: '' }];
   }
 
-  carregarBases(): void {
-    this.serviceEstrutura.buscarBaseExistente().subscribe({
-      next: (bases) => {
-        this.bases = bases.map((nm_base: string) => ({ nm_base }));
-      },
-      error: ({ error }) => {
-        Swal.fire({
-          icon: 'error',
-          title: error.code || 'Erro',
-          text: error.error || 'Erro ao carregar as bases.',
-          confirmButtonText: 'OK'
-        });
-      }
-    });
-  }
 
-  processarBaseDados() {
+  processarBaseDados()
+  {
     this.inicializarComponente();
   }
 
-  permissaoBotao(acao: boolean) {
+  permissaoBotao(acao: boolean)
+  {
     this.fl_operacaoVerificar = acao;
     this.fl_operacaoSincronizar = acao;
   }
 
-  verificarEstrutura(): void {
-    if (this.baseSelecionada) {
-      this.permissaoBotao(true);
 
-      this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe({
-        next: ({ tabelas_afetadas }) => {
-          this.permissaoBotao(false);
-
-          if (tabelas_afetadas?.length) {
-            this.resultados = tabelas_afetadas.map((x: TabelaEstrutura) => ({
-              tabela: x.tabela,
-              acao: x.acao,
-              querys: x.querys,
-              erro: x.erro,
-            }));
-            this.estruturaCache.setTabelas(this.resultados);
-          }
-          else {
-            Swal.fire({
-              icon: 'error',
-              title: `Sem resposta`,
-              text: 'Não existe atualização na estrutura das tabelas.',
-              confirmButtonText: 'OK'
-            });
-            this.iniciarTabela();
-            this.fl_operacaoSincronizar = true;
-
-          }
-        },
-        error: (e) => {
-          this.permissaoBotao(false);
-          Swal.fire({
-            icon: 'error',
-            title: `Erro ${e.status}`,
-            text: e.error?.details || 'Erro ao verificar estrutura.',
-            confirmButtonText: 'OK'
-          });
-        }
-      });
-    } else {
-      Swal.fire({
-        icon: 'error',
-        title: `Falha ao verificar`,
-        text: 'Erro ao verificar estrutura. Nenhuma base selecionada.',
-        confirmButtonText: 'OK'
-      });
-    }
+  private carregarBases(): void
+  {
+    this.serviceEstrutura.buscarBaseExistente().subscribe({
+      next: (bases) => {
+        this.bases = bases.map((nm_base: string) => ({ nm_base }));
+      },
+      error: ({ error }) => this.exibirErro('Erro ao carregar as bases.', error)
+    });
   }
 
-  execultarSincronizacaoEstrutura()
+  private exibirErro(text: string, error: any)
   {
-    this.permissaoBotao(true);
-    
-    if (this.resultados[0].tabela.length && this.baseSelecionada)
+    Swal.fire({
+      icon: 'error',
+      title: error.code || 'Erro',
+      text: error.error || text,
+      confirmButtonText: 'OK'
+    });
+  }
+
+  private atualizarErrosNaTabela(tabelasAfetadas: TabelaEstrutura[])
+  {
+    this.resultados = this.resultados.map(item => {
+      const erro = tabelasAfetadas.find(tab => tab.tabela?.toLowerCase() === item.tabela.toLowerCase())?.erro || '';
+      return { ...item, erro };
+    });
+  }
+
+  private setPermissaoOperacoes(ativo: boolean)
+  {
+    this.fl_operacaoVerificar = ativo;
+    this.fl_operacaoSincronizar = ativo;
+  }
+
+  
+  verificarEstrutura(): void
+  {
+    if (!this.baseSelecionada)
     {
-      this.progressoService.progresso = 0;
-      this.progressoService.status = 'Iniciando processamento de querys';
+      return this.exibirErro('Erro ao verificar estrutura. Nenhuma base selecionada.', { code: 'Falha ao verificar' });
+    }
 
-      this.serviceEstrutura.sincronizacaoEstrutura(this.baseSelecionada).subscribe({
-        next: (resposta) => {
+    this.setPermissaoOperacoes(true);
 
-          this.permissaoBotao(false);
+    this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe({
+      next: ({ tabelas_afetadas }) => {
+        this.setPermissaoOperacoes(false);
 
-          if (resposta?.tabelas_afetadas?.length)
-          {
-            this.resultados = this.resultados.map(item => {
-              let erro = '';
-         
-              for (const tab of resposta.tabelas_afetadas) {
-              
-                if (tab.tabela) {
-                  const nomeTabelaResposta = tab.tabela?.toLowerCase();
-            
-                  if (nomeTabelaResposta === item.tabela.toLowerCase()) {
-                    erro = tab.erro || '';
-                    break; 
-                  }
-                }
-              }
-            
-              return {
-                ...item,
-                erro
-              };
-            });
-          }
-          else
-          {
-            Swal.fire({
-              icon: 'success',
-              title: `Concluido.`,
-              text: resposta.mensagem,
-              confirmButtonText: 'OK'
-            });
-            this.router.navigate(['admin/dashboard'])
-          }
-
-        },
-        error: (e) => {
-          this.permissaoBotao(false);
+        if (tabelas_afetadas?.length) {
+          this.resultados = tabelas_afetadas.map((x: TabelaEstrutura) => ({
+            tabela: x.tabela,
+            acao: x.acao,
+            querys: x.querys,
+            erro: x.erro,
+          }));
+          this.estruturaCache.setTabelas(this.resultados);
+        } else {
           Swal.fire({
             icon: 'error',
-            title: `Falha na sincronização`,
-            text: e.error.mensagem,
+            title: 'Sem resposta',
+            text: 'Não existe atualização na estrutura das tabelas.',
             confirmButtonText: 'OK'
           });
+          this.limparTabela();
+          this.fl_operacaoSincronizar = true;
         }
-      });
-    } else {
+      },
+      error: (e) => {
+        this.setPermissaoOperacoes(false);
+        this.exibirErro('Erro ao verificar estrutura.', e);
+      }
+    });
+  }
+
+  execultarSincronizacaoEstrutura(): void
+  {
+    this.setPermissaoOperacoes(true);
+
+    if (!this.resultados[0].tabela || !this.baseSelecionada) {
       Swal.fire({
         icon: 'error',
         title: `Erro de informações`,
         text: 'Não existe estrutura para sincronizar!',
         confirmButtonText: 'OK'
       });
-      this.permissaoBotao(false);
+      return this.setPermissaoOperacoes(false);
     }
+
+    this.progressoService.progresso = 0;
+    this.progressoService.status = 'Iniciando processamento de querys';
+
+    this.serviceEstrutura.sincronizacaoEstrutura(this.baseSelecionada).subscribe({
+      next: (resposta) => {
+        this.setPermissaoOperacoes(false);
+
+        if (resposta?.tabelas_afetadas?.length) {
+          this.atualizarErrosNaTabela(resposta.tabelas_afetadas);
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Concluído',
+            text: resposta.mensagem,
+            confirmButtonText: 'OK'
+          });
+          this.router.navigate(['admin/dashboard']);
+        }
+      },
+      error: (e) => {
+        this.setPermissaoOperacoes(false);
+        Swal.fire({
+          icon: 'error',
+          title: 'Falha na sincronização',
+          text: e.error.mensagem,
+          confirmButtonText: 'OK'
+        });
+      }
+    });
   }
 }

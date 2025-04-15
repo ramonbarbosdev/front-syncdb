@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { WebsocketService } from './websocket.service';
+import { TabelaEstrutura } from '../models/tabela-estrutura';
 
 @Injectable({
   providedIn: 'root'
@@ -53,5 +54,6 @@ export class EstruturaService
       catchError(error => throwError(() => error))
     );
   }
+
 
 }
