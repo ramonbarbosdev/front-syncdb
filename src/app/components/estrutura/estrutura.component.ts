@@ -141,11 +141,12 @@ export class EstruturaComponent
   execultarSincronizacaoEstrutura()
   {
     this.permissaoBotao(true);
-    this.progressoService.progresso = 0;
-    this.progressoService.status = 'Iniciando processamento de querys';
-
-    if (this.resultados?.length > 0 && this.baseSelecionada)
+    
+    if (this.resultados[0].tabela.length && this.baseSelecionada)
     {
+      this.progressoService.progresso = 0;
+      this.progressoService.status = 'Iniciando processamento de querys';
+
       this.serviceEstrutura.sincronizacaoEstrutura(this.baseSelecionada).subscribe({
         next: (resposta) => {
 

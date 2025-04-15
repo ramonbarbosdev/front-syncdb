@@ -17,10 +17,10 @@ button:focus {
 }
 
 button:disabled {
-  // background-color: $color-button-disabled;
+  background-color: $color-button;
   cursor: not-allowed;
 }
 
 button:hover:not(:disabled) {
-  background-color: $color-button-hover;
+  background-color: $color-button;
 }
