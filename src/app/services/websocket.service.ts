@@ -48,6 +48,12 @@ export class WebsocketService {
       this.isConnected = false;
     };
 
+    this.client.onWebSocketClose = (event) => {
+      console.warn('[WebSocket fechado]', event.reason || event);
+      this.isConnected = false;
+      this.desconectarWebSocket();
+    };
+
     this.client.onStompError = (frame) => {
       console.error('[Erro STOMP]', frame);
       this.desconectarWebSocket();
@@ -89,6 +95,11 @@ export class WebsocketService {
   }
 
   send(destination: string, body: any) {
+    if (!this.connected) {
+      console.warn('⚠️ WebSocket não está conectado. Ignorando envio.');
+      return;
+    }
+
     this.client.publish({
       destination,
       body: JSON.stringify(body)
@@ -122,15 +133,19 @@ export class WebsocketService {
   }
 
   desconectarWebSocket() {
-    this.disconnect(); 
+    this.disconnect();
 
-    this.auth.logout();
-
-    Swal.fire({
-      icon: 'error',
-      title: 'Erro ao conectar WebSocket',
-      text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
-    });
+    // Tenta reconectar em 3 segundos
+    setTimeout(() => {
+      this.connect().catch(() => {
+        this.auth.logout();
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro ao conectar WebSocket',
+          text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
+        });
+      });
+    }, 3000);
   }
 
   startPing(intervalMs: number = 5000) {
@@ -141,7 +156,6 @@ export class WebsocketService {
     this.pingInterval = setInterval(() => {
       if (this.connected) {
         this.send('/app/ping', { mensagem: 'ping' });
-        // console.log('📤 Ping enviado...');
 
         if (this.pongTimeout) {
           clearTimeout(this.pongTimeout);
@@ -157,8 +171,6 @@ export class WebsocketService {
 
   subscribeToPong() {
     this.subscribe('/topic/pong', (msg) => {
-      // console.log('📥 Pong recebido:', msg);
-
       if (this.pongTimeout) {
         clearTimeout(this.pongTimeout);
         this.pongTimeout = null;
@@ -168,8 +180,6 @@ export class WebsocketService {
 
   subscribeProgress() {
     this.subscribe('/topic/sync/progress', (data) => {
-      // console.log('Progresso:', data);
-
       if (this.pongTimeout) {
         clearTimeout(this.pongTimeout);
         this.pongTimeout = null;
