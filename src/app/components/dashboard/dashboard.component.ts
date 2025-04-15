@@ -16,4 +16,8 @@ export class DashboardComponent {
   {
     this.router.navigate(['admin/estrutura'])
   }
+  abrirDados()
+  {
+    this.router.navigate(['admin/dados'])
+  }
 }

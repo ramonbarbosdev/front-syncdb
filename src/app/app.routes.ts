@@ -4,6 +4,7 @@ import { PrincipalComponent } from './components/layout/principal/principal.comp
 import { authGuard } from './auth/auth.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { EstruturaComponent } from './components/estrutura/estrutura.component';
+import { DadosComponent } from './components/dados/dados.component';
 
 export const routes: Routes = [
     {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -12,6 +13,7 @@ export const routes: Routes = [
         [
             {path: 'dashboard', component: DashboardComponent},
             {path: 'estrutura', component: EstruturaComponent},
+            {path: 'dados', component: DadosComponent},
             
         ]
     },

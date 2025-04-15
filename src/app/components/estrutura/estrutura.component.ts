@@ -78,7 +78,6 @@ export class EstruturaComponent
     this.fl_operacaoSincronizar = acao;
   }
 
-
   private carregarBases(): void
   {
     this.serviceEstrutura.buscarBaseExistente().subscribe({
