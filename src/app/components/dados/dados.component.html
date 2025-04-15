@@ -32,8 +32,39 @@
           [color]="''"
           [backgroundColor]="''"
           [disabled]="fl_operacaoVerificar"
-          (clickEvent)="verificarDados()">
+          (clickEvent)="verificar()">
         </app-button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-100">
+          <app-table-basic [resultados]="resultados"  [colunasVisiveis]="colunasVisiveis"></app-table-basic>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-100">
+          <app-progresso-bar  
+          [progresso]="progressoService.progresso"
+          [mensagem]="progressoService.status"
+          >
+          </app-progresso-bar>
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col button" >
+          <div >
+            <app-button
+            [text]="'Execultar'"
+            [icon]="'bi bi-upload'"  
+            [color]="''"
+            [backgroundColor]="''"
+            [disabled]="fl_operacaoSincronizar"
+            (clickEvent)="execultarSincronizacao()">
+          </app-button>
+          </div>
         </div>
       </div>
      

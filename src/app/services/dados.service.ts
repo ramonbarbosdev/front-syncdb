@@ -33,5 +33,27 @@ export class DadosService {
       catchError(error => throwError(() => error))
     );
   }
+
+  verificar(item: any): Observable<any>
+  {
+    this.verificarConexaoWebSocket();
+
+    const url = `${this.API}/verificar/${item}`;
+    
+    return this.http.get<any[]>(url).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
+
+  sincronizacao(item: any): Observable<any>
+  {
+    this.verificarConexaoWebSocket();
+
+    const url = `${this.API}/${item}`;
+    
+    return this.http.get<any[]>(url).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
   
 }

@@ -41,6 +41,7 @@ export class EstruturaComponent
   fl_operacaoVerificar = false;
   fl_operacaoSincronizar = false;
   resultados: TabelaEstrutura[] = [];
+  ds_operacao = 'Estrutura';
 
   colunasVisiveis = {
     tabela: true,
@@ -84,16 +85,16 @@ export class EstruturaComponent
       next: (bases) => {
         this.bases = bases.map((nm_base: string) => ({ nm_base }));
       },
-      error: ({ error }) => this.exibirErro('Erro ao carregar as bases.', error)
+      error: ({ error }) => this.exibirErro(`Erro ao carregar as ${this.ds_operacao}.`, error)
     });
   }
 
-  private exibirErro(text: string, error: any)
+  private exibirErro(text: string, e: any)
   {
     Swal.fire({
       icon: 'error',
-      title: error.code || 'Erro',
-      text: error.error || text,
+      title: e.error.message || e.status || 'Erro na operação',
+      text:  e.error.details ||  text || e.error.error,
       confirmButtonText: 'OK'
     });
   }
@@ -113,16 +114,16 @@ export class EstruturaComponent
   }
 
   
-  verificarEstrutura(): void
+  verificar(): void
   {
     if (!this.baseSelecionada)
     {
-      return this.exibirErro('Erro ao verificar estrutura. Nenhuma base selecionada.', { code: 'Falha ao verificar' });
+      return this.exibirErro(`Erro ao verificar ${this.ds_operacao}. Nenhuma base selecionada.`, { code: 'Falha ao verificar' });
     }
 
     this.setPermissaoOperacoes(true);
 
-    this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe({
+    this.serviceEstrutura.verificar(this.baseSelecionada).subscribe({
       next: ({ tabelas_afetadas }) => {
         this.setPermissaoOperacoes(false);
 
@@ -138,7 +139,7 @@ export class EstruturaComponent
           Swal.fire({
             icon: 'error',
             title: 'Sem resposta',
-            text: 'Não existe atualização na estrutura das tabelas.',
+            text: `Não existe atualização de ${this.ds_operacao} das tabelas.`,
             confirmButtonText: 'OK'
           });
           this.limparTabela();
@@ -147,12 +148,12 @@ export class EstruturaComponent
       },
       error: (e) => {
         this.setPermissaoOperacoes(false);
-        this.exibirErro('Erro ao verificar estrutura.', e);
+        this.exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
       }
     });
   }
 
-  execultarSincronizacaoEstrutura(): void
+  execultarSincronizacao(): void
   {
     this.setPermissaoOperacoes(true);
 
@@ -160,7 +161,7 @@ export class EstruturaComponent
       Swal.fire({
         icon: 'error',
         title: `Erro de informações`,
-        text: 'Não existe estrutura para sincronizar!',
+        text: `Não existe ${this.ds_operacao} para sincronizar!`,
         confirmButtonText: 'OK'
       });
       return this.setPermissaoOperacoes(false);
@@ -169,7 +170,7 @@ export class EstruturaComponent
     this.progressoService.progresso = 0;
     this.progressoService.status = 'Iniciando processamento de querys';
 
-    this.serviceEstrutura.sincronizacaoEstrutura(this.baseSelecionada).subscribe({
+    this.serviceEstrutura.sincronizacao(this.baseSelecionada).subscribe({
       next: (resposta) => {
         this.setPermissaoOperacoes(false);
 

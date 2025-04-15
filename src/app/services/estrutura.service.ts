@@ -19,7 +19,6 @@ export class EstruturaService
 
   private webSocketService = inject(WebsocketService);
 
-  
   private verificarConexaoWebSocket(): void
   {
     if (!this.webSocketService.getConnected()) this.webSocketService.connect();
@@ -34,7 +33,7 @@ export class EstruturaService
       catchError(error => throwError(() => error))
     );
   }
-  verificarEstrutura(item: any): Observable<any>
+  verificar(item: any): Observable<any>
   {
     this.verificarConexaoWebSocket();
 
@@ -45,7 +44,7 @@ export class EstruturaService
     );
   }
 
-  sincronizacaoEstrutura(item: any): Observable<any>
+  sincronizacao(item: any): Observable<any>
   {
     this.verificarConexaoWebSocket();
 
