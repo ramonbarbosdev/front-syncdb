@@ -137,7 +137,7 @@ export class WebsocketService {
     this.pingInterval = setInterval(() => {
       if (this.connected) {
         this.send('/app/ping', { mensagem: 'ping' });
-        console.log('📤 Ping enviado...');
+        // console.log('📤 Ping enviado...');
 
         if (this.pongTimeout) {
           clearTimeout(this.pongTimeout);
@@ -153,7 +153,7 @@ export class WebsocketService {
 
   subscribeToPong() {
     this.subscribe('/topic/pong', (msg) => {
-      console.log('📥 Pong recebido:', msg);
+      // console.log('📥 Pong recebido:', msg);
 
       if (this.pongTimeout) {
         clearTimeout(this.pongTimeout);
@@ -164,7 +164,7 @@ export class WebsocketService {
 
   subscribeProgress() {
     this.subscribe('/topic/sync/progress', (data) => {
-      console.log('Progresso:', data);
+      // console.log('Progresso:', data);
 
       if (this.pongTimeout) {
         clearTimeout(this.pongTimeout);

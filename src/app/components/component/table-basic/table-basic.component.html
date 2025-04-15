@@ -3,12 +3,20 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th *ngFor="let coluna of colunas">{{ coluna.toUpperCase() }}</th>
+          <th *ngFor="let coluna of colunas" >{{ coluna.toUpperCase() }}</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let resultado of resultados">
-          <td *ngFor="let coluna of colunas">{{ resultado[coluna] }}</td>
+          <td *ngFor="let coluna of colunas" [hidden]="!colunasVisiveis[coluna]">
+            {{ resultado[coluna] }}
+          </td>
+          <td>
+            <!-- Mostra o botão somente se houver erro -->
+            <div class="btn-error" *ngIf="resultado.erro" class="btn btn-sm btn-outline-danger" (click)="mostrarErro(resultado)">
+              <i class="bi bi-info-circle-fill"></i>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>

@@ -75,6 +75,11 @@ td:focus, th:focus {
   border: 1px solid #4CAF50;
 }
 
+.btn-error i
+{
+  font-size: 1rem;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   th, td {

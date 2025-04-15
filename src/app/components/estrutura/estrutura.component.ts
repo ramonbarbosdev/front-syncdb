@@ -29,8 +29,7 @@ import { Router, RouterModule } from '@angular/router';
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss'
 })
-export class EstruturaComponent
-{
+export class EstruturaComponent {
   serviceEstrutura = inject(EstruturaService);
   progressoService = inject(ProgressoService);
   estruturaCache = inject(EstruturaCacheService);
@@ -42,12 +41,18 @@ export class EstruturaComponent
   fl_operacaoSincronizar = false;
   resultados: TabelaEstrutura[] = [];
 
+  colunasVisiveis = {
+    tabela: true,
+    acao: true, 
+    querys: true,
+    erro: false,
+  };
+
   constructor() {
     this.inicializarComponente();
   }
 
-  inicializarComponente(): void
-  {
+  inicializarComponente(): void {
     this.progressoService.progresso = 0;
     this.progressoService.status = 'Verificação da estrutura';
     this.carregarBases();
@@ -55,7 +60,7 @@ export class EstruturaComponent
   }
 
   iniciarTabela(): void {
-    this.resultados =  [{ tabela: '', acao: '', erro: '', querys: '' }];
+    this.resultados = [{ tabela: '', acao: '', erro: '', querys: '' }];
   }
 
   carregarBases(): void {
@@ -74,40 +79,32 @@ export class EstruturaComponent
     });
   }
 
-  processarBaseDados()
-  {
+  processarBaseDados() {
     this.inicializarComponente();
   }
 
-  permissaoBotao(acao: boolean)
-  {
+  permissaoBotao(acao: boolean) {
     this.fl_operacaoVerificar = acao;
-    this.fl_operacaoSincronizar = acao
+    this.fl_operacaoSincronizar = acao;
   }
 
-  verificarEstrutura(): void 
-  {
-    if (this.baseSelecionada)
-    {
+  verificarEstrutura(): void {
+    if (this.baseSelecionada) {
       this.permissaoBotao(true);
 
       this.serviceEstrutura.verificarEstrutura(this.baseSelecionada).subscribe({
-        next: ({ tabelas_afetadas }) =>
-        {
+        next: ({ tabelas_afetadas }) => {
           this.permissaoBotao(false);
-  
-          if (tabelas_afetadas?.length)
-          {
+
+          if (tabelas_afetadas?.length) {
             this.resultados = tabelas_afetadas.map((x: TabelaEstrutura) => ({
               tabela: x.tabela,
               acao: x.acao,
               querys: x.querys,
               erro: x.erro,
             }));
-            // this.estruturaCache.setTabelas(this.resultados);
-          }
-          else
-          {
+            this.estruturaCache.setTabelas(this.resultados);
+          } else {
             Swal.fire({
               icon: 'error',
               title: `Sem resposta`,
@@ -127,9 +124,7 @@ export class EstruturaComponent
           });
         }
       });
-    }
-    else
-    {
+    } else {
       Swal.fire({
         icon: 'error',
         title: `Falha ao verificar`,
@@ -137,32 +132,36 @@ export class EstruturaComponent
         confirmButtonText: 'OK'
       });
     }
-    
   }
 
-  execultarSincronizacaoEstrutura()
-  {
+  execultarSincronizacaoEstrutura() {
     this.permissaoBotao(true);
-    if(this.resultados?.length > 0 && this.baseSelecionada)
-    {
+    if (this.resultados?.length > 0 && this.baseSelecionada) {
       this.serviceEstrutura.sincronizacaoEstrutura(this.baseSelecionada).subscribe({
-        next: (item) =>
-        {
-          this.permissaoBotao(false);
-                  console.log(item) 
-          if(item.success)
-          {
-            Swal.fire({
-              icon: 'success',
-              title: `Sucesso`,
-              text: item.mensagem,
-              confirmButtonText: 'OK'
-            });
+        next: (resposta) => {
 
-            // this.inicializarComponente();
-            // this.router.navigate(['admin/dashboard'])
-          }
-         
+          this.permissaoBotao(false);
+
+          if (resposta?.tabelas_afetadas?.length)
+          {
+            this.resultados = this.resultados.map(item => {
+              let erro = '';
+              for (const tab of resposta.tabelas_afetadas)
+              {
+                if (tab.tabela)
+                {
+                  if ( tab.tabela.toLowerCase() === item.tabela.toLowerCase())
+                  {
+                    erro = tab.erro || '';
+                    break; 
+                  }
+                }
+              }
+            
+              return { ...item,  erro   };
+            });
+          } 
+
         },
         error: (e) => {
           this.permissaoBotao(false);
@@ -174,10 +173,7 @@ export class EstruturaComponent
           });
         }
       });
-      
-    }
-    else
-    {
+    } else {
       Swal.fire({
         icon: 'error',
         title: `Erro de informações`,
