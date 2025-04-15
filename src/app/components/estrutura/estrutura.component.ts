@@ -114,6 +114,8 @@ export class EstruturaComponent
               confirmButtonText: 'OK'
             });
             this.iniciarTabela();
+            this.fl_operacaoSincronizar = true;
+
           }
         },
         error: (e) => {
@@ -136,9 +138,14 @@ export class EstruturaComponent
     }
   }
 
-  execultarSincronizacaoEstrutura() {
+  execultarSincronizacaoEstrutura()
+  {
     this.permissaoBotao(true);
-    if (this.resultados?.length > 0 && this.baseSelecionada) {
+    this.progressoService.progresso = 0;
+    this.progressoService.status = 'Iniciando processamento de querys';
+
+    if (this.resultados?.length > 0 && this.baseSelecionada)
+    {
       this.serviceEstrutura.sincronizacaoEstrutura(this.baseSelecionada).subscribe({
         next: (resposta) => {
 
