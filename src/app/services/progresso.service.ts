@@ -1,45 +1,29 @@
-import { inject, Injectable } from '@angular/core';
+// progresso.service.ts
+import { Injectable, inject } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { WebsocketService } from './websocket.service';
-import { Router } from '@angular/router';
-import Swal from 'sweetalert2';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ProgressoService {
-  public progresso = 0;
-  public mensagem = '';
-  public status = '';
-  private route = inject(Router);
+  private progressoSubject = new BehaviorSubject<number>(0);
+  progresso$ = this.progressoSubject.asObservable();
 
-  constructor(private ws: WebsocketService) {
-    this.initWebSocket();
+  status = '...';
+
+  private ws = inject(WebsocketService);
+
+  constructor() {
+    // Quando o WebSocket emitir novo progresso, repassa para os inscritos
+    this.ws.progresso$.subscribe((valor) => {
+      this.progressoSubject.next(valor);
+    });
   }
 
-  private async initWebSocket() {
-    try
-    {
-      await this.ws.connect(); 
-      this.ws.subscribe('/topic/sync/progress', (data: any) => {
-        
-        console.log(data)
-        if(!data)  this.ws.handleDisconnection(); 
-        this.progresso = data.progresso;
-        this.mensagem = data.mensagem;
-        this.status = data.status;
-       
-      });
-    }
-    catch (error)
-    {
-      console.error('[ProgressoService] Erro ao conectar WebSocket:', error);
-      this.ws.handleDisconnection()
-    }
+  set progresso(valor: number) {
+    this.progressoSubject.next(valor);
   }
 
-
-  desconectar()
-  {
-
+  get progresso(): number {
+    return this.progressoSubject.getValue();
   }
 }

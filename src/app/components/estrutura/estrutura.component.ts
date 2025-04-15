@@ -13,7 +13,7 @@ import { ProgressoBarComponent } from '../component/progresso-bar/progresso-bar.
 import { TableBasicComponent } from '../component/table-basic/table-basic.component';
 
 import { TabelaEstrutura } from '../../models/tabela-estrutura';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-estrutura',
@@ -29,10 +29,12 @@ import { RouterModule } from '@angular/router';
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss'
 })
-export class EstruturaComponent {
+export class EstruturaComponent
+{
   serviceEstrutura = inject(EstruturaService);
   progressoService = inject(ProgressoService);
   estruturaCache = inject(EstruturaCacheService);
+  router = inject(Router);
 
   bases: { nm_base: string }[] = [];
   baseSelecionada = '';
@@ -44,7 +46,8 @@ export class EstruturaComponent {
     this.inicializarComponente();
   }
 
-  inicializarComponente(): void {
+  inicializarComponente(): void
+  {
     this.progressoService.progresso = 0;
     this.progressoService.status = 'Verificação da estrutura';
     this.carregarBases();
@@ -146,7 +149,7 @@ export class EstruturaComponent {
         next: (item) =>
         {
           this.permissaoBotao(false);
-                 
+                  console.log(item) 
           if(item.success)
           {
             Swal.fire({
@@ -156,7 +159,8 @@ export class EstruturaComponent {
               confirmButtonText: 'OK'
             });
 
-            this.inicializarComponente();
+            // this.inicializarComponente();
+            // this.router.navigate(['admin/dashboard'])
           }
          
         },
