@@ -10,7 +10,7 @@
           </a>
          </div>
           <div class="col-titulo">
-            <h3>Sincronização da estrutura</h3>
+            <h3>Sincronização {{ds_operacao}}</h3>
           </div>
       </div>
 
@@ -54,7 +54,7 @@
       <div class="row">
         <div class="col-100">
           <app-button
-          [text]="'Verificar estrutura'"
+          [text]="'Verificar ' + ds_operacao"
           [icon]="'bi bi-arrow-repeat'"  
           [color]="''"
           [backgroundColor]="''"
@@ -81,9 +81,8 @@
       </div>
       
       <div class="row">
-        <div class="col button" >
-          <div >
-            <app-button
+        <div class="" style="  width: 100%;  justify-content: flex-end;  display: flex; " >
+          <app-button
             [text]="'Execultar'"
             [icon]="'bi bi-upload'"  
             [color]="''"
@@ -91,7 +90,6 @@
             [disabled]="fl_operacaoSincronizar"
             (clickEvent)="execultarSincronizacao()">
           </app-button>
-          </div>
         </div>
       </div>
 

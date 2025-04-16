@@ -1,74 +1,98 @@
 
 <div class="container">
   
-    <div class="card">
+  <div class="card">
 
-      <div class="row">
-        <div class="col-btn">
-          <a [routerLink]="['/admin/dashboard']">
-            <i class="bi bi-arrow-left-short"></i>  
-          </a>
-         </div>
-          <div class="col-titulo">
-            <h3>Sincronização de dados</h3>
-          </div>
-      </div>
-
-      <div class="row">
-        <div class="col-80">
-            <label for="base-select">Base de dados: (*)</label>
-            <app-select-basic
-            [options]="bases"
-            [(selected)]="baseSelecionada"
-            (selectedChange)="processarBaseDados()">
-            >
-            </app-select-basic>
+    <div class="row">
+      <div class="col-btn">
+        <a [routerLink]="['/admin/dashboard']">
+          <i class="bi bi-arrow-left-short"></i>  
+        </a>
+       </div>
+        <div class="col-titulo">
+          <h3>Sincronização {{ds_operacao}}</h3>
         </div>
-        <div class="col-10">
-          <!-- <label>&nbsp;</label>  -->
-          <app-button
-          [text]="''"
-          [icon]="'bi bi-arrow-repeat'"  
-          [color]="''"
-          [backgroundColor]="''"
-          [disabled]="fl_operacaoVerificar"
-          (clickEvent)="verificar()">
-        </app-button>
-        </div>
-      </div>
+    </div>
 
-      <div class="row">
-        <div class="col-100">
-          <app-table-basic [resultados]="resultados"  [colunasVisiveis]="colunasVisiveis"></app-table-basic>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-100">
-          <app-progresso-bar  
-          [progresso]="progressoService.progresso"
-          [mensagem]="progressoService.status"
+    <div class="row">
+      <div class="col-100">
+          <label for="base-select">Base de dados: (*)</label>
+          <app-select-basic
+          [options]="selectBases"
+          [(selected)]="baseSelecionada"
+          (selectedChange)="processarBaseDados()">
           >
-          </app-progresso-bar>
-        </div>
+          </app-select-basic>
       </div>
       
-      <div class="row">
-        <div class="col button" >
-          <div >
-            <app-button
-            [text]="'Execultar'"
-            [icon]="'bi bi-upload'"  
-            [color]="''"
-            [backgroundColor]="''"
-            [disabled]="fl_operacaoSincronizar"
-            (clickEvent)="execultarSincronizacao()">
-          </app-button>
-          </div>
-        </div>
-      </div>
-     
     </div>
-  </div>
 
-  
+    <div class="row">
+      <div class="col-100">
+        <label for="base-select">Esquema:</label>
+        <app-select-basic
+        [options]="selectEsquema"
+        [(selected)]="esquemaSelecionada"
+        (selectedChange)="processarEsquema()">
+        >
+        </app-select-basic>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-100">
+        <label for="base-select">Tabela:</label>
+        <app-select-basic
+        [options]="selectTabelas"
+        [(selected)]="tabelaSelecionada"
+        (selectedChange)="processarBaseDados()">
+        >
+        </app-select-basic>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-100">
+        <app-button
+        [text]="'Verificar ' + ds_operacao"
+        [icon]="'bi bi-arrow-repeat'"  
+        [color]="''"
+        [backgroundColor]="''"
+        [disabled]="fl_operacaoVerificar"
+        (clickEvent)="verificar()">
+      </app-button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-100">
+        <app-table-basic [resultados]="resultados"  [colunasVisiveis]="colunasVisiveis"></app-table-basic>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-100">
+        <app-progresso-bar  
+        [progresso]="progressoService.progresso"
+        [mensagem]="progressoService.status"
+        >
+        </app-progresso-bar>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="" style="  width: 100%;  justify-content: flex-end;  display: flex; " >
+        <app-button
+          [text]="'Execultar'"
+          [icon]="'bi bi-upload'"  
+          [color]="''"
+          [backgroundColor]="''"
+          [disabled]="fl_operacaoSincronizar"
+          (clickEvent)="execultarSincronizacao()">
+        </app-button>
+      </div>
+    </div>
+
+  </div>
+</div>
+

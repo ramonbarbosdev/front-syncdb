@@ -19,13 +19,19 @@ import { ProgressoBarComponent } from '../component/progresso-bar/progresso-bar.
 })
 export class DadosComponent {
 
-  serviceDados = inject(DadosService);
+  service = inject(DadosService);
   progressoService = inject(ProgressoService);
   estruturaCache = inject(EstruturaCacheService);
   router = inject(Router);
 
-  bases: { nm_base: string }[] = [];
+  selectBases: { nm_option: string }[] = [];
+  selectEsquema: { nm_option: string }[] = [];
+  selectTabelas: { nm_option: string }[] = [];
+
   baseSelecionada = '';
+  esquemaSelecionada = '';
+  tabelaSelecionada = '';
+
   fl_operacaoVerificar = false;
   fl_operacaoSincronizar = false;
   resultados: TabelaEstrutura[] = [];
@@ -59,7 +65,14 @@ export class DadosComponent {
   processarBaseDados()
   {
     this.inicializarComponente();
+    this.carregarEsquema();
   }
+
+  processarEsquema()
+  {
+    this.carregarTabelas();
+  }
+
 
   permissaoBotao(acao: boolean)
   {
@@ -69,9 +82,27 @@ export class DadosComponent {
 
   private carregarBases(): void
   {
-    this.serviceDados.buscarBaseExistente().subscribe({
-      next: (bases) => {
-        this.bases = bases.map((nm_base: string) => ({ nm_base }));
+    this.service.buscarBaseExistente().subscribe({
+      next: (item) => {
+        this.selectBases = item.map((nm_option: string) => ({ nm_option }));
+      },
+      error: ({ error }) => this.exibirErro(`Erro ao carregar as ${this.ds_operacao}.`, error)
+    });
+  }
+  private carregarEsquema(): void
+  {
+    this.service.buscarEsquemaExistente(this.baseSelecionada).subscribe({
+      next: (item) => {
+        this.selectEsquema = item.map((nm_option: string) => ({ nm_option }));
+      },
+      error: ({ error }) => this.exibirErro(`Erro ao carregar as ${this.ds_operacao}.`, error)
+    });
+  }
+  private carregarTabelas(): void
+  {
+    this.service.buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada).subscribe({
+      next: (item) => {
+        this.selectTabelas = item.map((nm_option: string) => ({ nm_option }));
       },
       error: ({ error }) => this.exibirErro(`Erro ao carregar as ${this.ds_operacao}.`, error)
     });
@@ -113,7 +144,9 @@ export class DadosComponent {
 
     this.setPermissaoOperacoes(true);
 
-    this.serviceDados.verificar(this.baseSelecionada).subscribe({
+    let tabelaEsquema = !this.tabelaSelecionada ? this.esquemaSelecionada : this.tabelaSelecionada ;
+
+    this.service.verificar(this.baseSelecionada, tabelaEsquema).subscribe({
       next: ({ tabelas_afetadas }) => {
         this.setPermissaoOperacoes(false);
 
@@ -160,7 +193,7 @@ export class DadosComponent {
       this.progressoService.progresso = 0;
       this.progressoService.status = 'Iniciando processamento de querys';
   
-      this.serviceDados.sincronizacao(this.baseSelecionada).subscribe({
+      this.service.sincronizacao(this.baseSelecionada).subscribe({
         next: (resposta) => {
           this.setPermissaoOperacoes(false);
   

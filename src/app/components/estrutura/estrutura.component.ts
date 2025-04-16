@@ -31,7 +31,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class EstruturaComponent
 {
-  serviceEstrutura = inject(EstruturaService);
+  service = inject(EstruturaService);
   progressoService = inject(ProgressoService);
   estruturaCache = inject(EstruturaCacheService);
   router = inject(Router);
@@ -55,7 +55,8 @@ export class EstruturaComponent
     erro: false,
   };
 
-  constructor() {
+  constructor()
+  {
     this.inicializarComponente();
   }
 
@@ -66,6 +67,7 @@ export class EstruturaComponent
     this.carregarBases();
     this.limparTabela();
   }
+
 
   private limparTabela(): void
   {
@@ -92,7 +94,7 @@ export class EstruturaComponent
 
   private carregarBases(): void
   {
-    this.serviceEstrutura.buscarBaseExistente().subscribe({
+    this.service.buscarBaseExistente().subscribe({
       next: (item) => {
         this.selectBases = item.map((nm_option: string) => ({ nm_option }));
       },
@@ -101,7 +103,7 @@ export class EstruturaComponent
   }
   private carregarEsquema(): void
   {
-    this.serviceEstrutura.buscarEsquemaExistente(this.baseSelecionada).subscribe({
+    this.service.buscarEsquemaExistente(this.baseSelecionada).subscribe({
       next: (item) => {
         this.selectEsquema = item.map((nm_option: string) => ({ nm_option }));
       },
@@ -110,7 +112,7 @@ export class EstruturaComponent
   }
   private carregarTabelas(): void
   {
-    this.serviceEstrutura.buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada).subscribe({
+    this.service.buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada).subscribe({
       next: (item) => {
         this.selectTabelas = item.map((nm_option: string) => ({ nm_option }));
       },
@@ -153,8 +155,8 @@ export class EstruturaComponent
     this.setPermissaoOperacoes(true);
 
     let tabelaEsquema = !this.tabelaSelecionada ? this.esquemaSelecionada : this.tabelaSelecionada ;
-    
-    this.serviceEstrutura.verificar(this.baseSelecionada, tabelaEsquema).subscribe({
+
+    this.service.verificar(this.baseSelecionada, tabelaEsquema).subscribe({
       next: ({ tabelas_afetadas }) => {
         this.setPermissaoOperacoes(false);
 
@@ -201,7 +203,7 @@ export class EstruturaComponent
     this.progressoService.progresso = 0;
     this.progressoService.status = 'Iniciando processamento de querys';
 
-    this.serviceEstrutura.sincronizacao(this.baseSelecionada).subscribe({
+    this.service.sincronizacao(this.baseSelecionada).subscribe({
       next: (resposta) => {
         this.setPermissaoOperacoes(false);
 
