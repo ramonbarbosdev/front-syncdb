@@ -15,25 +15,52 @@
       </div>
 
       <div class="row">
-        <div class="col-80">
+        <div class="col-100">
             <label for="base-select">Base de dados: (*)</label>
             <app-select-basic
-            [bases]="bases"
+            [options]="selectBases"
             [(selected)]="baseSelecionada"
             (selectedChange)="processarBaseDados()">
             >
             </app-select-basic>
         </div>
-        <div class="col-10">
-          <!-- <label>&nbsp;</label>  -->
+        
+      </div>
+
+      <div class="row">
+        <div class="col-100">
+          <label for="base-select">Esquema:</label>
+          <app-select-basic
+          [options]="selectEsquema"
+          [(selected)]="esquemaSelecionada"
+          (selectedChange)="processarEsquema()">
+          >
+          </app-select-basic>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-100">
+          <label for="base-select">Tabela:</label>
+          <app-select-basic
+          [options]="selectTabelas"
+          [(selected)]="tabelaSelecionada"
+          (selectedChange)="processarBaseDados()">
+          >
+          </app-select-basic>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-100">
           <app-button
-            [text]="''"
-            [icon]="'bi bi-arrow-repeat'"  
-            [color]="''"
-            [backgroundColor]="''"
-            [disabled]="fl_operacaoVerificar"
-            (clickEvent)="verificar()">
-          </app-button>
+          [text]="'Verificar estrutura'"
+          [icon]="'bi bi-arrow-repeat'"  
+          [color]="''"
+          [backgroundColor]="''"
+          [disabled]="fl_operacaoVerificar"
+          (clickEvent)="verificar()">
+        </app-button>
         </div>
       </div>
 

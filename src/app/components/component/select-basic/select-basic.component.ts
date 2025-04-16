@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class SelectBasicComponent {
   @Input() label!: string;
-  @Input() bases: any[] = [];
+  @Input() options: any[] = [];
   @Input() selected: string = '';
   @Output() selectedChange = new EventEmitter<string>();
 

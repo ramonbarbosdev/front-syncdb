@@ -33,11 +33,29 @@ export class EstruturaService
       catchError(error => throwError(() => error))
     );
   }
-  verificar(item: any): Observable<any>
+  buscarEsquemaExistente(base: string): Observable<any>
+  {
+    this.verificarConexaoWebSocket();
+    const url = `${this.API}/base/esquema/${base}`;
+    
+    return this.http.get<any[]>(url).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
+  buscarTabelaExistente(base: string, esquema: string): Observable<any>
+  {
+    this.verificarConexaoWebSocket();
+    const url = `${this.API}/base/tabela/${base}/${esquema}`;
+    
+    return this.http.get<any[]>(url).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
+  verificar(item: any, tabela: string): Observable<any>
   {
     this.verificarConexaoWebSocket();
 
-    const url = `${this.API}/verificar/${item}`;
+    const url = `${this.API}/verificar/${item}/${tabela}`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))

@@ -18,7 +18,7 @@
         <div class="col-80">
             <label for="base-select">Base de dados: (*)</label>
             <app-select-basic
-            [bases]="bases"
+            [options]="bases"
             [(selected)]="baseSelecionada"
             (selectedChange)="processarBaseDados()">
             >
