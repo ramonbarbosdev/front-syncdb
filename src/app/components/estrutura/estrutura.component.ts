@@ -62,12 +62,15 @@ export class EstruturaComponent
 
   inicializarComponente(): void
   {
-    this.progressoService.progresso = 0;
-    this.progressoService.status = `Verificação de ${this.ds_operacao}` ;
+    this.iniciarProgresso();
     this.carregarBases();
     this.limparTabela();
   }
-
+  iniciarProgresso()
+  {
+    this.progressoService.progresso = 0;
+    this.progressoService.status = `Verificação de ${this.ds_operacao}` ;
+  }
 
   private limparTabela(): void
   {
@@ -79,6 +82,8 @@ export class EstruturaComponent
   {
     this.inicializarComponente();
     this.carregarEsquema();
+    this.carregarTabelas();
+    this.selectTabelas = [];
   }
 
   processarEsquema()
@@ -103,6 +108,8 @@ export class EstruturaComponent
   }
   private carregarEsquema(): void
   {
+    if( !this.baseSelecionada)  return;
+
     this.service.buscarEsquemaExistente(this.baseSelecionada).subscribe({
       next: (item) => {
         this.selectEsquema = item.map((nm_option: string) => ({ nm_option }));
@@ -112,6 +119,8 @@ export class EstruturaComponent
   }
   private carregarTabelas(): void
   {
+    if(!this.esquemaSelecionada) return;
+
     this.service.buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada).subscribe({
       next: (item) => {
         this.selectTabelas = item.map((nm_option: string) => ({ nm_option }));
@@ -177,6 +186,7 @@ export class EstruturaComponent
           });
           this.limparTabela();
           this.fl_operacaoSincronizar = true;
+          this.iniciarProgresso();
         }
       },
       error: (e) => {

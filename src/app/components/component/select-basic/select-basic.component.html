@@ -4,7 +4,7 @@
   [ngModel]="selected"
   (ngModelChange)="onChange($event)"
 >
-  <option value="" disabled>Selecione uma base</option>
+  <option value="" disabled>Selecione</option>
   <option *ngFor="let option of options" [value]="option.nm_option">
     {{ option.nm_option }}
   </option>

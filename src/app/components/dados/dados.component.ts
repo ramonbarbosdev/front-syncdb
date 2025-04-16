@@ -51,10 +51,15 @@ export class DadosComponent {
 
   inicializarComponente(): void
   {
-    this.progressoService.progresso = 0;
-    this.progressoService.status = `Verificação de ${this.ds_operacao}` ;
+    this.iniciarProgresso();
     this.carregarBases();
     this.limparTabela();
+  }
+
+  iniciarProgresso()
+  {
+    this.progressoService.progresso = 0;
+    this.progressoService.status = `Verificação de ${this.ds_operacao}` ;
   }
 
   private limparTabela(): void
@@ -66,6 +71,8 @@ export class DadosComponent {
   {
     this.inicializarComponente();
     this.carregarEsquema();
+    this.carregarTabelas();
+    this.selectTabelas = [];
   }
 
   processarEsquema()
@@ -86,26 +93,31 @@ export class DadosComponent {
       next: (item) => {
         this.selectBases = item.map((nm_option: string) => ({ nm_option }));
       },
-      error: ({ error }) => this.exibirErro(`Erro ao carregar as ${this.ds_operacao}.`, error)
+      error: ({ error }) => this.exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
     });
   }
   private carregarEsquema(): void
   {
+    if( !this.baseSelecionada)  return;
+
     this.service.buscarEsquemaExistente(this.baseSelecionada).subscribe({
       next: (item) => {
         this.selectEsquema = item.map((nm_option: string) => ({ nm_option }));
       },
-      error: ({ error }) => this.exibirErro(`Erro ao carregar as ${this.ds_operacao}.`, error)
+      error: ({ error }) => this.exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
     });
   }
   private carregarTabelas(): void
   {
+    if(!this.esquemaSelecionada) return;
+
     this.service.buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada).subscribe({
       next: (item) => {
         this.selectTabelas = item.map((nm_option: string) => ({ nm_option }));
       },
-      error: ({ error }) => this.exibirErro(`Erro ao carregar as ${this.ds_operacao}.`, error)
+      error: ({ error }) => this.exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
     });
+   
   }
 
   private exibirErro(text: string, e: any)
@@ -172,6 +184,7 @@ export class DadosComponent {
       error: (e) => {
         this.setPermissaoOperacoes(false);
         this.exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
+        this.iniciarProgresso();
       }
     });
   }
