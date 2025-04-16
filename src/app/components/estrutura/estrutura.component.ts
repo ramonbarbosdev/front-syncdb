@@ -57,7 +57,7 @@ export class EstruturaComponent
   inicializarComponente(): void
   {
     this.progressoService.progresso = 0;
-    this.progressoService.status = 'Verificação da estrutura';
+    this.progressoService.status = `Verificação de ${this.ds_operacao}` ;
     this.carregarBases();
     this.limparTabela();
   }
@@ -93,8 +93,8 @@ export class EstruturaComponent
   {
     Swal.fire({
       icon: 'error',
-      title: e.error.message || e.status || 'Erro na operação',
-      text:  e.error.details ||  text || e.error.error,
+      title: e.error.mensagem || e.status || 'Erro na operação',
+      text:  e.error.detalhes ||  text || e.error.erro,
       confirmButtonText: 'OK'
     });
   }
