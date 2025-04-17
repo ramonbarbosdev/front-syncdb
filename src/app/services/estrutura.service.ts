@@ -14,6 +14,7 @@ export class EstruturaService
   http = inject(HttpClient);
 
   private readonly API =  `${environment.apiUrl}/estrutura`;
+  private readonly APISync =  `${environment.apiUrl}/sincronizacao`;
 
   constructor() { }
 
@@ -27,7 +28,7 @@ export class EstruturaService
   buscarBaseExistente(): Observable<any>
   {
     this.verificarConexaoWebSocket();
-    const url = `${this.API}/bases/`;
+    const url = `${this.APISync}/bases/`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
@@ -36,7 +37,7 @@ export class EstruturaService
   buscarEsquemaExistente(base: string): Observable<any>
   {
     this.verificarConexaoWebSocket();
-    const url = `${this.API}/base/esquema/${base}`;
+    const url = `${this.APISync}/base/esquema/${base}`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
@@ -45,17 +46,29 @@ export class EstruturaService
   buscarTabelaExistente(base: string, esquema: string): Observable<any>
   {
     this.verificarConexaoWebSocket();
-    const url = `${this.API}/base/tabela/${base}/${esquema}`;
+    const url = `${this.APISync}/base/tabela/${base}/${esquema}`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
   }
-  verificar(item: any, tabela: string): Observable<any>
+
+  verificarExistenciaEsquema(base: string, esquema: string)
+  {
+    this.verificarConexaoWebSocket();
+    const url = `${this.APISync}/verificaesquema/${base}/${esquema}`;
+    
+    return this.http.get<any[]>(url).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
+
+  //------------------------------
+  verificar(item: any, esquema: string,tabela: string): Observable<any>
   {
     this.verificarConexaoWebSocket();
 
-    const url = `${this.API}/verificar/${item}/${tabela}`;
+    const url = `${this.API}/verificar/${item}/${esquema}/${tabela}`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))

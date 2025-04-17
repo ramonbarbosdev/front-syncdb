@@ -13,6 +13,7 @@ export class DadosService {
   http = inject(HttpClient);
 
   private readonly API =  `${environment.apiUrl}/dados`;
+  private readonly APISync =  `${environment.apiUrl}/sincronizacao`;
 
   constructor() { }
 
@@ -27,7 +28,7 @@ export class DadosService {
   buscarBaseExistente(): Observable<any>
   {
     this.verificarConexaoWebSocket();
-    const url = `${this.API}/bases/`;
+    const url = `${this.APISync}/bases/`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
@@ -36,7 +37,7 @@ export class DadosService {
   buscarEsquemaExistente(base: string): Observable<any>
   {
     this.verificarConexaoWebSocket();
-    const url = `${this.API}/base/esquema/${base}`;
+    const url = `${this.APISync}/base/esquema/${base}`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
@@ -45,13 +46,24 @@ export class DadosService {
   buscarTabelaExistente(base: string, esquema: string): Observable<any>
   {
     this.verificarConexaoWebSocket();
-    const url = `${this.API}/base/tabela/${base}/${esquema}`;
+    const url = `${this.APISync}/base/tabela/${base}/${esquema}`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
   }
 
+  verificarExistenciaEsquema(base: string, esquema: string)
+  {
+    this.verificarConexaoWebSocket();
+    const url = `${this.APISync}/verificaesquema/${base}/${esquema}`;
+    
+    return this.http.get<any[]>(url).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
+
+  //**------------------ */
   verificar(item: any, tabela: string): Observable<any>
   {
     this.verificarConexaoWebSocket();
