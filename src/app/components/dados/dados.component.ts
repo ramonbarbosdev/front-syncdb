@@ -144,7 +144,6 @@ export class DadosComponent {
       return { ...item, erro };
     });
   }
-
  
 
   verificar(): void
