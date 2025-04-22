@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { WebsocketService } from '../services/websocket.service';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { WebsocketService } from '../services/websocket.service';
 export class AuthService
 {
 
-  private apiUrl = 'http://localhost:8080/syncdb';
+  private readonly apiUrl =  `${environment.apiUrl}`;
 
   private router = inject(Router);
   constructor(private http: HttpClient) { }

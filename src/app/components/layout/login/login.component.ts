@@ -30,13 +30,14 @@ export class LoginComponent
         this.auth.login({login: this.login, senha: this.senha}).subscribe({
           next: (res: any) => {
           
-
+            console.log(res)
             this.websocketService.connect().then(() => {
               console.log('[Login OK + WebSocket conectado]');
               this.auth.setToken(res.Authorization);
               this.router.navigate(['admin/dashboard'])
 
-            }).catch((err) => {
+            })
+            .catch((err) => {
               console.error('[Erro ao conectar WebSocket após login]', err);
               Swal.fire({
                 icon: 'error',

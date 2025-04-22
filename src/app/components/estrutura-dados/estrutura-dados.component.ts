@@ -120,7 +120,8 @@ export abstract  class EstruturaDadosComponent<TService>
     this.verificarExistenciaEsquema(this.baseSelecionada, this.esquemaSelecionada);
   }
 
-  verificarExistenciaEsquema(baseSelecionada: string, esquemaSelecionada: string) {
+  verificarExistenciaEsquema(baseSelecionada: string, esquemaSelecionada: string)
+  {
     (this.service as any).verificarExistenciaEsquema(baseSelecionada, esquemaSelecionada).subscribe({
       next: () => {
         let tabelaEsquema = !this.tabelaSelecionada ? this.esquemaSelecionada : this.tabelaSelecionada;
