@@ -9,54 +9,86 @@ import { ConexaoService } from '../../services/conexao.service';
   selector: 'app-conexao',
   imports: [RouterModule, InputTextComponent, ButtonComponent],
   templateUrl: './conexao.component.html',
-  styleUrl: './conexao.component.scss'
+  styleUrl: './conexao.component.scss',
 })
 export class ConexaoComponent {
+  private id_conexao?: number; // Pode ser undefined no início!
 
   public cloud = {
-    db_cloud_host: "",
-    db_cloud_port: "",
-    db_cloud_user: "",
-    db_cloud_password: ""
-  }
+    db_cloud_host: '',
+    db_cloud_port: '',
+    db_cloud_user: '',
+    db_cloud_password: '',
+  };
   public local = {
-    db_local_host: "",
-    db_local_port: "",
-    db_local_user: "",
-    db_local_password: ""
-  }
+    db_local_host: '',
+    db_local_port: '',
+    db_local_user: '',
+    db_local_password: '',
+  };
 
   service = inject(ConexaoService);
 
-  onSave()
-  {
+  constructor() {
+    this.service.getConexao().subscribe((data) => {
+      if (data) {
+        this.id_conexao = data.id_conexao;
+        this.cloud = data.cloud;
+        this.local = data.local;
+      }
+    });
+  }
 
+  onSave() {
     const payload = {
+      id_conexao: this.id_conexao,
       cloud: this.cloud,
-      local: this.local
+      local: this.local,
     };
-     this.service.salvarDadosConexao(payload).subscribe
-     ({
-        next: (res: any) => {
 
+    if (this.id_conexao)
+    {
+      this.service.atualizarConexao(payload).subscribe({
+        next: (res: any) => {
           Swal.fire({
             icon: 'success',
             title: 'Sucesso!',
-            text: 'Conexões salvas com sucesso.',
-            confirmButtonText: 'OK'
+            text: 'Conexões atualizadas com sucesso.',
+            confirmButtonText: 'OK',
           });
         },
-        error: err =>
-        {
-          console.log(err)
+        error: (err) => {
+          console.error(err);
           Swal.fire({
             icon: 'error',
-            title: "Erro ao salvar",
-            text: "Verifique os dados de conexão.",
-            confirmButtonText: 'OK'
+            title: 'Erro ao atualizar',
+            text: 'Verifique os dados de conexão.',
+            confirmButtonText: 'OK',
           });
-        }
-    })
+        },
+      });
+    }
+    // Se não existe id, cria novo (POST)
+    else {
+      this.service.criarConexao(payload).subscribe({
+        next: (res: any) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Sucesso!',
+            text: 'Nova conexão criada com sucesso.',
+            confirmButtonText: 'OK',
+          });
+        },
+        error: (err) => {
+          console.error(err);
+          Swal.fire({
+            icon: 'error',
+            title: 'Erro ao criar',
+            text: 'Verifique os dados de conexão.',
+            confirmButtonText: 'OK',
+          });
+        },
+      });
+    }
   }
-
 }
