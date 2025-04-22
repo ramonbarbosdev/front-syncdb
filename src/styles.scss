@@ -5,7 +5,10 @@
 *
 {
     margin: 0;
+    scrollbar-width: thin;
+    scrollbar-color:  $color-bg-body lighten($color-bg-body, 5%);
 }
+
 
 html, body
 {
@@ -47,7 +50,7 @@ html, body
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  gap: 20px; 
+  gap: 5px; 
   flex-wrap: wrap; 
 }
 
@@ -113,9 +116,44 @@ html, body
   background: $color-button-hover;
 }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color:  $color-bg-body lighten($color-bg-body, 5%);
+
+
+// Cabeçalho
+.header
+{
+  display: flex;
+  flex-direction: row;
+}
+
+.col-btn
+{
+  width: 10%;
+}
+
+.col-btn a {
+  padding: 5px;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color:$color-text-main;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.col-btn a:hover:not(:disabled)
+{
+  color: $color-button-hover;
+}
+
+
+.col-titulo
+{
+  width: 86%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-text-main;
 }
   
   

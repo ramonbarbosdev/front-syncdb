@@ -64,11 +64,11 @@ export class DadosService {
   }
 
   //**------------------ */
-  verificar(item: any, tabela: string): Observable<any>
+  verificar(item: any, esquema: string,tabela: string): Observable<any>
   {
     this.verificarConexaoWebSocket();
 
-    const url = `${this.API}/verificar/${item}/${tabela}`;
+    const url = `${this.API}/verificar/${item}/${esquema}/${tabela}`;
     
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
