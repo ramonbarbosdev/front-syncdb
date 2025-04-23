@@ -9,7 +9,7 @@ import { environment } from '../environments/environment';
 })
 export class DadosService {
 
-  
+
   http = inject(HttpClient);
 
   private readonly API =  `${environment.apiUrl}/dados`;
@@ -19,7 +19,7 @@ export class DadosService {
 
   private webSocketService = inject(WebsocketService);
 
-  
+
   private verificarConexaoWebSocket(): void
   {
     if (!this.webSocketService.getConnected()) this.webSocketService.connect();
@@ -29,7 +29,7 @@ export class DadosService {
   {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/bases/`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -38,7 +38,7 @@ export class DadosService {
   {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/base/esquema/${base}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -47,7 +47,7 @@ export class DadosService {
   {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/base/tabela/${base}/${esquema}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -57,7 +57,7 @@ export class DadosService {
   {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/verificaesquema/${base}/${esquema}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -69,7 +69,7 @@ export class DadosService {
     this.verificarConexaoWebSocket();
 
     const url = `${this.API}/verificar/${item}/${esquema}/${tabela}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -80,10 +80,10 @@ export class DadosService {
     this.verificarConexaoWebSocket();
 
     const url = `${this.API}/${item}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
   }
-  
+
 }

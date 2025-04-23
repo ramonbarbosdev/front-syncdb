@@ -96,7 +96,7 @@ export class WebsocketService {
 
   send(destination: string, body: any) {
     if (!this.connected) {
-      console.warn('⚠️ WebSocket não está conectado. Ignorando envio.');
+      console.warn('WebSocket não está conectado. Ignorando envio.');
       return;
     }
 
@@ -135,6 +135,12 @@ export class WebsocketService {
   desconectarWebSocket() {
     this.disconnect();
 
+     Swal.fire({
+       icon: 'error',
+       title: 'Erro ao conectar WebSocket',
+       text: 'Tentando reconectar ao WebSocket.',
+     });
+
     // Tenta reconectar em 3 segundos
     setTimeout(() => {
       this.connect().catch(() => {
@@ -162,7 +168,7 @@ export class WebsocketService {
         }
 
         this.pongTimeout = setTimeout(() => {
-          console.warn('⚠️ Pong não recebido dentro do tempo limite!');
+          console.warn('Pong não recebido dentro do tempo limite!');
           this.desconectarWebSocket();
         }, this.pongTimeoutMs);
       }

@@ -4,6 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { WebsocketService } from './websocket.service';
 import { TabelaEstrutura } from '../models/tabela-estrutura';
 import { environment } from '../environments/environment';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -22,14 +23,14 @@ export class EstruturaService
 
   private verificarConexaoWebSocket(): void
   {
-    if (!this.webSocketService.getConnected()) this.webSocketService.connect();
+     if (!this.webSocketService.getConnected())  this.webSocketService.connect();
   }
-  
+
   buscarBaseExistente(): Observable<any>
   {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/bases/`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -38,7 +39,7 @@ export class EstruturaService
   {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/base/esquema/${base}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -47,7 +48,7 @@ export class EstruturaService
   {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/base/tabela/${base}/${esquema}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -57,7 +58,7 @@ export class EstruturaService
   {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/verificaesquema/${base}/${esquema}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -69,7 +70,7 @@ export class EstruturaService
     this.verificarConexaoWebSocket();
 
     const url = `${this.API}/verificar/${item}/${esquema}/${tabela}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
@@ -80,7 +81,7 @@ export class EstruturaService
     this.verificarConexaoWebSocket();
 
     const url = `${this.API}/${item}`;
-    
+
     return this.http.get<any[]>(url).pipe(
       catchError(error => throwError(() => error))
     );
