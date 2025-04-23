@@ -50,7 +50,7 @@ export class WebsocketService {
 
     this.client.onWebSocketClose = (event) => {
       this.desconectarWebSocket();
-      console.warn('[WebSocket fechado]', event.reason || event);
+      console.warn('[WebSocket fechadoo]', event.reason || event);
       this.isConnected = false;
     };
 
@@ -135,23 +135,24 @@ export class WebsocketService {
 
   desconectarWebSocket() {
     this.disconnect();
+     this.auth.logout();
      Swal.fire({
        icon: 'error',
        title: 'Erro ao conectar WebSocket',
-       text: 'Tentando reconectar ao WebSocket.',
+       text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
      });
 
-    // Tenta reconectar em 3 segundos
-    setTimeout(() => {
-      this.connect().catch(() => {
-        this.auth.logout();
-        Swal.fire({
-          icon: 'error',
-          title: 'Erro ao conectar WebSocket',
-          text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
-        });
-      });
-    }, 3000);
+    // // Tenta reconectar em 3 segundos
+    // setTimeout(() => {
+    //   this.connect().catch(() => {
+    //     this.auth.logout();
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Erro ao conectar WebSocket',
+    //       text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
+    //     });
+    //   });
+    // }, 3000);
   }
 
   startPing(intervalMs: number = 5000) {

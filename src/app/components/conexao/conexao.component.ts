@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { InputTextComponent } from '../component/input-text/input-text.component';
 import { ButtonComponent } from '../component/button/button.component';
@@ -11,8 +11,8 @@ import { ConexaoService } from '../../services/conexao.service';
   templateUrl: './conexao.component.html',
   styleUrl: './conexao.component.scss',
 })
-export class ConexaoComponent {
-  private id_conexao?: number; // Pode ser undefined no início!
+export class ConexaoComponent implements OnInit {
+  private id_conexao?: number;
 
   public cloud = {
     db_cloud_host: '',
@@ -29,12 +29,29 @@ export class ConexaoComponent {
 
   service = inject(ConexaoService);
 
-  constructor() {
-    this.service.getConexao().subscribe((data) => {
-      if (data) {
-        this.id_conexao = data.id_conexao;
-        this.cloud = data.cloud;
-        this.local = data.local;
+  constructor() { }
+
+  ngOnInit() {
+    this.onShow();
+  }
+
+  onShow() {
+    this.service.getConexao().subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.id_conexao = res.id_conexao;
+          this.cloud = res.cloud;
+          this.local = res.local;
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire({
+          icon: 'warning',
+          title: 'Aviso',
+          text: 'Não existe conexãos cadastradas',
+          confirmButtonText: 'OK',
+        });
       }
     });
   }
@@ -68,7 +85,6 @@ export class ConexaoComponent {
         },
       });
     }
-    // Se não existe id, cria novo (POST)
     else {
       this.service.criarConexao(payload).subscribe({
         next: (res: any) => {
@@ -78,6 +94,7 @@ export class ConexaoComponent {
             text: 'Nova conexão criada com sucesso.',
             confirmButtonText: 'OK',
           });
+          this.id_conexao = res.id_conexao;
         },
         error: (err) => {
           console.error(err);

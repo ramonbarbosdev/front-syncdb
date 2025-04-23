@@ -41,7 +41,7 @@ export class ConexaoService {
      const url = `${this.API}/`;
 
      return this.http
-       .post(url, payload)
+       .put(url, payload)
        .pipe(catchError((error) => throwError(() => error)));
   }
 }
