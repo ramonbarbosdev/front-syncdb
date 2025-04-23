@@ -49,19 +49,20 @@ export class WebsocketService {
     };
 
     this.client.onWebSocketClose = (event) => {
+      this.desconectarWebSocket();
       console.warn('[WebSocket fechado]', event.reason || event);
       this.isConnected = false;
-      this.desconectarWebSocket();
     };
 
     this.client.onStompError = (frame) => {
-      console.error('[Erro STOMP]', frame);
       this.desconectarWebSocket();
+      console.error('[Erro STOMP]', frame);
     };
 
     this.client.onWebSocketError = (error) => {
-      console.error('[Erro WebSocket]', error);
       this.desconectarWebSocket();
+      console.error('[Erro WebSocket]', error);
+
     };
   }
 
@@ -134,7 +135,6 @@ export class WebsocketService {
 
   desconectarWebSocket() {
     this.disconnect();
-
      Swal.fire({
        icon: 'error',
        title: 'Erro ao conectar WebSocket',
