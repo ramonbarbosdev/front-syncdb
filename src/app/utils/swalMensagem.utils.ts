@@ -1,20 +1,22 @@
 import Swal from 'sweetalert2';
 
-export function exibirErro(textoPadrao: string, erro: any): void
+export function exibirErro(textoPadrao: string, e: any): void
 {
-  console.log(erro);
+  console.log(e, textoPadrao);
   let titulo = 'Erro ';
   let texto = textoPadrao;
 
-  if (erro != null) {
-    titulo = erro.error?.mensagem || `Erro ${erro.status}` || 'Erro na operação';
-    texto = erro.error?.detalhes || erro.error?.erro || textoPadrao;
+  if(e)
+  {
+      titulo = titulo + e.error.code;
+      texto = texto + e.error.error;
   }
   else
   {
-    titulo = titulo + erro.code;
-    texto = texto + erro.error;
+      titulo = titulo + 'desconhecido';
+      texto = textoPadrao;
   }
+ 
 
   Swal.fire({
     icon: 'error',

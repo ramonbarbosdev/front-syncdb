@@ -75,7 +75,7 @@ export abstract  class EstruturaDadosComponent<TService>
       next: (item: string[]) => {
         this.selectBases = item.map(nm_option => ({ nm_option }));
       },
-      error: ({ error }: any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
+      error: ( error : any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
     });
   }
 
@@ -86,7 +86,7 @@ export abstract  class EstruturaDadosComponent<TService>
       next: (item: string[]) => {
         this.selectEsquema = item.map(nm_option => ({ nm_option }));
       },
-      error: ({ error }: any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
+      error: (error : any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
     });
   }
 
@@ -97,7 +97,7 @@ export abstract  class EstruturaDadosComponent<TService>
       next: (item: string[]) => {
         this.selectTabelas = item.map(nm_option => ({ nm_option }));
       },
-      error: ({ error }: any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
+      error: ( error : any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
     });
   }
 
@@ -114,9 +114,9 @@ export abstract  class EstruturaDadosComponent<TService>
   }
 
   verificar() {
-    if (!this.baseSelecionada) return exibirErro(`Erro ao verificar ${this.ds_operacao}. Nenhuma base selecionada.`, { code: 'Falha ao verificar' });
+    if (!this.baseSelecionada) return exibirErro(`Erro ao verificar ${this.ds_operacao}. Nenhuma base selecionada.`, null);
     if (!this.esquemaSelecionada) return exibirErro(`Erro ao verificar ${this.ds_operacao}. Nenhum esquema selecionado.`, null);
-    
+
     this.verificarExistenciaEsquema(this.baseSelecionada, this.esquemaSelecionada);
   }
 
