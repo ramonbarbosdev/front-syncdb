@@ -7,29 +7,30 @@
         <app-input-text
           [label]="'Usuário'"
           [inputId]="'login'"
-          [(model)]="login"
+          [(model)]="objeto.login"
           [required]="true"
-          placeholder="Login de acesso">
+          >
         </app-input-text>
 
         <app-input-password
           [label]="'Senha'"
           [inputId]="'senha'"
-          [(model)]="senha"
+          [(model)]="objeto.senha"
           [required]="true">
       </app-input-password>
 
-      <div class="link-register">
-          <a [routerLink]="['/register']" class="link">Registrar-se</a>
+      <div class="button-group">
+        <button class="btn-link" type="button">
+          <a [routerLink]="['/register']">Registrar-se</a>
+        </button>
+
+        <button class="btn-primary" type="submit">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Entrar
+        </button>
       </div>
-        <app-button
-        [text]="'Entrar'"
-        [type]="'submit'"
-        [icon]="'bi bi-box-arrow-in-right'"
-        [color]="''"
-        [backgroundColor]="''"
-        >
-      </app-button>
+
+
 
     </form>
 

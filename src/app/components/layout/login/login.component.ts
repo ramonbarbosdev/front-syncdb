@@ -10,55 +10,56 @@ import { WebsocketService } from '../../../services/websocket.service';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, InputPasswordComponent, InputTextComponent, ButtonComponent, RouterModule],
+  imports: [
+    FormsModule,
+    InputPasswordComponent,
+    InputTextComponent,
+    ButtonComponent,
+    RouterModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
-export class LoginComponent
-{
-    login!: string;
-    senha!:string;
+export class LoginComponent {
 
-    router =  inject(Router);
-    websocketService = inject(WebsocketService);
+  public objeto = {
+    login: '',
+    senha: '',
+  };
 
-    constructor(private auth: AuthService){}
+  router = inject(Router);
+  websocketService = inject(WebsocketService);
 
-    logar()
-    {
+  constructor(private auth: AuthService) {}
 
-        this.auth.login({login: this.login, senha: this.senha}).subscribe({
-          next: (res: any) => {
-
-            this.websocketService.connect().then(() => {
-              console.log('[Login OK + WebSocket conectado]');
-              this.auth.setToken(res.Authorization);
-              this.router.navigate(['admin/dashboard'])
-
-            })
-            .catch((err) => {
-              console.error('[Erro ao conectar WebSocket após login]', err);
-              Swal.fire({
-                icon: 'error',
-                title: 'Erro de Conexão',
-                text: 'Não foi possível conectar ao WebSocket.',
-              });
-            });
-
-
-          },
-          error: err =>
-          {
-            console.log(err)
+  logar() {
+    this.auth.login(this.objeto).subscribe({
+      next: (res: any) => {
+        this.websocketService
+          .connect()
+          .then(() => {
+            console.log('[Login OK + WebSocket conectado]');
+            this.auth.setToken(res.Authorization);
+            this.router.navigate(['admin/dashboard']);
+          })
+          .catch((err) => {
+            console.error('[Erro ao conectar WebSocket após login]', err);
             Swal.fire({
-                      icon: 'error',
-                      title: "Login inválido",
-                      text: "Login ou senha incorreto",
-                      confirmButtonText: 'OK'
-                    });
-          }
-        })
-
-    }
-
+              icon: 'error',
+              title: 'Erro de Conexão',
+              text: 'Não foi possível conectar ao WebSocket.',
+            });
+          });
+      },
+      error: (err) => {
+        console.log(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Login inválido',
+          text: 'Login ou senha incorreto',
+          confirmButtonText: 'OK',
+        });
+      },
+    });
+  }
 }
