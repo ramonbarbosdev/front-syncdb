@@ -1,6 +1,6 @@
-  
+
 @import '../../../../styles/variaveis';
-  
+
   :host {
     display: flex;
     align-items: center;
@@ -8,18 +8,24 @@
     min-height: 100vh;
     background: $color-bg-degrade;
   }
-  
-  .login-container {
-    background-color:  $color-bg-container;
-    padding: 40px 30px;
-    border-radius: 16px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-    width: 100%;
-    max-width: 360px;
-    color:$color-text-main;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-  
+
   h2 {
     text-align: center;
     margin-bottom: 24px;
+    color: $color-text-main;
+  }
+
+  .link-register
+  {
+    color: $color-text-main;
+    margin-bottom: 10px;
+    text-align: center;
+    outline: none;
   }

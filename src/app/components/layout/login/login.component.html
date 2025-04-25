@@ -1,33 +1,40 @@
 
-<div class="login-container">
-  <h2>Bem-vindo</h2>
-  <form (ngSubmit)="logar()">
-              
-    <app-input-text
-      [label]="'Usuário'"
-      [inputId]="'login'"
-      [(model)]="login"
-      [required]="true"
-      placeholder="Login de acesso">
-    </app-input-text>
+<div class="container">
+  <div class="card">
+     <h2>Bem-vindo</h2>
+      <form (ngSubmit)="logar()">
 
-    <app-input-password
-      [label]="'Senha'"
-      [inputId]="'senha'"
-      [(model)]="senha"
-      [required]="true">
-   </app-input-password>
+        <app-input-text
+          [label]="'Usuário'"
+          [inputId]="'login'"
+          [(model)]="login"
+          [required]="true"
+          placeholder="Login de acesso">
+        </app-input-text>
 
-    <app-button
-    [text]="'Entrar'"
-    [type]="'submit'"
-    [icon]="'bi bi-box-arrow-in-right'"  
-    [color]="''"
-    [backgroundColor]="''"
-    >
-  </app-button>
+        <app-input-password
+          [label]="'Senha'"
+          [inputId]="'senha'"
+          [(model)]="senha"
+          [required]="true">
+      </app-input-password>
 
-  </form>
+      <div class="link-register">
+          <a [routerLink]="['/register']" class="link">Registrar-se</a>
+      </div>
+        <app-button
+        [text]="'Entrar'"
+        [type]="'submit'"
+        [icon]="'bi bi-box-arrow-in-right'"
+        [color]="''"
+        [backgroundColor]="''"
+        >
+      </app-button>
+
+    </form>
+
+  </div>
+
   </div>
 
 

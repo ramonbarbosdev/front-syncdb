@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../auth/auth.service';
 import Swal from 'sweetalert2';
@@ -10,7 +10,7 @@ import { WebsocketService } from '../../../services/websocket.service';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, InputPasswordComponent, InputTextComponent, ButtonComponent],
+  imports: [FormsModule, InputPasswordComponent, InputTextComponent, ButtonComponent, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -29,7 +29,7 @@ export class LoginComponent
 
         this.auth.login({login: this.login, senha: this.senha}).subscribe({
           next: (res: any) => {
-          
+
             this.websocketService.connect().then(() => {
               console.log('[Login OK + WebSocket conectado]');
               this.auth.setToken(res.Authorization);
@@ -56,9 +56,9 @@ export class LoginComponent
                       text: "Login ou senha incorreto",
                       confirmButtonText: 'OK'
                     });
-          } 
-        }) 
-  
+          }
+        })
+
     }
 
 }

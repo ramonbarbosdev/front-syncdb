@@ -16,7 +16,7 @@ export function exibirErro(textoPadrao: string, e: any): void
       titulo = titulo + 'desconhecido';
       texto = textoPadrao;
   }
- 
+
 
   Swal.fire({
     icon: 'error',

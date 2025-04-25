@@ -1,0 +1,11 @@
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: front-syncdb:latest
+    container_name: front-syncdb
+    restart: on-failure
+    ports:
+      - 3000:4200

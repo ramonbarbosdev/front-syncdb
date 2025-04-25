@@ -3,53 +3,52 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { WebsocketService } from '../services/websocket.service';
 import { environment } from '../environments/environment';
+import { catchError, Observable, throwError } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthService
-{
-
-  private readonly apiUrl =  `${environment.apiUrl}`;
+export class AuthService {
+  private readonly apiUrl = `${environment.apiUrl}`;
 
   private router = inject(Router);
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  login(credenciais: {login: string, senha: string})
-  {
-
-    // this.websocketService
-    return this.http.post(`${this.apiUrl}/login`, credenciais, {
-      withCredentials: true // <- permite receber e enviar cookies
+  login(credenciais: { login: string; senha: string }) {
+    return this.http.post(`${this.apiUrl}/auth/login`, credenciais, {
+      withCredentials: true, // <- permite receber e enviar cookies
     });
   }
 
-  logout()
-  {
+  cadastrar(data: any): Observable<any> {
+    const url = `${this.apiUrl}/auth/register`;
+
+    return this.http
+      .post(url, data)
+      .pipe(catchError((error) => throwError(() => error)));
+  }
+
+  logout() {
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
 
-  setToken(token: string)
-  {
+  setToken(token: string) {
     localStorage.setItem('token', token);
   }
 
-  getToken(): string | null
-  {
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  isAuthenticated(): boolean
-  {
+  isAuthenticated(): boolean {
     return !!this.getToken();
   }
 
-  getHeaders()
-  {
+  getHeaders() {
     const token = this.getToken();
     return new HttpHeaders({
-      Authorization: `${token}`
+      Authorization: `${token}`,
     });
   }
 }
