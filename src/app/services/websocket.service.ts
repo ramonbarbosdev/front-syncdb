@@ -20,6 +20,9 @@ export class WebsocketService {
   private progressoSubject = new Subject<number>();
   progresso$ = this.progressoSubject.asObservable();
 
+  private reconnectionAttempts = 0;
+  private readonly maxReconnectionAttempts = 5;
+
   constructor() {
     this.initializeClient();
   }
@@ -28,7 +31,7 @@ export class WebsocketService {
     this.client = new Client({
       brokerURL: 'ws://localhost:8080/syncdb/ws',
       connectHeaders: {
-        Authorization: this.auth.getToken() ?? ''
+        Authorization: this.auth.getToken() ?? '',
       },
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
@@ -38,6 +41,7 @@ export class WebsocketService {
     this.client.onConnect = (frame) => {
       console.log('[WebSocket conectado]', frame);
       this.isConnected = true;
+      this.reconnectionAttempts = 0;
       this.startPing();
       this.subscribeToPong();
       this.subscribeProgress();
@@ -45,24 +49,22 @@ export class WebsocketService {
 
     this.client.onDisconnect = () => {
       console.log('[WebSocket desconectado]');
-      this.isConnected = false;
+      this.desconectarWebSocket();
     };
 
     this.client.onWebSocketClose = (event) => {
-      this.desconectarWebSocket();
       console.warn('[WebSocket fechadoo]', event.reason || event);
-      this.isConnected = false;
+      this.reconectWebSocket();
     };
 
     this.client.onStompError = (frame) => {
-      this.desconectarWebSocket();
       console.error('[Erro STOMP]', frame);
+      this.reconectWebSocket();
     };
 
     this.client.onWebSocketError = (error) => {
-      this.desconectarWebSocket();
       console.error('[Erro WebSocket]', error);
-
+      this.desconectarWebSocket();
     };
   }
 
@@ -72,13 +74,14 @@ export class WebsocketService {
     }
 
     this.client.connectHeaders = {
-      Authorization: this.auth.getToken() ?? ''
+      Authorization: this.auth.getToken() ?? '',
     };
 
     return new Promise<void>((resolve, reject) => {
       this.client.onConnect = (frame) => {
         console.log('[WebSocket conectado]', frame);
         this.isConnected = true;
+        this.reconnectionAttempts = 0;
         this.startPing();
         this.subscribeToPong();
         this.subscribeProgress();
@@ -103,7 +106,7 @@ export class WebsocketService {
 
     this.client.publish({
       destination,
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
   }
 
@@ -135,24 +138,37 @@ export class WebsocketService {
 
   desconectarWebSocket() {
     this.disconnect();
-     this.auth.logout();
-     Swal.fire({
-       icon: 'error',
-       title: 'Erro ao conectar WebSocket',
-       text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
-     });
+    this.auth.logout();
+    Swal.fire({
+      icon: 'error',
+      title: 'Erro ao conectar WebSocket',
+      text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
+    });
+    this.isConnected = false;
 
-    // // Tenta reconectar em 3 segundos
-    // setTimeout(() => {
-    //   this.connect().catch(() => {
-    //     this.auth.logout();
-    //     Swal.fire({
-    //       icon: 'error',
-    //       title: 'Erro ao conectar WebSocket',
-    //       text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
-    //     });
-    //   });
-    // }, 3000);
+  }
+
+  reconectWebSocket() {
+    if (this.reconnectionAttempts < this.maxReconnectionAttempts)
+    {
+      this.reconnectionAttempts++;
+      console.log(
+        `Tentando reconectar... tentativa ${this.reconnectionAttempts}`
+      );
+      setTimeout(() => {
+        this.connect().catch(() => {
+          console.error('Erro ao tentar reconectar WebSocket');
+        });
+      }, 3000); // espera 3 segundos para tentar de novo
+    }
+    else
+    {
+      console.error(
+        'Máximo de tentativas de reconexão alcançado. Desconectando.'
+      );
+      this.desconectarWebSocket();
+      this.isConnected = false;
+    }
   }
 
   startPing(intervalMs: number = 5000) {
