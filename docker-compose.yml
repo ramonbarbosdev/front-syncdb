@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: front-syncdb:latest
+    image: ramonbarbosdev/front-syncdb:latest
     container_name: front-syncdb
     restart: on-failure
     ports:
