@@ -86,4 +86,15 @@ export class DadosService {
     );
   }
 
+  cancelar(base: any): Observable<any>
+  {
+    this.verificarConexaoWebSocket();
+
+    const url = `${environment.apiUrl}/processo/cancelar/${base}`;
+
+    return this.http.get<any[]>(url).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
+
 }

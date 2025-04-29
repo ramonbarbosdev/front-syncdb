@@ -21,27 +21,22 @@ import { EstruturaDadosComponent } from '../estrutura-dados/estrutura-dados.comp
     ButtonComponent,
     ProgressoBarComponent,
     TableBasicComponent,
-    RouterModule
+    RouterModule,
   ],
   templateUrl: './estrutura.component.html',
-  styleUrl: './estrutura.component.scss'
+  styleUrl: './estrutura.component.scss',
 })
-export class EstruturaComponent extends EstruturaDadosComponent<EstruturaService>
-{
-
-  constructor()
-  {
+export class EstruturaComponent extends EstruturaDadosComponent<EstruturaService> {
+  constructor() {
     super(inject(EstruturaService));
   }
 
   colunasVisiveis = {
     tabela: true,
-    acao: true, 
+    acao: true,
     querys: true,
     erro: false,
   };
 
   ds_operacao = 'Estrutura';
-
-
 }

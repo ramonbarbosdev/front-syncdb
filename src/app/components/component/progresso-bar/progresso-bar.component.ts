@@ -7,6 +7,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './progresso-bar.component.scss'
 })
 export class ProgressoBarComponent {
-  @Input() progresso!: number; 
-  @Input() mensagem: string = ''; 
+  @Input() progresso!: number;
+  @Input() mensagem: string = '';
 }

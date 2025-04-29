@@ -40,14 +40,14 @@ export abstract  class EstruturaDadosComponent<TService>
   }
 
   inicializarComponente(): void {
-    this.iniciarProgresso();
+    this.iniciarProgresso('');
     this.carregarBases();
     this.limparTabela();
   }
 
-  iniciarProgresso() {
+  iniciarProgresso(acao:string = ''): void {
     this.progressoService.progresso = 0;
-    this.progressoService.status = `Verificação de ${this.ds_operacao}`;
+    this.progressoService.status = acao;
   }
 
   limparTabela() {
@@ -135,25 +135,27 @@ export abstract  class EstruturaDadosComponent<TService>
 
   continuarVerificacao(tabelaEsquema: string) {
     this.setPermissaoOperacoes(true);
+    this.iniciarProgresso("Verificando");
 
     (this.service as any).verificar(this.baseSelecionada,this.esquemaSelecionada, tabelaEsquema).subscribe({
-      next: ({ tabelas_afetadas }: any) => {
+      next: (resposta: any) => {
         this.setPermissaoOperacoes(false);
-
-        if (tabelas_afetadas?.length) {
-          this.resultados = tabelas_afetadas.map((x: TabelaEstrutura) => ({
-            tabela: x.tabela,
-            acao: x.acao,
-            querys: x.querys,
-            erro: x.erro,
-          }));
-          this.estruturaCache.setTabelas(this.resultados);
-        } else {
+        if (resposta.tabelas_afetadas?.length > 0 && Array.isArray(resposta.tabelas_afetadas))
+        {
+          this.resultados = resposta.tabelas_afetadas.map(
+            (x: TabelaEstrutura) => ({
+              tabela: x.tabela,
+              acao: x.acao,
+              querys: x.querys,
+              erro: x.erro,
+            })
+          );
+        } else if ( resposta.tabelas_afetadas?.length <= 0 &&  Array.isArray(resposta.tabelas_afetadas)) {
           Swal.fire({
             icon: 'error',
             title: 'Sem resposta',
             text: `Não existe atualização de ${this.ds_operacao} das tabelas.`,
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
           });
           this.limparTabela();
           this.fl_operacaoSincronizar = true;
@@ -162,6 +164,7 @@ export abstract  class EstruturaDadosComponent<TService>
       },
       error: (e: any) => {
         this.setPermissaoOperacoes(false);
+        this.iniciarProgresso();
         exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
       }
     });
@@ -177,11 +180,11 @@ export abstract  class EstruturaDadosComponent<TService>
         text: `Não existe ${this.ds_operacao} para sincronizar!`,
         confirmButtonText: 'OK'
       });
+      this.iniciarProgresso();
       return this.setPermissaoOperacoes(false);
     }
 
-    this.progressoService.progresso = 0;
-    // this.progressoService.status = 'Iniciando processamento de querys';
+    this.iniciarProgresso('Executando');
 
     (this.service as any).sincronizacao(this.baseSelecionada).subscribe({
       next: (resposta: any) => {
@@ -200,6 +203,7 @@ export abstract  class EstruturaDadosComponent<TService>
         }
       },
       error: (e: any) => {
+        this.iniciarProgresso();
         this.setPermissaoOperacoes(false);
         Swal.fire({
           icon: 'error',
@@ -209,5 +213,39 @@ export abstract  class EstruturaDadosComponent<TService>
         });
       }
     });
+  }
+
+  cancelarSincronizacao()
+  {
+     this.setPermissaoOperacoes(false);
+     this.iniciarProgresso();
+
+     if (this.baseSelecionada)
+     {
+        (this.service as any).cancelar(this.baseSelecionada).subscribe({
+          next: (resposta: any) => {
+            if (resposta.cancel) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'Cancelamento',
+                text: 'Operação em execução cancelada pelo usuário.',
+                confirmButtonText: 'OK',
+              });
+              this.router.navigate(['admin/dashboard']);
+            }
+          },
+        });
+     }
+     else
+     {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Cancelamento',
+          text: 'Operação cancelada pelo usuário.',
+          confirmButtonText: 'OK',
+        });
+        this.router.navigate(['admin/dashboard']);
+     }
+
   }
 }

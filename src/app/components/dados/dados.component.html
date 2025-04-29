@@ -81,7 +81,14 @@
     </div>
 
     <div class="row">
-      <div class="" style="  width: 100%;  justify-content: flex-end;  display: flex; " >
+      <div class="" style="  width: 100%;  justify-content: space-between;  display: flex; " >
+        <app-button
+          [text]="'Cancelar'"
+          [icon]="'bi bi-x-lg'"
+          [color]="''"
+          [backgroundColor]="'#ba1e1e'"
+          (clickEvent)="cancelarSincronizacao()">
+        </app-button>
         <app-button
           [text]="'Executar'"
           [icon]="'bi bi-upload'"
