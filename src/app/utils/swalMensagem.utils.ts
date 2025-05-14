@@ -6,15 +6,16 @@ export function exibirErro(textoPadrao: string, e: any): void
   let titulo = '';
   let texto = '';
 
-  if(e.error)
+  if(e)
   {
-     titulo = e.error.code ? e.error.code : '';
-     texto = e.error.error;
-    if(e.error.detalhes)
-    {
-      titulo = textoPadrao;
-      texto = e.error.detalhes;
-    }
+    if (e.error)
+      titulo = e.error.code ? e.error.code : '';
+      texto = e.error.error;
+      if(e.error.detalhes)
+      {
+        titulo = textoPadrao;
+        texto = e.error.detalhes;
+      }
 
   }
   else
