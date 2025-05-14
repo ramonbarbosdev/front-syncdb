@@ -14,12 +14,13 @@
       <div class="row">
         <div class="col-100">
             <label for="base-select">Base de dados: (*)</label>
-            <app-select-basic
+            <app-select-search
             [options]="selectBases"
             [(selected)]="baseSelecionada"
             (selectedChange)="processarBaseDados()">
             >
-            </app-select-basic>
+            </app-select-search>
+
         </div>
 
       </div>
@@ -41,12 +42,11 @@
       <div class="row">
         <div class="col-100">
           <label for="base-select">Tabela:</label>
-          <app-select-basic
+          <app-select-search
           [options]="selectTabelas"
           [(selected)]="tabelaSelecionada"
           >
-          >
-          </app-select-basic>
+          </app-select-search>
         </div>
       </div>
 
