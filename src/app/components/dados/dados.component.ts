@@ -8,15 +8,23 @@ import { TableBasicComponent } from '../component/table-basic/table-basic.compon
 import { ProgressoBarComponent } from '../component/progresso-bar/progresso-bar.component';
 import { EstruturaDadosComponent } from '../estrutura-dados/estrutura-dados.component';
 import { HeaderComponent } from "../component/header/header.component";
+import { SelectSearchComponent } from '../component/select-search/select-search.component';
 
 @Component({
   selector: 'app-dados',
-  imports: [RouterModule, ButtonComponent, CommonModule, SelectBasicComponent, TableBasicComponent, ProgressoBarComponent, HeaderComponent],
+  imports: [
+    RouterModule,
+    ButtonComponent,
+    CommonModule,
+    TableBasicComponent,
+    ProgressoBarComponent,
+    HeaderComponent,
+    SelectSearchComponent,
+  ],
   templateUrl: './dados.component.html',
-  styleUrl: './dados.component.scss'
+  styleUrl: './dados.component.scss',
 })
-export class DadosComponent extends EstruturaDadosComponent<DadosService>
-{
+export class DadosComponent extends EstruturaDadosComponent<DadosService> {
   constructor() {
     super(inject(DadosService));
   }

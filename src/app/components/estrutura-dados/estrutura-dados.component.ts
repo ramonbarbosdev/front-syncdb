@@ -64,7 +64,6 @@ export abstract class EstruturaDadosComponent<TService> {
   }
 
   processarEsquema() {
-     console.log('Selecionado:', this.esquemaSelecionada);
     this.carregarTabelas();
   }
 
@@ -79,7 +78,7 @@ export abstract class EstruturaDadosComponent<TService> {
         this.selectBases = item.map((nm_option) => ({ nm_option }));
       },
       error: (error: any) =>
-        exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error),
+        exibirErro(`Erro ao carregar as bases de ${this.ds_operacao}.`, error),
     });
   }
 
@@ -93,7 +92,7 @@ export abstract class EstruturaDadosComponent<TService> {
           this.selectEsquema = item.map((nm_option) => ({ nm_option }));
         },
         error: (error: any) =>
-          exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error),
+          exibirErro(`Erro ao carregar os esquemas de ${this.ds_operacao}.`, error),
       });
   }
 

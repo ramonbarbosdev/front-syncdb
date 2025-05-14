@@ -19,7 +19,6 @@ import { SelectSearchComponent } from "../component/select-search/select-search.
   imports: [
     CommonModule,
     FormsModule,
-    SelectBasicComponent,
     ButtonComponent,
     ProgressoBarComponent,
     TableBasicComponent,

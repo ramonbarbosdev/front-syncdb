@@ -1,7 +1,7 @@
 
 <div class="container">
 
-  <div class="card">
+    <div class="card">
 
       <app-header
          [titulo]="'Sincronização '+ ds_operacao"
@@ -11,92 +11,94 @@
         >
       </app-header>
 
-    <div class="row">
-      <div class="col-100">
-          <label for="base-select">Base de dados: (*)</label>
-          <app-select-basic
-          [options]="selectBases"
-          [(selected)]="baseSelecionada"
-          (selectedChange)="processarBaseDados()">
+      <div class="row">
+        <div class="col-100">
+            <label for="base-select">Base de dados: (*)</label>
+            <app-select-search
+            [options]="selectBases"
+            [(selected)]="baseSelecionada"
+            (selectedChange)="processarBaseDados()">
+            >
+            </app-select-search>
+
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-100">
+          <label for="base-select">Esquema:</label>
+
+          <app-select-search
+            [options]="selectEsquema"
+            [(selected)]="esquemaSelecionada"
+            (selectedChange)="processarEsquema()">
           >
-          </app-select-basic>
+          </app-select-search>
+
+        </div>
       </div>
 
-    </div>
-
-    <div class="row">
-      <div class="col-100">
-        <label for="base-select">Esquema:</label>
-        <app-select-basic
-        [options]="selectEsquema"
-        [(selected)]="esquemaSelecionada"
-        (selectedChange)="processarEsquema()">
-        >
-        </app-select-basic>
+      <div class="row">
+        <div class="col-100">
+          <label for="base-select">Tabela:</label>
+          <app-select-search
+          [options]="selectTabelas"
+          [(selected)]="tabelaSelecionada"
+          >
+          </app-select-search>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-100">
-        <label for="base-select">Tabela:</label>
-        <app-select-basic
-        [options]="selectTabelas"
-        [(selected)]="tabelaSelecionada"
-        >
-        >
-        </app-select-basic>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-100">
-        <app-button
-        [text]="'Verificar ' + ds_operacao"
-        [icon]="'bi bi-arrow-repeat'"
-        [color]="''"
-        [backgroundColor]="''"
-        [disabled]="fl_operacaoVerificar"
-        (clickEvent)="verificar()">
-      </app-button>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-100">
-        <app-table-basic [resultados]="resultados"  [colunasVisiveis]="colunasVisiveis"></app-table-basic>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-100">
-        <app-progresso-bar
-        [progresso]="progressoService.progresso"
-        [mensagem]="progressoService.status"
-        >
-        </app-progresso-bar>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="" style="  width: 100%;  justify-content: space-between;  display: flex; " >
-        <app-button
-          [text]="'Cancelar'"
-          [icon]="'bi bi-x-lg'"
-          [color]="''"
-          [backgroundColor]="'#ba1e1e'"
-          (clickEvent)="cancelarSincronizacao()">
-        </app-button>
-        <app-button
-          [text]="'Executar'"
-          [icon]="'bi bi-upload'"
+      <div class="row">
+        <div class="col-100">
+          <app-button
+          [text]="'Verificar ' + ds_operacao"
+          [icon]="'bi bi-arrow-repeat'"
           [color]="''"
           [backgroundColor]="''"
-          [disabled]="fl_operacaoSincronizar"
-          (clickEvent)="execultarSincronizacao()">
+          [disabled]="fl_operacaoVerificar"
+          (clickEvent)="verificar()">
         </app-button>
+        </div>
       </div>
-    </div>
 
+      <div class="row">
+        <div class="col-100">
+          <app-table-basic [resultados]="resultados"  [colunasVisiveis]="colunasVisiveis"></app-table-basic>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-100">
+          <app-progresso-bar
+          [progresso]="progressoService.progresso"
+          [mensagem]="progressoService.status"
+          >
+          </app-progresso-bar>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="" style="  width: 100%;  justify-content: space-between;  display: flex; " >
+          <app-button
+            [text]="'Cancelar'"
+            [icon]="'bi bi-x-lg'"
+            [color]="''"
+            [backgroundColor]="'#ba1e1e'"
+            (clickEvent)="cancelarSincronizacao()">
+          </app-button>
+          <app-button
+            [text]="'Executar'"
+            [icon]="'bi bi-upload'"
+            [color]="''"
+            [backgroundColor]="''"
+            [disabled]="fl_operacaoSincronizar"
+            (clickEvent)="execultarSincronizacao()">
+          </app-button>
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
 
