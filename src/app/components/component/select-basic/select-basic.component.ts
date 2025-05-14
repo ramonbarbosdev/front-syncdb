@@ -14,7 +14,7 @@ export class SelectBasicComponent {
   @Input() selected: string = '';
   @Output() selectedChange = new EventEmitter<string>();
 
- 
+
   onChange(value: string) {
     this.selectedChange.emit(value);
   }

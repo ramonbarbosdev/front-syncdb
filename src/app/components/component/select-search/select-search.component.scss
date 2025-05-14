@@ -1,0 +1,90 @@
+@import '../../../../styles/variaveis';
+
+label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #ccc;
+}
+
+/* Estiliza o contêiner do ng-select */
+ng-select.form-control {
+  display: block;
+  width: 100%;
+
+  ::ng-deep .ng-select-container {
+    background-color: $color-input-bg;
+    color: #fff;
+    border: 1px solid $color-input-focus-bg;
+    padding: 10px 15px ;
+    border-radius: 8px;
+    font-size: 1rem;
+    height: 42px;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+
+  /* Estilo ao passar o mouse sobre o campo */
+  ::ng-deep .ng-select-container:hover {
+    border-color: lighten($color-input-border-focus, 10%);
+  }
+
+  /* Estilo quando há um valor selecionado */
+  ::ng-deep .ng-select-container.ng-has-value {
+    color: #fff;
+  }
+
+  /* Estilo quando o campo tem foco */
+  ::ng-deep .ng-select-container:focus-within {
+    border-color: $color-input-border-focus;
+    box-shadow: 0 0 0 3px rgba(77, 166, 255, 0.2);
+  }
+
+  /* Estilo do valor dentro do campo */
+  ::ng-deep .ng-select-container .ng-value {
+    color: #fff;
+  }
+
+  /* Estilo para o campo de pesquisa */
+  ::ng-deep .ng-input input {
+    color: #fff;
+      background-color: transparent;
+      border: none;
+      padding: 0 12px !important;
+      font-size: 1rem;
+      width: 100%;
+      height: 100%;
+  }
+
+  /* Estiliza o painel do dropdown */
+  ::ng-deep .ng-dropdown-panel {
+    background-color: $color-input-bg;
+    border: 1px solid $color-input-border-focus;
+    border-radius: 6px;
+    margin-top: 4px;
+    /* Ajusta a distância do painel do dropdown */
+    padding: 6px 0;
+    /* Espaçamento dentro do dropdown */
+  }
+
+  /* Estilo das opções dentro do dropdown */
+  ::ng-deep .ng-dropdown-panel .ng-option {
+    color: #fff;
+    padding: 8px 12px;
+  }
+
+  /* Estilo das opções quando o mouse passa sobre elas */
+  ::ng-deep .ng-dropdown-panel .ng-option:hover {
+    background-color: lighten($color-input-bg, 5%);
+  }
+
+  /* Estilo das opções selecionadas */
+  ::ng-deep .ng-dropdown-panel .ng-option-selected {
+    background-color: $color-input-border-focus;
+    font-weight: bold;
+  }
+
+  /* Ajuste para garantir o espaçamento correto da busca */
+  ::ng-deep .ng-select-search {
+    padding: 6px 12px;
+    /* Mesmo padding do contêiner */
+  }
+}

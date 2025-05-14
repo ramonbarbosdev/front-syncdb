@@ -1,0 +1,17 @@
+<div class="form-group">
+  <label [for]="inputId">{{ label }}</label>
+<ng-select
+  [items]="options"
+  bindLabel="nm_option"
+  bindValue="nm_option"
+  [(ngModel)]="selected"
+  (change)="onChange($event)"
+  [searchable]="true"
+  [clearable]="false"
+  class="form-control"
+  [id]="inputId"
+  placeholder="Selecione"
+>
+</ng-select>
+
+</div>

@@ -27,12 +27,14 @@
       <div class="row">
         <div class="col-100">
           <label for="base-select">Esquema:</label>
-          <app-select-basic
-          [options]="selectEsquema"
-          [(selected)]="esquemaSelecionada"
-          (selectedChange)="processarEsquema()">
+
+          <app-select-search
+            [options]="selectEsquema"
+            [(selected)]="esquemaSelecionada"
+            (selectedChange)="processarEsquema()">
           >
-          </app-select-basic>
+          </app-select-search>
+
         </div>
       </div>
 
