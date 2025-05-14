@@ -148,10 +148,8 @@ export abstract class EstruturaDadosComponent<TService> {
     this.verificarExistenciaEsquema(this.baseSelecionada,  this.esquemaSelecionada );
   }
 
-  verificarExistenciaEsquema(
-    baseSelecionada: string,
-    esquemaSelecionada: string
-  ) {
+  verificarExistenciaEsquema(   baseSelecionada: string,  esquemaSelecionada: string )
+  {
     (this.service as any)
       .verificarExistenciaEsquema(baseSelecionada, esquemaSelecionada)
       .subscribe({
@@ -162,6 +160,7 @@ export abstract class EstruturaDadosComponent<TService> {
           this.continuarVerificacao(tabelaEsquema);
         },
         error: (e: any) => {
+          this.iniciarProgresso();
           exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
         },
       });
@@ -197,7 +196,6 @@ export abstract class EstruturaDadosComponent<TService> {
             });
             this.limparTabela();
             this.fl_operacaoSincronizar = true;
-            this.iniciarProgresso();
           }
         },
         error: (e: any) => {
@@ -245,21 +243,19 @@ export abstract class EstruturaDadosComponent<TService> {
 
       },
       error: (e: any) => {
-        this.iniciarProgresso();
         this.setPermissaoOperacoes(false);
-        Swal.fire({
-          icon: 'error',
-          title: 'Falha na sincronização',
-          text: e.error.mensagem,
-          confirmButtonText: 'OK',
-        });
+        this.iniciarProgresso();
+        exibirErro(`Falha na sincronização ${this.ds_operacao}.`, e);
       },
     });
+
   }
 
   cancelarSincronizacao() {
     this.setPermissaoOperacoes(false);
     this.iniciarProgresso();
+    this.limparTabela();
+
 
     (this.service as any).cancelar(this.baseSelecionada).subscribe({
       next: (resposta: any) => {
