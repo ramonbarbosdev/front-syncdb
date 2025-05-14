@@ -5,96 +5,86 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DadosService {
-
-
   http = inject(HttpClient);
 
-  private readonly API =  `${environment.apiUrl}/dados`;
-  private readonly APISync =  `${environment.apiUrl}/sincronizacao`;
+  private readonly API = `${environment.apiUrl}/dados`;
+  private readonly APISync = `${environment.apiUrl}/sincronizacao`;
 
-  constructor() { }
+  constructor() {}
 
   private webSocketService = inject(WebsocketService);
 
-
-  private verificarConexaoWebSocket(): void
-  {
+  private verificarConexaoWebSocket(): void {
     if (!this.webSocketService.getConnected()) this.webSocketService.connect();
   }
 
-  buscarBaseExistente(): Observable<any>
-  {
+  buscarBaseExistente(): Observable<any> {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/bases/`;
 
-    return this.http.get<any[]>(url).pipe(
-      catchError(error => throwError(() => error))
-    );
+    return this.http
+      .get<any[]>(url)
+      .pipe(catchError((error) => throwError(() => error)));
   }
-  buscarEsquemaExistente(base: string): Observable<any>
-  {
+  buscarEsquemaExistente(base: string): Observable<any> {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/base/esquema/${base}`;
 
-    return this.http.get<any[]>(url).pipe(
-      catchError(error => throwError(() => error))
-    );
+    return this.http
+      .get<any[]>(url)
+      .pipe(catchError((error) => throwError(() => error)));
   }
-  buscarTabelaExistente(base: string, esquema: string): Observable<any>
-  {
+  buscarTabelaExistente(base: string, esquema: string): Observable<any> {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/base/tabela/${base}/${esquema}`;
 
-    return this.http.get<any[]>(url).pipe(
-      catchError(error => throwError(() => error))
-    );
+    return this.http
+      .get<any[]>(url)
+      .pipe(catchError((error) => throwError(() => error)));
   }
 
-  verificarExistenciaEsquema(base: string, esquema: string)
-  {
+  verificarExistenciaEsquema(base: string, esquema: string) {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/verificaesquema/${base}/${esquema}`;
 
-    return this.http.get<any[]>(url).pipe(
-      catchError(error => throwError(() => error))
-    );
+    return this.http
+      .get<any[]>(url)
+      .pipe(catchError((error) => throwError(() => error)));
   }
 
   //**------------------ */
-  verificar(item: any, esquema: string,tabela: string): Observable<any>
-  {
+  verificar(item: any, esquema: string, tabela: string): Observable<any> {
     this.verificarConexaoWebSocket();
 
     const url = `${this.API}/verificar/${item}/${esquema}/${tabela}`;
 
-    return this.http.get<any[]>(url).pipe(
-      catchError(error => throwError(() => error))
-    );
+    return this.http
+      .get<any[]>(url)
+      .pipe(catchError((error) => throwError(() => error)));
   }
 
-  sincronizacao(item: any): Observable<any>
-  {
+  sincronizacao(item: any): Observable<any> {
     this.verificarConexaoWebSocket();
 
     const url = `${this.API}/${item}`;
 
-    return this.http.get<any[]>(url).pipe(
-      catchError(error => throwError(() => error))
-    );
+    return this.http
+      .get<any[]>(url)
+      .pipe(catchError((error) => throwError(() => error)));
   }
 
-  cancelar(base: any): Observable<any>
+  cancelar(): Observable<any>
   {
     this.verificarConexaoWebSocket();
 
-    const url = `${environment.apiUrl}/processo/cancelar/${base}`;
+    // const url = `${environment.apiUrl}/processo/cancelar/${base}`;
+    const url = `${this.API}/cancelar`;
 
-    return this.http.get<any[]>(url).pipe(
-      catchError(error => throwError(() => error))
-    );
+    return this.http
+      .get<any[]>(url)
+      .pipe(catchError((error) => throwError(() => error)));
   }
-
 }

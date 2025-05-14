@@ -78,7 +78,7 @@ export class EstruturaService {
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  cancelar(base: any): Observable<any> {
+  cancelar(): Observable<any> {
     this.verificarConexaoWebSocket();
 
     // const url = `${environment.apiUrl}/processo/cancelar/${base}`;

@@ -45,11 +45,13 @@ export abstract class EstruturaDadosComponent<TService> {
     this.iniciarProgresso('');
     this.carregarBases();
     this.limparTabela();
+    this.cancelarSincronizacao();
   }
 
   iniciarProgresso(acao: string = ''): void {
     this.progressoService.progresso = 0;
     this.progressoService.status = acao;
+    this.progressoService.emProgresso = false;
   }
 
   limparTabela() {
@@ -168,6 +170,7 @@ export abstract class EstruturaDadosComponent<TService> {
   continuarVerificacao(tabelaEsquema: string) {
     this.setPermissaoOperacoes(true);
     this.iniciarProgresso('Verificando');
+    this.limparTabela();
 
     (this.service as any)
       .verificar(this.baseSelecionada, this.esquemaSelecionada, tabelaEsquema)
@@ -239,6 +242,7 @@ export abstract class EstruturaDadosComponent<TService> {
           });
           this.router.navigate(['admin/dashboard']);
         }
+
       },
       error: (e: any) => {
         this.iniciarProgresso();
@@ -256,28 +260,17 @@ export abstract class EstruturaDadosComponent<TService> {
   cancelarSincronizacao() {
     this.setPermissaoOperacoes(false);
     this.iniciarProgresso();
-    this.progressoService.emProgresso = false;
 
-    if (this.baseSelecionada)
-    {
-      (this.service as any).cancelar(this.baseSelecionada).subscribe({
-        next: (resposta: any) => {
-          // Swal.fire({
-          //   icon: 'warning',
-          //   title: 'Cancelamento',
-          //   text: 'Operação cancelada pelo usuário.',
-          //   confirmButtonText: 'OK',
-          // });
-        }
-      });
-    } else {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Cancelamento',
-        text: 'Operação cancelada pelo usuário.',
-        confirmButtonText: 'OK',
-      });
-      // this.router.navigate(['admin/dashboard']);
-    }
+    (this.service as any).cancelar(this.baseSelecionada).subscribe({
+      next: (resposta: any) => {
+        // Swal.fire({
+        //   icon: 'warning',
+        //   title: 'Cancelamento',
+        //   text: 'Operação cancelada pelo usuário.',
+        //   confirmButtonText: 'OK',
+        // });
+      },
+    });
+
   }
 }

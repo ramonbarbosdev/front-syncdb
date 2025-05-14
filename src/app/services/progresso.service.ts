@@ -18,7 +18,11 @@ export class ProgressoService {
     this.ws.progresso$.subscribe((valor) => {
       this.progressoSubject.next(valor);
 
-      if (valor > 0 && valor < 100 || valor != null) this.emProgresso = true;
+      if ((valor > 0 && valor < 100)) {
+        this.emProgresso = true;
+      } else if (valor === 100 || valor === null) {
+        this.emProgresso = false;
+      }
 
     });
   }
