@@ -11,6 +11,7 @@ import { TableBasicComponent } from '../component/table-basic/table-basic.compon
 
 import { Router, RouterModule } from '@angular/router';
 import { EstruturaDadosComponent } from '../estrutura-dados/estrutura-dados.component';
+import { HeaderComponent } from "../component/header/header.component";
 
 @Component({
   selector: 'app-estrutura',
@@ -22,7 +23,8 @@ import { EstruturaDadosComponent } from '../estrutura-dados/estrutura-dados.comp
     ProgressoBarComponent,
     TableBasicComponent,
     RouterModule,
-  ],
+    HeaderComponent
+],
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss',
 })

@@ -5,17 +5,15 @@ import { TabelaEstrutura } from '../../models/tabela-estrutura';
 import { ProgressoService } from '../../services/progresso.service';
 import { EstruturaCacheService } from '../../services/estruturacache.service';
 import { Router } from '@angular/router';
+import { WebsocketService } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-estrutura-dados',
   imports: [],
   templateUrl: './estrutura-dados.component.html',
-  styleUrl: './estrutura-dados.component.scss'
+  styleUrl: './estrutura-dados.component.scss',
 })
-export abstract  class EstruturaDadosComponent<TService>
-{
-
-  progressoService = inject(ProgressoService);
+export abstract class EstruturaDadosComponent<TService> {
   estruturaCache = inject(EstruturaCacheService);
   router = inject(Router);
 
@@ -32,6 +30,9 @@ export abstract  class EstruturaDadosComponent<TService>
 
   resultados: TabelaEstrutura[] = [];
 
+  progressoService = inject(ProgressoService);
+  wsService = inject(WebsocketService);
+
   abstract ds_operacao: string;
 
   protected constructor(@Inject('TService') protected service: TService)
@@ -39,13 +40,14 @@ export abstract  class EstruturaDadosComponent<TService>
     this.inicializarComponente();
   }
 
+
   inicializarComponente(): void {
     this.iniciarProgresso('');
     this.carregarBases();
     this.limparTabela();
   }
 
-  iniciarProgresso(acao:string = ''): void {
+  iniciarProgresso(acao: string = ''): void {
     this.progressoService.progresso = 0;
     this.progressoService.status = acao;
   }
@@ -73,37 +75,47 @@ export abstract  class EstruturaDadosComponent<TService>
   carregarBases() {
     (this.service as any).buscarBaseExistente().subscribe({
       next: (item: string[]) => {
-        this.selectBases = item.map(nm_option => ({ nm_option }));
+        this.selectBases = item.map((nm_option) => ({ nm_option }));
       },
-      error: ( error : any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
+      error: (error: any) =>
+        exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error),
     });
   }
 
   carregarEsquema() {
     if (!this.baseSelecionada) return;
 
-    (this.service as any).buscarEsquemaExistente(this.baseSelecionada).subscribe({
-      next: (item: string[]) => {
-        this.selectEsquema = item.map(nm_option => ({ nm_option }));
-      },
-      error: (error : any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
-    });
+    (this.service as any)
+      .buscarEsquemaExistente(this.baseSelecionada)
+      .subscribe({
+        next: (item: string[]) => {
+          this.selectEsquema = item.map((nm_option) => ({ nm_option }));
+        },
+        error: (error: any) =>
+          exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error),
+      });
   }
 
   carregarTabelas() {
     if (!this.esquemaSelecionada) return;
 
-    (this.service as any).buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada).subscribe({
-      next: (item: string[]) => {
-        this.selectTabelas = item.map(nm_option => ({ nm_option }));
-      },
-      error: ( error : any) => exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error)
-    });
+    (this.service as any)
+      .buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada)
+      .subscribe({
+        next: (item: string[]) => {
+          this.selectTabelas = item.map((nm_option) => ({ nm_option }));
+        },
+        error: (error: any) =>
+          exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error),
+      });
   }
 
   atualizarErrosNaTabela(tabelasAfetadas: TabelaEstrutura[]) {
-    this.resultados = this.resultados.map(item => {
-      const erro = tabelasAfetadas.find(tab => tab.tabela?.toLowerCase() === item.tabela.toLowerCase())?.erro || '';
+    this.resultados = this.resultados.map((item) => {
+      const erro =
+        tabelasAfetadas.find(
+          (tab) => tab.tabela?.toLowerCase() === item.tabela.toLowerCase()
+        )?.erro || '';
       return { ...item, erro };
     });
   }
@@ -113,64 +125,92 @@ export abstract  class EstruturaDadosComponent<TService>
     this.fl_operacaoSincronizar = ativo;
   }
 
-  verificar() {
-    if (!this.baseSelecionada) return exibirErro(`Erro ao verificar ${this.ds_operacao}. Nenhuma base selecionada.`, null);
-    if (!this.esquemaSelecionada) return exibirErro(`Erro ao verificar ${this.ds_operacao}. Nenhum esquema selecionado.`, null);
+  verificar()
+  {
+    if (!this.baseSelecionada)
+    {
+      return exibirErro(
+        `Erro ao verificar ${this.ds_operacao}. Nenhuma base selecionada.`,
+        null
+      );
+    }
 
-    this.verificarExistenciaEsquema(this.baseSelecionada, this.esquemaSelecionada);
+    if (!this.esquemaSelecionada)
+    {
+      return exibirErro( `Erro ao verificar ${this.ds_operacao}. Nenhum esquema selecionado.`,  null  );
+    }
+
+    if (this.progressoService.emProgresso) return exibirErro(`Ação bloqueada: há um progresso em andamento.`, null);
+
+    this.verificarExistenciaEsquema(this.baseSelecionada,  this.esquemaSelecionada );
   }
 
-  verificarExistenciaEsquema(baseSelecionada: string, esquemaSelecionada: string)
-  {
-    (this.service as any).verificarExistenciaEsquema(baseSelecionada, esquemaSelecionada).subscribe({
-      next: () => {
-        let tabelaEsquema = !this.tabelaSelecionada ? this.esquemaSelecionada : this.tabelaSelecionada;
-        this.continuarVerificacao(tabelaEsquema);
-      },
-      error: (e: any) => {
-        exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
-      }
-    });
+  verificarExistenciaEsquema(
+    baseSelecionada: string,
+    esquemaSelecionada: string
+  ) {
+    (this.service as any)
+      .verificarExistenciaEsquema(baseSelecionada, esquemaSelecionada)
+      .subscribe({
+        next: () => {
+          let tabelaEsquema = !this.tabelaSelecionada
+            ? this.esquemaSelecionada
+            : this.tabelaSelecionada;
+          this.continuarVerificacao(tabelaEsquema);
+        },
+        error: (e: any) => {
+          exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
+        },
+      });
   }
 
   continuarVerificacao(tabelaEsquema: string) {
     this.setPermissaoOperacoes(true);
-    this.iniciarProgresso("Verificando");
+    this.iniciarProgresso('Verificando');
 
-    (this.service as any).verificar(this.baseSelecionada,this.esquemaSelecionada, tabelaEsquema).subscribe({
-      next: (resposta: any) => {
-        this.setPermissaoOperacoes(false);
-        if (resposta.tabelas_afetadas?.length > 0 && Array.isArray(resposta.tabelas_afetadas))
-        {
-          this.resultados = resposta.tabelas_afetadas.map(
-            (x: TabelaEstrutura) => ({
-              tabela: x.tabela,
-              acao: x.acao,
-              querys: x.querys,
-              erro: x.erro,
-            })
-          );
-        } else if ( resposta.tabelas_afetadas?.length <= 0 &&  Array.isArray(resposta.tabelas_afetadas)) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Sem resposta',
-            text: `Não existe atualização de ${this.ds_operacao} das tabelas.`,
-            confirmButtonText: 'OK',
-          });
-          this.limparTabela();
-          this.fl_operacaoSincronizar = true;
+    (this.service as any)
+      .verificar(this.baseSelecionada, this.esquemaSelecionada, tabelaEsquema)
+      .subscribe({
+        next: (resposta: any) => {
+          this.setPermissaoOperacoes(false);
+          if (
+            resposta.tabelas_afetadas?.length > 0 &&
+            Array.isArray(resposta.tabelas_afetadas)
+          ) {
+            this.resultados = resposta.tabelas_afetadas.map(
+              (x: TabelaEstrutura) => ({
+                tabela: x.tabela,
+                acao: x.acao,
+                querys: x.querys,
+                erro: x.erro,
+              })
+            );
+          } else if (
+            resposta.tabelas_afetadas?.length <= 0 &&
+            Array.isArray(resposta.tabelas_afetadas)
+          ) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Sem resposta',
+              text: `Não existe atualização de ${this.ds_operacao} das tabelas.`,
+              confirmButtonText: 'OK',
+            });
+            this.limparTabela();
+            this.fl_operacaoSincronizar = true;
+            this.iniciarProgresso();
+          }
+        },
+        error: (e: any) => {
+          this.setPermissaoOperacoes(false);
           this.iniciarProgresso();
-        }
-      },
-      error: (e: any) => {
-        this.setPermissaoOperacoes(false);
-        this.iniciarProgresso();
-        exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
-      }
-    });
+          exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
+        },
+      });
   }
 
-  execultarSincronizacao() {
+  execultarSincronizacao()
+  {
+    if (this.progressoService.emProgresso) return exibirErro(`Ação bloqueada: há um progresso em andamento.`, null);
     this.setPermissaoOperacoes(true);
 
     if (!this.resultados[0].tabela || !this.baseSelecionada) {
@@ -178,7 +218,7 @@ export abstract  class EstruturaDadosComponent<TService>
         icon: 'error',
         title: `Erro de informações`,
         text: `Não existe ${this.ds_operacao} para sincronizar!`,
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
       });
       this.iniciarProgresso();
       return this.setPermissaoOperacoes(false);
@@ -197,7 +237,7 @@ export abstract  class EstruturaDadosComponent<TService>
             icon: 'success',
             title: 'Concluído',
             text: resposta.mensagem,
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
           });
           this.router.navigate(['admin/dashboard']);
         }
@@ -209,43 +249,38 @@ export abstract  class EstruturaDadosComponent<TService>
           icon: 'error',
           title: 'Falha na sincronização',
           text: e.error.mensagem,
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
         });
-      }
+      },
     });
   }
 
-  cancelarSincronizacao()
-  {
-     this.setPermissaoOperacoes(false);
-     this.iniciarProgresso();
+  cancelarSincronizacao() {
+    this.setPermissaoOperacoes(false);
+    this.iniciarProgresso();
 
-     if (this.baseSelecionada)
-     {
-        (this.service as any).cancelar(this.baseSelecionada).subscribe({
-          next: (resposta: any) => {
-            if (resposta.cancel) {
-              Swal.fire({
-                icon: 'warning',
-                title: 'Cancelamento',
-                text: 'Operação em execução cancelada pelo usuário.',
-                confirmButtonText: 'OK',
-              });
-              this.router.navigate(['admin/dashboard']);
-            }
-          },
-        });
-     }
-     else
-     {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Cancelamento',
-          text: 'Operação cancelada pelo usuário.',
-          confirmButtonText: 'OK',
-        });
-        this.router.navigate(['admin/dashboard']);
-     }
-
+    if (this.baseSelecionada) {
+      (this.service as any).cancelar(this.baseSelecionada).subscribe({
+        next: (resposta: any) => {
+          if (resposta.cancel) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Cancelamento',
+              text: 'Operação em execução cancelada pelo usuário.',
+              confirmButtonText: 'OK',
+            });
+            this.router.navigate(['admin/dashboard']);
+          }
+        },
+      });
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Cancelamento',
+        text: 'Operação cancelada pelo usuário.',
+        confirmButtonText: 'OK',
+      });
+      this.router.navigate(['admin/dashboard']);
+    }
   }
 }

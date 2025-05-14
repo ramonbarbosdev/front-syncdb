@@ -9,13 +9,14 @@ export class ProgressoService {
   progresso$ = this.progressoSubject.asObservable();
 
   status = '...';
+  emProgresso = false;
 
   private ws = inject(WebsocketService);
 
   constructor() {
-    // Quando o WebSocket emitir novo progresso, repassa para os inscritos
     this.ws.progresso$.subscribe((valor) => {
       this.progressoSubject.next(valor);
+      this.emProgresso = valor > 0 && valor < 100; // Atualiza automaticamente
     });
   }
 
@@ -26,4 +27,5 @@ export class ProgressoService {
   get progresso(): number {
     return this.progressoSubject.getValue();
   }
+
 }

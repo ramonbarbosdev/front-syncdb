@@ -2,19 +2,16 @@
 
     <div class="card">
 
-        <div class="row">
-            <div class="col-btn">
-              <a [routerLink]="['/admin/dashboard']">
-                <i class="bi bi-arrow-left-short"></i>
-              </a>
-             </div>
-              <div class="col-titulo">
-                <h3>Conexao</h3>
-              </div>
-        </div>
+        <app-header
+         [titulo]="'Conexão'"
+         [form]=""
+         [fl_list]="false"
+          >
+        >
+      </app-header>
+
         <h3>Configuração banco de dados CLOUD</h3>
         <div class="row">
-
 
            <div class="col-50-custom">
                 <app-input-text

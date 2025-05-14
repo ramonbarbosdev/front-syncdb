@@ -19,7 +19,7 @@ export function exibirErro(textoPadrao: string, e: any): void
   }
   else
   {
-      titulo = titulo + 'desconhecido';
+      titulo = titulo + 'inesperado';
       texto = textoPadrao;
   }
 

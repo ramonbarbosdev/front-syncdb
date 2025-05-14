@@ -4,10 +4,11 @@ import { InputTextComponent } from '../component/input-text/input-text.component
 import { ButtonComponent } from '../component/button/button.component';
 import Swal from 'sweetalert2';
 import { ConexaoService } from '../../services/conexao.service';
+import { HeaderComponent } from "../component/header/header.component";
 
 @Component({
   selector: 'app-conexao',
-  imports: [RouterModule, InputTextComponent, ButtonComponent],
+  imports: [RouterModule, InputTextComponent, ButtonComponent, HeaderComponent],
   templateUrl: './conexao.component.html',
   styleUrl: './conexao.component.scss',
 })

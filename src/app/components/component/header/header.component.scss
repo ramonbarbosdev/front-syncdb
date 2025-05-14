@@ -1,0 +1,61 @@
+@import '../../../../styles/variaveis';
+
+// Cabeçalho
+.header {
+  display: flex;
+  flex-direction: row;
+}
+
+.col-voltar {
+  width: 20%;
+}
+
+.col-voltar a {
+  padding: 5px;
+  background-color: transparent;
+  border: none;
+  border-radius: 8px;
+  color: $color-text-main;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.col-voltar a:hover:not(:disabled) {
+  color: $color-button-hover;
+}
+
+
+.col-titulo {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: $color-text-main;
+}
+
+.col-novo {
+  width: 20%;
+  display: flex;
+  color: $color-text-main;
+  justify-content: center;
+  align-items: center;
+}
+
+.col-novo a {
+  background-color: $color-button;
+  border-radius: 15px;
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  color: $color-text-main;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+}
+
+.col-novo a:hover:not(:disabled) {
+  color: $color-text-secondary;
+}

@@ -3,7 +3,7 @@ import { Client, IMessage, StompSubscription } from '@stomp/stompjs';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
@@ -19,6 +19,10 @@ export class WebsocketService {
 
   private progressoSubject = new Subject<number>();
   progresso$ = this.progressoSubject.asObservable();
+
+  // Indica se há progresso (ex: progresso entre 1 e 99)
+  private emProgressoSubject = new BehaviorSubject<boolean>(false);
+  emProgresso$ = this.emProgressoSubject.asObservable();
 
   private reconnectionAttempts = 0;
   private readonly maxReconnectionAttempts = 5;
@@ -145,12 +149,10 @@ export class WebsocketService {
       text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
     });
     this.isConnected = false;
-
   }
 
   reconectWebSocket() {
-    if (this.reconnectionAttempts < this.maxReconnectionAttempts)
-    {
+    if (this.reconnectionAttempts < this.maxReconnectionAttempts) {
       this.reconnectionAttempts++;
       console.log(
         `Tentando reconectar... tentativa ${this.reconnectionAttempts}`
@@ -160,9 +162,7 @@ export class WebsocketService {
           console.error('Erro ao tentar reconectar WebSocket');
         });
       }, 3000); // espera 3 segundos para tentar de novo
-    }
-    else
-    {
+    } else {
       console.error(
         'Máximo de tentativas de reconexão alcançado. Desconectando.'
       );
@@ -210,6 +210,9 @@ export class WebsocketService {
 
       const progresso = Number(data?.progresso ?? 0);
       this.progressoSubject.next(progresso);
+
+       const emAndamento = progresso > 0 && progresso < 100;
+       this.emProgressoSubject.next(emAndamento);
     });
   }
 }

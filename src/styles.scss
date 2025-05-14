@@ -38,24 +38,24 @@ html, body
   display: flex;
   flex-direction: column;
   padding: 20px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   transition: transform 0.3s ease-in-out;
 }
-  
+
 .card:hover {
-  transform: scale(1.002); 
+  transform: scale(1.002);
 }
 
 .card .row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
-  gap: 5px; 
-  flex-wrap: wrap; 
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
 .card .row .col-10, .card .row .col-90 {
-  width: calc(100% - 20px); 
+  width: calc(100% - 20px);
 }
 
 .card .row .col-10 { width: 10%; }
@@ -83,12 +83,12 @@ html, body
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  
+
 
 }
 
 .card label {
-  font-size: 1rem; 
+  font-size: 1rem;
   margin-bottom: 5px;
   color:$color-text-main;
 }
@@ -96,8 +96,8 @@ html, body
 
 //Scrol
 ::-webkit-scrollbar {
-  width: 10px;            
-  height: 8px;            
+  width: 10px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -117,74 +117,33 @@ html, body
 }
 
 
-
-// Cabeçalho
-.header
-{
-  display: flex;
-  flex-direction: row;
-}
-
-.col-btn
-{
-  width: 10%;
-}
-
-.col-btn a {
-  padding: 5px;
-  background-color: transparent;
-  border: none;
-  border-radius: 8px;
-  color:$color-text-main;
-  font-size: 2rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.col-btn a:hover:not(:disabled)
-{
-  color: $color-button-hover;
-}
-
-
-.col-titulo
-{
-  width: 86%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: $color-text-main;
-}
-  
-  
   /* Responsividade */
   @media (max-width: 768px) {
     .card {
-      width: 100%; 
+      width: 100%;
       padding: 15px;
     }
-  
+
     .card .row {
-      flex-direction: column; 
-      gap: 10px; 
+      flex-direction: column;
+      gap: 10px;
     }
-  
-    .card .row .col-10, 
-    .card .row .col-20, 
-    .card .row .col-30, 
+
+    .card .row .col-10,
+    .card .row .col-20,
+    .card .row .col-30,
     .card .row .col-40,
-    .card .row .col-50, 
-    .card .row .col-60, 
-    .card .row .col-70, 
-    .card .row .col-80, 
-    .card .row .col-90, 
+    .card .row .col-50,
+    .card .row .col-60,
+    .card .row .col-70,
+    .card .row .col-80,
+    .card .row .col-90,
     .card .row .col-100 {
-      width: 100%; 
+      width: 100%;
     }
 
 
-    
+
 
 
 }
-  
