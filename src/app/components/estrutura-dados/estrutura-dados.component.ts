@@ -187,15 +187,13 @@ export abstract class EstruturaDadosComponent<TService> {
               })
             );
           }else if ( resposta.tabelas_afetadas?.length <= 0 && Array.isArray(resposta.tabelas_afetadas))
-          {
-            Swal.fire({
-              icon: 'error',
-              title: 'Sem resposta',
-              text: `Não existe atualização de ${this.ds_operacao} das tabelas.`,
-              confirmButtonText: 'OK',
-            });
-            this.limparTabela();
-            this.fl_operacaoSincronizar = true;
+            {
+              this.fl_operacaoSincronizar = true;
+              this.limparTabela();
+              exibirErro(
+                `Não existe atualização de ${this.ds_operacao} das tabelas.`,
+                null
+              );
           }
         },
         error: (e: any) => {

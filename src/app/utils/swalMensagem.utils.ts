@@ -3,12 +3,12 @@ import Swal from 'sweetalert2';
 export function exibirErro(textoPadrao: string, e: any): void
 {
   console.log(e, textoPadrao);
-  let titulo = 'Alerta - ';
-  let texto = textoPadrao;
+  let titulo = '';
+  let texto = '';
 
-  if(e)
+  if(e.error)
   {
-     titulo = titulo + e.error.code;
+     titulo = e.error.code ? e.error.code : '';
      texto = e.error.error;
     if(e.error.detalhes)
     {
@@ -19,10 +19,8 @@ export function exibirErro(textoPadrao: string, e: any): void
   }
   else
   {
-      titulo = titulo + 'inesperado';
       texto = textoPadrao;
   }
-
 
   Swal.fire({
     icon: 'error',
