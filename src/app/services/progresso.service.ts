@@ -2,6 +2,7 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { WebsocketService } from './websocket.service';
+import { exibirErro } from '../utils/swalMensagem.utils';
 
 @Injectable({ providedIn: 'root' })
 export class ProgressoService {
@@ -16,7 +17,9 @@ export class ProgressoService {
   constructor() {
     this.ws.progresso$.subscribe((valor) => {
       this.progressoSubject.next(valor);
-      this.emProgresso = valor > 0 && valor < 100; // Atualiza automaticamente
+
+      if (valor > 0 && valor < 100 || valor != null) this.emProgresso = true;
+
     });
   }
 
@@ -27,5 +30,6 @@ export class ProgressoService {
   get progresso(): number {
     return this.progressoSubject.getValue();
   }
+
 
 }

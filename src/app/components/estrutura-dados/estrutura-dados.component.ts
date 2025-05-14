@@ -142,6 +142,7 @@ export abstract class EstruturaDadosComponent<TService> {
 
     if (this.progressoService.emProgresso) return exibirErro(`Ação bloqueada: há um progresso em andamento.`, null);
 
+
     this.verificarExistenciaEsquema(this.baseSelecionada,  this.esquemaSelecionada );
   }
 
@@ -173,10 +174,8 @@ export abstract class EstruturaDadosComponent<TService> {
       .subscribe({
         next: (resposta: any) => {
           this.setPermissaoOperacoes(false);
-          if (
-            resposta.tabelas_afetadas?.length > 0 &&
-            Array.isArray(resposta.tabelas_afetadas)
-          ) {
+          if (  resposta.tabelas_afetadas?.length > 0 && Array.isArray(resposta.tabelas_afetadas))
+          {
             this.resultados = resposta.tabelas_afetadas.map(
               (x: TabelaEstrutura) => ({
                 tabela: x.tabela,
@@ -185,10 +184,8 @@ export abstract class EstruturaDadosComponent<TService> {
                 erro: x.erro,
               })
             );
-          } else if (
-            resposta.tabelas_afetadas?.length <= 0 &&
-            Array.isArray(resposta.tabelas_afetadas)
-          ) {
+          }else if ( resposta.tabelas_afetadas?.length <= 0 && Array.isArray(resposta.tabelas_afetadas))
+          {
             Swal.fire({
               icon: 'error',
               title: 'Sem resposta',
@@ -211,6 +208,7 @@ export abstract class EstruturaDadosComponent<TService> {
   execultarSincronizacao()
   {
     if (this.progressoService.emProgresso) return exibirErro(`Ação bloqueada: há um progresso em andamento.`, null);
+
     this.setPermissaoOperacoes(true);
 
     if (!this.resultados[0].tabela || !this.baseSelecionada) {
@@ -258,20 +256,19 @@ export abstract class EstruturaDadosComponent<TService> {
   cancelarSincronizacao() {
     this.setPermissaoOperacoes(false);
     this.iniciarProgresso();
+    this.progressoService.emProgresso = false;
 
-    if (this.baseSelecionada) {
+    if (this.baseSelecionada)
+    {
       (this.service as any).cancelar(this.baseSelecionada).subscribe({
         next: (resposta: any) => {
-          if (resposta.cancel) {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Cancelamento',
-              text: 'Operação em execução cancelada pelo usuário.',
-              confirmButtonText: 'OK',
-            });
-            this.router.navigate(['admin/dashboard']);
-          }
-        },
+          // Swal.fire({
+          //   icon: 'warning',
+          //   title: 'Cancelamento',
+          //   text: 'Operação cancelada pelo usuário.',
+          //   confirmButtonText: 'OK',
+          // });
+        }
       });
     } else {
       Swal.fire({
@@ -280,7 +277,7 @@ export abstract class EstruturaDadosComponent<TService> {
         text: 'Operação cancelada pelo usuário.',
         confirmButtonText: 'OK',
       });
-      this.router.navigate(['admin/dashboard']);
+      // this.router.navigate(['admin/dashboard']);
     }
   }
 }

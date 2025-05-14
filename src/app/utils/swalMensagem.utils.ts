@@ -9,7 +9,7 @@ export function exibirErro(textoPadrao: string, e: any): void
   if(e)
   {
      titulo = titulo + e.error.code;
-     texto = texto + e.error.error;
+     texto = e.error.error;
     if(e.error.detalhes)
     {
       titulo = textoPadrao;

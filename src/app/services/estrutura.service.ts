@@ -81,11 +81,12 @@ export class EstruturaService {
   cancelar(base: any): Observable<any> {
     this.verificarConexaoWebSocket();
 
-    const url = `${environment.apiUrl}/processo/cancelar/${base}`;
+    // const url = `${environment.apiUrl}/processo/cancelar/${base}`;
+     const url = `${this.API}/cancelar`;
 
     return this.http
       .get<any[]>(url)
       .pipe(catchError((error) => throwError(() => error)));
   }
-  
+
 }
