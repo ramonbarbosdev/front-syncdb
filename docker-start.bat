@@ -35,6 +35,8 @@ docker-compose up -d
 echo "Construindo a imagem Docker..."
 docker build -t %REPOSITORY%/%IMAGE_NAME%:%TAG% .
 
+docker run -d --name %IMAGE_NAME% %REPOSITORY%/%IMAGE_NAME%:%TAG%
+
 :: Push da imagem para o Docker Hub
 echo "Enviando a imagem para o Docker Hub..."
 docker push %REPOSITORY%/%IMAGE_NAME%:%TAG%
