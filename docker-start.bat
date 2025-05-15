@@ -17,18 +17,19 @@ if %ERRORLEVEL% neq 0 (
 )
 
 :: Nome do seu repositório Docker Hub
-set REPOSITORY=ramonbarbosdev/front-syncdb
+set REPOSITORY=ramonbarbosdev
 
 :: Nome da imagem
 set IMAGE_NAME=front-syncdb
 set TAG=latest
 
+docker login
 :: Derruba e recria os containers
 echo "Derrubando os containers existentes..."
 docker-compose down
 
 echo "Recriando e atualizando os containers..."
-docker-compose up --build --force-recreate --remove-orphans
+docker-compose up -d
 
 :: Build da imagem
 echo "Construindo a imagem Docker..."

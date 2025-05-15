@@ -1,16 +1,14 @@
 
 <div class="container">
   <div class="card">
-    <div class="row">
-      <div class="col-btn">
-        <a [routerLink]="['/login']">
-          <i class="bi bi-arrow-left-short"></i>
-        </a>
-       </div>
-        <div class="col-titulo">
-          <h3>Registrar</h3>
-        </div>
-    </div>
+    
+    <app-header
+      [titulo]="'Registrar'"
+      [form]=""
+      [fl_list]="false"
+      >
+    >
+  </app-header>
 
       <div class="form">
 

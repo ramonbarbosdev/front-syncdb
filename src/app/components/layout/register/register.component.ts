@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { exibirErro } from '../../../utils/swalMensagem.utils';
 import { AuthService } from '../../../auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
+import { HeaderComponent } from "../../component/header/header.component";
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,8 @@ import { Router, RouterModule } from '@angular/router';
     InputPasswordComponent,
     ButtonComponent,
     RouterModule,
-  ],
+    HeaderComponent
+],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
