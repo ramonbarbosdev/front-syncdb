@@ -187,7 +187,7 @@ export abstract class EstruturaDadosComponent<TService> {
               (x: TabelaEstrutura) => ({
                 tabela: x.tabela,
                 acao: x.acao,
-                querys: x.querys,
+                queris: x.querys,
                 erro: x.erro,
               })
             );
@@ -232,8 +232,8 @@ export abstract class EstruturaDadosComponent<TService> {
 
     (this.service as any).sincronizacao(this.baseSelecionada).subscribe({
       next: (resposta: any) => {
-        this.setPermissaoOperacoes(false);
-
+        this.cancelarSincronizacao();
+        
         if (resposta?.tabelas_afetadas?.length) {
           this.atualizarErrosNaTabela(resposta.tabelas_afetadas);
         } else {
@@ -247,8 +247,7 @@ export abstract class EstruturaDadosComponent<TService> {
         }
       },
       error: (e: any) => {
-        this.setPermissaoOperacoes(false);
-        this.iniciarProgresso();
+        this.cancelarSincronizacao();
         exibirErro(`Falha na sincronização ${this.ds_operacao}.`, e);
       },
     });
