@@ -24,8 +24,8 @@ import { SelectSearchComponent } from "../component/select-search/select-search.
     TableBasicComponent,
     RouterModule,
     HeaderComponent,
-    SelectSearchComponent
-],
+    SelectSearchComponent,
+  ],
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss',
 })
@@ -42,4 +42,7 @@ export class EstruturaComponent extends EstruturaDadosComponent<EstruturaService
   };
 
   ds_operacao = 'Estrutura';
+  protected override get endpoint(): string {
+    return 'estrutura';
+  }
 }

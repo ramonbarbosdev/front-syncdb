@@ -37,4 +37,7 @@ export class DadosComponent extends EstruturaDadosComponent<DadosService> {
   };
 
   ds_operacao = 'Dados';
+  protected override get endpoint(): string {
+    return 'dados';
+  }
 }
