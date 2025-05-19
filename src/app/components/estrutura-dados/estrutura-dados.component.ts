@@ -73,6 +73,8 @@ export abstract class EstruturaDadosComponent<TService> {
   }
 
   carregarBases() {
+    this.esquemaSelecionada = '';
+
     (this.service as any).buscarBaseExistente().subscribe({
       next: (item: string[]) => {
         this.selectBases = item.map((nm_option) => ({ nm_option }));
@@ -98,6 +100,7 @@ export abstract class EstruturaDadosComponent<TService> {
 
   carregarTabelas() {
     if (!this.esquemaSelecionada) return;
+    this.tabelaSelecionada = "";
 
     (this.service as any)
       .buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada)
@@ -126,6 +129,7 @@ export abstract class EstruturaDadosComponent<TService> {
   }
 
   verificar() {
+
     if (!this.baseSelecionada) {
       return exibirErro(
         `Erro ao verificar ${this.ds_operacao}. Nenhuma base selecionada.`,
