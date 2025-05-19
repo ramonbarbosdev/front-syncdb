@@ -53,7 +53,7 @@ export abstract class EstruturaDadosComponent<TService> {
   }
 
   limparTabela() {
-    this.resultados = [{ tabela: '', acao: '', erro: '', querys: '' }];
+    this.resultados = [{ tabela: '', acao: '', erro: '' }];
   }
 
   processarBaseDados() {
@@ -187,7 +187,7 @@ export abstract class EstruturaDadosComponent<TService> {
               (x: TabelaEstrutura) => ({
                 tabela: x.tabela,
                 acao: x.acao,
-                queris: x.querys,
+                // queris: x.querys,
                 erro: x.erro,
               })
             );
@@ -233,7 +233,7 @@ export abstract class EstruturaDadosComponent<TService> {
     (this.service as any).sincronizacao(this.baseSelecionada).subscribe({
       next: (resposta: any) => {
         this.cancelarSincronizacao();
-        
+
         if (resposta?.tabelas_afetadas?.length) {
           this.atualizarErrosNaTabela(resposta.tabelas_afetadas);
         } else {

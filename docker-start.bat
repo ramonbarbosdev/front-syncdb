@@ -18,26 +18,24 @@ if %ERRORLEVEL% neq 0 (
 
 :: Nome do seu repositório Docker Hub
 set REPOSITORY=ramonbarbosdev
-
-:: Nome da imagem
 set IMAGE_NAME=front-syncdb
 set TAG=latest
+set PROJECT_NAME=docker-compose
 
 docker login
-:: Derruba e recria os containers
-echo "Derrubando os containers existentes..."
-docker-compose down
 
-echo "Recriando e atualizando os containers..."
-docker-compose up -d
-
-:: Build da imagem
-echo "Construindo a imagem Docker..."
+echo.
+echo === Construindo a imagem Docker ===
 docker build -t %REPOSITORY%/%IMAGE_NAME%:%TAG% .
 
-:: Push da imagem para o Docker Hub
-echo "Enviando a imagem para o Docker Hub..."
+echo.
+echo === Subindo containers com Docker Compose ===
+docker-compose -p %PROJECT_NAME% up -d --build
+
+echo.
+echo === Enviando a imagem para o Docker Hub ===
 docker push %REPOSITORY%/%IMAGE_NAME%:%TAG%
 
-echo "Processo concluído!"
+echo.
+echo === Processo concluído com sucesso! ===
 pause
