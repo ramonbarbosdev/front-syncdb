@@ -4,11 +4,13 @@ import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
   private client!: Client;
   private isConnected = false;
+  private readonly API = `${environment.apiUrlWebSocket}`;
 
   private auth = inject(AuthService);
   private route = inject(Router);
@@ -33,7 +35,10 @@ export class WebsocketService {
 
   private initializeClient() {
     this.client = new Client({
-      brokerURL: 'ws://localhost:8080/syncdb/ws',
+      brokerURL: `wss://${this.API}/ws`,
+      // brokerURL: 'ws://localhost:8080/syncdb/ws',
+      // ws://syncdb-mfa3.onrender.com/syncdb/ws
+
       connectHeaders: {
         Authorization: this.auth.getToken() ?? '',
       },
@@ -211,8 +216,8 @@ export class WebsocketService {
       const progresso = Number(data?.progresso ?? 0);
       this.progressoSubject.next(progresso);
 
-       const emAndamento = progresso > 0 && progresso < 100;
-       this.emProgressoSubject.next(emAndamento);
+      const emAndamento = progresso > 0 && progresso < 100;
+      this.emProgressoSubject.next(emAndamento);
     });
   }
 }
