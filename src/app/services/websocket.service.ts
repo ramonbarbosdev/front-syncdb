@@ -35,7 +35,7 @@ export class WebsocketService {
 
   private initializeClient() {
     this.client = new Client({
-      brokerURL: `wss://${this.API}/ws`,
+      brokerURL: `ws://${this.API}/ws`,
       // brokerURL: 'ws://localhost:8080/syncdb/ws',
       // ws://syncdb-mfa3.onrender.com/syncdb/ws
 
