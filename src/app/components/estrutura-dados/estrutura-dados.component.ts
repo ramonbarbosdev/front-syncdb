@@ -113,6 +113,7 @@ export abstract class EstruturaDadosComponent<TService> {
 
   atualizarErrosNaTabela(tabelasAfetadas: TabelaEstrutura[]) {
     this.resultados = this.resultados.map((item) => {
+      console.log(item);
       const erro =
         tabelasAfetadas.find(
           (tab) => tab.tabela?.toLowerCase() === item.tabela.toLowerCase()
@@ -233,8 +234,13 @@ export abstract class EstruturaDadosComponent<TService> {
         next: (resposta: any) => {
           this.cancelarSincronizacao();
 
-          if (resposta?.tabelas_afetadas?.length) {
-            this.atualizarErrosNaTabela(resposta.tabelas_afetadas);
+          if (resposta?.error?.length) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erros ao executar',
+              text: resposta.error,
+              confirmButtonText: 'OK',
+            });
           } else {
             Swal.fire({
               icon: 'success',
