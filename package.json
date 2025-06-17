@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --base-href ./ --output-path=dist",
+    "build": "ng build --configuration production --base-href ./ --output-path ./dist/frontend",
     "electron": "npm run build && electron electron/main.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
