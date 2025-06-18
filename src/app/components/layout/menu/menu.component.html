@@ -1,8 +1,10 @@
 <nav class="custom-navbar dark">
   <div class="navbar-container">
     <a class="navbar-brand" [routerLink]="['/admin/dashboard']">
+     <div>
       <i class="bi bi-cloudy-fill"></i>
       <span>SyncDB</span>
+     </div>
     </a>
 
     <button class="navbar-toggle" (click)="menuAberto = !menuAberto">
@@ -26,7 +28,7 @@
       </ul>
       <form (submit)="buscar()">
         <input type="text" placeholder="Buscar..." [(ngModel)]="termoBusca" name="search" />
-        <button type="submit">
+        <button title="Buscar" type="submit">
           <i class="bi bi-search"></i>
         </button>
       </form>

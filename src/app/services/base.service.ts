@@ -23,6 +23,23 @@ export class BaseService {
     if (!this.webSocketService.getConnected()) this.webSocketService.connect();
   }
 
+  verificarStatus(): Observable<any> {
+
+    const url = `${this.API}/status/`;
+
+    console.log(url);
+
+    return this.http.get<any>(url).pipe(
+      tap((res) => {
+        return res;
+      }),
+      catchError((e) => {
+        // exibirErro('', e);
+        return throwError(() => e);
+      })
+    );
+  }
+
   buscarBaseExistente(): Observable<any> {
     this.verificarConexaoWebSocket();
 
@@ -38,6 +55,7 @@ export class BaseService {
       })
     );
   }
+
   buscarEsquemaExistente(base: string): Observable<any> {
     this.verificarConexaoWebSocket();
     const url = `${this.APISync}/base/esquema/${base}`;

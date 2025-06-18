@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production --base-href ./ --output-path ./dist/frontend",
+    "copy-icons-fonts": "node copy-fonts.js",
+    "build": " npm run copy-icons-fonts && ng build --configuration production --base-href ./ --output-path ./dist/frontend",
     "electron": "npm run build && electron electron/main.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
