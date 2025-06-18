@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 export function exibirErro(textoPadrao: string, e: any): void
 {
   console.log(e, textoPadrao);
-  let titulo = 'Tente novamente';
+  let titulo = '';
   let texto = '';
 
   texto = textoPadrao;
