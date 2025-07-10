@@ -1,23 +1,37 @@
 import { Component, inject } from '@angular/core';
-import { WebsocketService } from '../../services/websocket.service';
 import { Router } from '@angular/router';
+
+import {
+  HlmCardContentDirective,
+  HlmCardDescriptionDirective,
+  HlmCardDirective,
+  HlmCardFooterDirective,
+  HlmCardHeaderDirective,
+  HlmCardTitleDirective,
+  HlmCardActionDirective,
+} from '@spartan-ng/helm/card';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [
+    HlmCardContentDirective,
+    HlmCardDescriptionDirective,
+    HlmCardDirective,
+    HlmCardFooterDirective,
+    HlmCardHeaderDirective,
+    HlmCardTitleDirective,
+    HlmCardActionDirective,
+  ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent {
+  router = inject(Router);
 
-  router = inject(Router)
-
-  abrirEstrutura()
-  {
-    this.router.navigate(['admin/estrutura'])
+  abrirEstrutura() {
+    this.router.navigate(['admin/estrutura']);
   }
-  abrirDados()
-  {
-    this.router.navigate(['admin/dados'])
+  abrirDados() {
+    this.router.navigate(['admin/dados']);
   }
 }
