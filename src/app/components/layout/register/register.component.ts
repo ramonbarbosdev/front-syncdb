@@ -6,8 +6,9 @@ import Swal from 'sweetalert2';
 import { exibirErro } from '../../../utils/swalMensagem.utils';
 import { AuthService } from '../../../auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { HeaderComponent } from "../../component/header/header.component";
-
+import { HeaderComponent } from '../../component/header/header.component';
+import { HlmSpinnerComponent } from '@spartan-ng/helm/spinner';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-register',
   imports: [
@@ -15,8 +16,10 @@ import { HeaderComponent } from "../../component/header/header.component";
     InputPasswordComponent,
     ButtonComponent,
     RouterModule,
-    HeaderComponent
-],
+    HeaderComponent,
+    HlmSpinnerComponent,
+    CommonModule
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
@@ -28,12 +31,17 @@ export class RegisterComponent {
     token: '',
   };
 
+  loading = false;
+
   auth = inject(AuthService);
   router = inject(Router);
 
   cadastrar() {
+    this.loading = true;
+
     this.auth.cadastrar(this.objeto).subscribe({
       next: (res: any) => {
+        this.loading = false;
         Swal.fire({
           icon: 'success',
           title: 'Cadastro realizado com sucesso!',
@@ -43,6 +51,7 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       },
       error: (err) => {
+        this.loading = false;
         console.log(err);
         exibirErro(``, err);
       },

@@ -8,6 +8,7 @@ import { InputTextComponent } from '../../component/input-text/input-text.compon
 import { WebsocketService } from '../../../services/websocket.service';
 import { HlmSpinnerComponent } from '@spartan-ng/helm/spinner';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-login',
   imports: [
