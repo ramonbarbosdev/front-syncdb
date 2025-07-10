@@ -8,6 +8,7 @@ import { InputTextComponent } from '../../component/input-text/input-text.compon
 import { WebsocketService } from '../../../services/websocket.service';
 import { HlmSpinnerComponent } from '@spartan-ng/helm/spinner';
 import { CommonModule } from '@angular/common';
+import { exibirErro } from '../../../utils/swalMensagem.utils';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +24,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-
   public objeto = {
     login: '',
     senha: '',
@@ -37,7 +37,13 @@ export class LoginComponent {
   constructor(private auth: AuthService) {}
 
   logar() {
-    this.loading = true
+    this.loading = true;
+
+    if (!this.objeto.login || !this.objeto.senha) {
+      exibirErro(`Necessario informar em todos os campos.`, null);
+      this.loading = false;
+      return;
+    }
 
     this.auth.login(this.objeto).subscribe({
       next: (res: any) => {

@@ -18,7 +18,7 @@ import { CommonModule } from '@angular/common';
     RouterModule,
     HeaderComponent,
     HlmSpinnerComponent,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -38,6 +38,12 @@ export class RegisterComponent {
 
   cadastrar() {
     this.loading = true;
+
+    if (!this.objeto.login || !this.objeto.senha) {
+      exibirErro(`Necessario informar em todos os campos.`, null);
+      this.loading = false;
+      return ;
+    }
 
     this.auth.cadastrar(this.objeto).subscribe({
       next: (res: any) => {
