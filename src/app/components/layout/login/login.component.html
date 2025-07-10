@@ -1,25 +1,23 @@
-
 <div class="container">
-  <div class="card">
-     
-     <h1 class="text-3xl font-bold ">
+  <div class="card" *ngIf="loading == false">
+    <h1 class="text-3xl font-bold">
       <h2>Bem-vindo</h2>
     </h1>
-      <form (ngSubmit)="logar()">
+    <form (ngSubmit)="logar()">
+      <app-input-text
+        [label]="'Usuário'"
+        [inputId]="'login'"
+        [(model)]="objeto.login"
+        [required]="true"
+      >
+      </app-input-text>
 
-        <app-input-text
-          [label]="'Usuário'"
-          [inputId]="'login'"
-          [(model)]="objeto.login"
-          [required]="true"
-          >
-        </app-input-text>
-
-        <app-input-password
-          [label]="'Senha'"
-          [inputId]="'senha'"
-          [(model)]="objeto.senha"
-          [required]="true">
+      <app-input-password
+        [label]="'Senha'"
+        [inputId]="'senha'"
+        [(model)]="objeto.senha"
+        [required]="true"
+      >
       </app-input-password>
 
       <div class="button-group">
@@ -32,13 +30,13 @@
           Entrar
         </button>
       </div>
-
-
-
     </form>
 
+    
   </div>
 
+  <div class="" *ngIf="loading == true">
+    <hlm-spinner class="text-white" />
   </div>
 
-
+</div>
