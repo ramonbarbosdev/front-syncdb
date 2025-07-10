@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { BaseService } from './services/base.service';
+import { ElectronServiceService } from './services/electron.service.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +13,25 @@ import { BaseService } from './services/base.service';
 export class AppComponent {
   title = 'front-syncdb';
 
-  constructor(private http: HttpClient) {}
+  updateAvailable = false;
+  updateDownloaded = false;
+  electronService = inject(ElectronServiceService);
+
+  constructor(private http: HttpClient) {
+
+    this.electronService.updateAvailable$.subscribe(() => {
+      this.updateAvailable = true;
+      console.log('Nova atualização disponível');
+    });
+
+    this.electronService.updateDownloaded$.subscribe(() => {
+      this.updateDownloaded = true;
+      console.log('Atualização baixada!');
+    });
+
+  }
 
   baseService = inject(BaseService);
-
 
   ngOnInit() {
     this.waitForBackend();
