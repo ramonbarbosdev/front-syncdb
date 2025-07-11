@@ -81,7 +81,7 @@
       },
       {
         "file": "components.json",
-        "hash": "3089158842223537119"
+        "hash": "9084201805420329269"
       },
       {
         "file": "copy-fonts.js",
@@ -101,123 +101,123 @@
       },
       {
         "file": "libs/ui/ui-button-helm/src/index.ts",
-        "hash": "1172790725020474104"
+        "hash": "7564254587286447539"
       },
       {
         "file": "libs/ui/ui-button-helm/src/lib/hlm-button.directive.ts",
-        "hash": "7030409177781286625"
+        "hash": "8618418239056434508"
       },
       {
         "file": "libs/ui/ui-button-helm/src/lib/hlm-button.token.ts",
-        "hash": "7896754714560199098"
+        "hash": "15400945862735069611"
       },
       {
         "file": "libs/ui/ui-card-helm/src/index.ts",
-        "hash": "2965731249143665272"
+        "hash": "9357252975719728546"
       },
       {
         "file": "libs/ui/ui-card-helm/src/lib/hlm-card-action.directive.ts",
-        "hash": "10450325865631902282"
+        "hash": "10371920122737482440"
       },
       {
         "file": "libs/ui/ui-card-helm/src/lib/hlm-card-content.directive.ts",
-        "hash": "7790713837517395342"
+        "hash": "12139008587577955271"
       },
       {
         "file": "libs/ui/ui-card-helm/src/lib/hlm-card-description.directive.ts",
-        "hash": "13069839047022876154"
+        "hash": "15922975229634929832"
       },
       {
         "file": "libs/ui/ui-card-helm/src/lib/hlm-card-footer.directive.ts",
-        "hash": "8943769292738345862"
+        "hash": "251688949763232558"
       },
       {
         "file": "libs/ui/ui-card-helm/src/lib/hlm-card-header.directive.ts",
-        "hash": "12731163550532877272"
+        "hash": "7883039259357051325"
       },
       {
         "file": "libs/ui/ui-card-helm/src/lib/hlm-card-title.directive.ts",
-        "hash": "4610195246360061194"
+        "hash": "964970980879739496"
       },
       {
         "file": "libs/ui/ui-card-helm/src/lib/hlm-card.directive.ts",
-        "hash": "18074843755388503920"
+        "hash": "16938545443596199552"
       },
       {
         "file": "libs/ui/ui-form-field-helm/src/index.ts",
-        "hash": "1379682831294187538"
+        "hash": "10129577571815628638"
       },
       {
         "file": "libs/ui/ui-form-field-helm/src/lib/hlm-error.directive.ts",
-        "hash": "12891378835362712439"
+        "hash": "16154191220984600605"
       },
       {
         "file": "libs/ui/ui-form-field-helm/src/lib/hlm-form-field.component.ts",
-        "hash": "13237312663814435636"
+        "hash": "9471466711193866880"
       },
       {
         "file": "libs/ui/ui-form-field-helm/src/lib/hlm-hint.directive.ts",
-        "hash": "4645969772139847401"
+        "hash": "16924070608443174754"
       },
       {
         "file": "libs/ui/ui-icon-helm/src/index.ts",
-        "hash": "13072002477516072914"
+        "hash": "15861921324411002203"
       },
       {
         "file": "libs/ui/ui-icon-helm/src/lib/hlm-icon.directive.ts",
-        "hash": "3510781170031678997"
+        "hash": "16844985678509437664"
       },
       {
         "file": "libs/ui/ui-icon-helm/src/lib/hlm-icon.token.ts",
-        "hash": "1780499468245078594"
+        "hash": "11722829991660298489"
       },
       {
         "file": "libs/ui/ui-input-helm/src/index.ts",
-        "hash": "8377442368032775525"
+        "hash": "9008956807754156939"
       },
       {
         "file": "libs/ui/ui-input-helm/src/lib/hlm-input-error.directive.ts",
-        "hash": "13447628399259260926"
+        "hash": "16417154695727878480"
       },
       {
         "file": "libs/ui/ui-input-helm/src/lib/hlm-input.directive.ts",
-        "hash": "5555162501108591022"
+        "hash": "15739527602466580351"
       },
       {
         "file": "libs/ui/ui-label-helm/src/index.ts",
-        "hash": "11520514252818889827"
+        "hash": "7741314033207451738"
       },
       {
         "file": "libs/ui/ui-label-helm/src/lib/hlm-label.directive.ts",
-        "hash": "8451519133016567249"
+        "hash": "476165217826661488"
       },
       {
         "file": "libs/ui/ui-popover-helm/src/index.ts",
-        "hash": "14206434168979323056"
+        "hash": "11609425880810050350"
       },
       {
         "file": "libs/ui/ui-popover-helm/src/lib/hlm-popover-close.directive.ts",
-        "hash": "6921065027108518098"
+        "hash": "7922601436691157746"
       },
       {
         "file": "libs/ui/ui-popover-helm/src/lib/hlm-popover-content.directive.ts",
-        "hash": "15634766142529572905"
+        "hash": "6163188091727537256"
       },
       {
         "file": "libs/ui/ui-spinner-helm/src/index.ts",
-        "hash": "9931764571277820309"
+        "hash": "3453496058067922973"
       },
       {
         "file": "libs/ui/ui-spinner-helm/src/lib/hlm-spinner.component.ts",
-        "hash": "7549535118845348337"
+        "hash": "5288402413592090485"
       },
       {
         "file": "package-lock.json",
-        "hash": "1014129377059167395"
+        "hash": "16675039693677060764"
       },
       {
         "file": "package.json",
-        "hash": "10355110574701527705"
+        "hash": "3083972519906384491"
       },
       {
         "file": "public/favicon.ico",
@@ -412,8 +412,24 @@
         "hash": "4475040625583894155"
       },
       {
+        "file": "src/app/components/component/upload-certificado/upload-certificado.component.html",
+        "hash": "12076443858293052080"
+      },
+      {
+        "file": "src/app/components/component/upload-certificado/upload-certificado.component.scss",
+        "hash": "3244421341483603138"
+      },
+      {
+        "file": "src/app/components/component/upload-certificado/upload-certificado.component.spec.ts",
+        "hash": "6585379639230053495"
+      },
+      {
+        "file": "src/app/components/component/upload-certificado/upload-certificado.component.ts",
+        "hash": "8935589511981746024"
+      },
+      {
         "file": "src/app/components/conexao/conexao.component.html",
-        "hash": "2438249000541871085"
+        "hash": "1401864211010918917"
       },
       {
         "file": "src/app/components/conexao/conexao.component.scss",
@@ -425,11 +441,11 @@
       },
       {
         "file": "src/app/components/conexao/conexao.component.ts",
-        "hash": "13133683509771069934"
+        "hash": "1323232673552287255"
       },
       {
         "file": "src/app/components/dados/dados.component.html",
-        "hash": "6330052254026943650"
+        "hash": "3841892003732925807"
       },
       {
         "file": "src/app/components/dados/dados.component.scss",
@@ -445,7 +461,7 @@
       },
       {
         "file": "src/app/components/dashboard/dashboard.component.html",
-        "hash": "8628854067022890032"
+        "hash": "513334801569981281"
       },
       {
         "file": "src/app/components/dashboard/dashboard.component.scss",
@@ -457,7 +473,7 @@
       },
       {
         "file": "src/app/components/dashboard/dashboard.component.ts",
-        "hash": "16440177572435510607"
+        "hash": "7789343091583843500"
       },
       {
         "file": "src/app/components/estrutura-dados/estrutura-dados.component.html",
@@ -477,7 +493,7 @@
       },
       {
         "file": "src/app/components/estrutura/estrutura.component.html",
-        "hash": "6330052254026943650"
+        "hash": "11363010529280630513"
       },
       {
         "file": "src/app/components/estrutura/estrutura.component.scss",
@@ -493,7 +509,7 @@
       },
       {
         "file": "src/app/components/input-custom/input-custom.component.html",
-        "hash": "14167659599085155574"
+        "hash": "15123600112954103900"
       },
       {
         "file": "src/app/components/input-custom/input-custom.component.scss",
@@ -525,7 +541,7 @@
       },
       {
         "file": "src/app/components/layout/menu/menu.component.html",
-        "hash": "14053940626350927843"
+        "hash": "618997110105439761"
       },
       {
         "file": "src/app/components/layout/menu/menu.component.scss",
@@ -660,6 +676,14 @@
         "hash": "5561117732638671548"
       },
       {
+        "file": "src/app/services/event-conexao.service.spec.ts",
+        "hash": "661876164573628165"
+      },
+      {
+        "file": "src/app/services/event-conexao.service.ts",
+        "hash": "8091170691106255601"
+      },
+      {
         "file": "src/app/services/progresso.service.spec.ts",
         "hash": "1918103095612737583"
       },
@@ -685,7 +709,7 @@
       },
       {
         "file": "src/app/utils/swalMensagem.utils.ts",
-        "hash": "4239651665541237712"
+        "hash": "13494070105406924948"
       },
       {
         "file": "src/assets/fonts/bootstrap-icons/bootstrap-icons.woff",
@@ -709,7 +733,7 @@
       },
       {
         "file": "src/styles/_card.scss",
-        "hash": "6436560449426645179"
+        "hash": "2134469693019752279"
       },
       {
         "file": "src/styles/_spartan.scss",
@@ -725,7 +749,7 @@
       },
       {
         "file": "tsconfig.json",
-        "hash": "18046186410547560234"
+        "hash": "7015839200553034144"
       },
       {
         "file": "tsconfig.spec.json",

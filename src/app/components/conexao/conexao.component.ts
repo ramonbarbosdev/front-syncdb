@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { UploadCertificadoComponent } from '../component/upload-certificado/upload-certificado.component';
 import { CommonModule } from '@angular/common';
 import { EventConexaoService } from '../../services/event-conexao.service';
+import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
 
 @Component({
   selector: 'app-conexao',
@@ -25,12 +26,13 @@ import { EventConexaoService } from '../../services/event-conexao.service';
     FormsModule,
     UploadCertificadoComponent,
     CommonModule,
+    HlmCheckboxImports,
   ],
   templateUrl: './conexao.component.html',
   styleUrl: './conexao.component.scss',
 })
 export class ConexaoComponent implements OnInit {
-   id_conexao?: number;
+  id_conexao?: number;
 
   arquivoValidado: boolean = false;
 
@@ -39,6 +41,7 @@ export class ConexaoComponent implements OnInit {
     db_cloud_port: '',
     db_cloud_user: '',
     db_cloud_password: '',
+    fl_admin: false
   };
   public local = {
     db_local_host: '',
@@ -66,7 +69,6 @@ export class ConexaoComponent implements OnInit {
           this.id_conexao = res.id_conexao;
           this.cloud = res.cloud;
           this.local = res.local;
-
         }
       },
       error: (err) => {

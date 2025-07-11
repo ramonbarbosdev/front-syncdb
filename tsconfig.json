@@ -39,6 +39,12 @@
       ],
       "@spartan-ng/helm/popover": [
         "./libs/ui/ui-popover-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/switch": [
+        "./libs/ui/ui-switch-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/checkbox": [
+        "./libs/ui/ui-checkbox-helm/src/index.ts"
       ]
     }
   },

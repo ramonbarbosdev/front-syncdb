@@ -98,7 +98,21 @@
           </app-input-custom>
         </div>
 
-        <div class="flex w-full justify-end">
+        <div class="flex w-full justify-between ">
+          <div
+            *ngIf="arquivoValidado == true"
+            class="flex items-center space-x-2 gap-2 text-white"
+          >
+            <hlm-checkbox
+              id="fl_admin"
+              [(ngModel)]="cloud.fl_admin"
+              name="fl_admin"
+            />
+            <label hlmLabel for="fl_admin">Acesso Administrador</label>
+          </div>
+
+          <div  *ngIf="arquivoValidado == false"></div>
+
           <button
             type="submit"
             class="bg-[#4caf50] hover:bg-[#45a049] text-white"
@@ -108,10 +122,13 @@
           </button>
         </div>
 
-        <app-upload-certificado
-          [(arquivoValido)]="arquivoValidado"
-          [id_conexao]="id_conexao || 0"
-        ></app-upload-certificado>
+        <div *ngIf="arquivoValidado == false">
+          <app-upload-certificado
+            [(arquivoValido)]="arquivoValidado"
+            [id_conexao]="id_conexao || 0"
+          ></app-upload-certificado>
+        </div>
+
       </div>
     </form>
   </div>
