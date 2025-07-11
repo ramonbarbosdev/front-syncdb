@@ -2,7 +2,10 @@
 @import '@angular/cdk/overlay-prebuilt.css';
 @import "tailwindcss";
 
-
+$color-bg-body: #1e1e2f;
+$color-bg-body-end: #282c34;
+$color-bg-container: #1f1f2e;
+$color-bg-degrade: linear-gradient(135deg, $color-bg-body, $color-bg-body-end);
 
 :root {
     // --font-sans: '';
@@ -26,6 +29,7 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
+    --bg-degrade: linear-gradient(135deg, #1e1e2f, #282c34);
     color-scheme: light;
 }
 
@@ -49,6 +53,7 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+    --bg-degrade: linear-gradient(135deg, #1e1e2f, #282c34);
     color-scheme: dark;
 }
 
