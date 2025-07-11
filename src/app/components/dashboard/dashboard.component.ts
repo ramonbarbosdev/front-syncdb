@@ -14,13 +14,10 @@ import {
 @Component({
   selector: 'app-dashboard',
   imports: [
-    HlmCardContentDirective,
     HlmCardDescriptionDirective,
     HlmCardDirective,
-    HlmCardFooterDirective,
     HlmCardHeaderDirective,
     HlmCardTitleDirective,
-    HlmCardActionDirective,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
