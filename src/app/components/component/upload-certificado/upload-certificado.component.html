@@ -1,8 +1,48 @@
-<div class="upload-certificado p-4 border rounded shadow bg-white">
-  <h2 class="text-lg font-semibold mb-2">Upload de Certificado</h2>
+<div
+  class="upload-certificado relative p-6 border-2 border-dashed border-zinc-300 rounded-2xl shadow-sm bg-zinc-50 hover:bg-zinc-100 transition-colors duration-200"
+  [class.opacity-50]="carregando"
+>
+  <h2 class="text-zinc-700 text-xl font-semibold mb-4 flex items-center gap-2">
+    <svg
+      class="w-5 h-5 text-zinc-500"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M12 16V4m0 0l-4 4m4-4l4 4M4 20h16"
+      />
+    </svg>
+    Upload de Certificado
+  </h2>
 
-  <input title="titulo" type="file" (change)="onFileSelected($event)" accept=".enc" class="mb-2" />
+  <label
+    class="w-full flex flex-col items-center px-4 py-6 bg-white text-zinc-600 rounded-lg shadow-sm tracking-wide uppercase border border-zinc-300 cursor-pointer hover:bg-zinc-200 transition-colors duration-150"
+  >
+    <div *ngIf="!carregando" class="flex flex-col justify-center items-center gap-4">
 
-  <div *ngIf="carregando">⏳ Enviando...</div>
-  <div *ngIf="mensagem" class="mt-2">{{ mensagem }}</div>
+      <ng-icon hlm size="base" name="lucideUpload" />
+
+      <span class="text-sm leading-tight"
+        >Clique ou arraste o arquivo `.enc`</span
+      >
+      <input
+        type="file"
+        accept=".enc"
+        (change)="onFileSelected($event)"
+        class="hidden"
+      />
+    </div>
+    <div
+      *ngIf="carregando"
+      class="m-4 text-zinc-600 flex items-center gap-2 justify-center"
+    >
+      <hlm-spinner class="text-white" />
+    </div>
+  </label>
+
+  
 </div>
