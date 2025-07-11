@@ -8,9 +8,30 @@ import { HlmIconDirective } from '@spartan-ng/helm/icon';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideEllipsisVertical } from '@ng-icons/lucide';
 
+import {
+  BrnPopoverCloseDirective,
+  BrnPopoverComponent,
+  BrnPopoverContentDirective,
+  BrnPopoverTriggerDirective,
+} from '@spartan-ng/brain/popover';
+import {
+  HlmPopoverCloseDirective,
+  HlmPopoverContentDirective,
+} from '@spartan-ng/helm/popover';
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, FormsModule, HlmIconDirective, NgIcon],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HlmIconDirective,
+    NgIcon,
+    BrnPopoverCloseDirective,
+    BrnPopoverComponent,
+    BrnPopoverContentDirective,
+    BrnPopoverTriggerDirective,
+    HlmPopoverCloseDirective,
+    HlmPopoverContentDirective,
+  ],
   providers: [provideIcons({ lucideEllipsisVertical })],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

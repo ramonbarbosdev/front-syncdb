@@ -36,6 +36,9 @@
       ],
       "@spartan-ng/helm/button": [
         "./libs/ui/ui-button-helm/src/index.ts"
+      ],
+      "@spartan-ng/helm/popover": [
+        "./libs/ui/ui-popover-helm/src/index.ts"
       ]
     }
   },
