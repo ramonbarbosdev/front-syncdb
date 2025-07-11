@@ -21,26 +21,26 @@ export function exibirErro(textoPadrao: string, e: any): void
       }
    }
 
-  // Swal.fire({
-  //   icon: 'error',
-  //   title: titulo,
-  //   text: texto,
-  //   confirmButtonText: 'OK',
-  // });
-
-  const Toast = Swal.mixin({
-    toast: true,
-    position: 'top-end',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
-  Toast.fire({
+  Swal.fire({
     icon: 'error',
-    title: texto == '' ? titulo : texto,
+    title: titulo,
+    text: texto,
+    confirmButtonText: 'OK',
   });
+
+  // const Toast = Swal.mixin({
+  //   toast: true,
+  //   position: 'top-end',
+  //   showConfirmButton: false,
+  //   timer: 3000,
+  //   timerProgressBar: true,
+  //   didOpen: (toast) => {
+  //     toast.onmouseenter = Swal.stopTimer;
+  //     toast.onmouseleave = Swal.resumeTimer;
+  //   },
+  // });
+  // Toast.fire({
+  //   icon: 'error',
+  //   title: texto == '' ? titulo : texto,
+  // });
 }

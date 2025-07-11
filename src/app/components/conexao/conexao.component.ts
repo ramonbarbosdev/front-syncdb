@@ -10,6 +10,9 @@ import { InputCustomComponent } from '../input-custom/input-custom.component';
 import { BrnCommandImports } from '@spartan-ng/brain/command';
 import {  HlmCardImports } from '@spartan-ng/helm/card';
 import { FormsModule } from '@angular/forms';
+import { UploadCertificadoComponent } from '../component/upload-certificado/upload-certificado.component';
+import { CommonModule } from '@angular/common';
+import { EventConexaoService } from '../../services/event-conexao.service';
 
 @Component({
   selector: 'app-conexao',
@@ -20,12 +23,16 @@ import { FormsModule } from '@angular/forms';
     InputCustomComponent,
     HlmButtonDirective,
     FormsModule,
+    UploadCertificadoComponent,
+    CommonModule,
   ],
   templateUrl: './conexao.component.html',
   styleUrl: './conexao.component.scss',
 })
 export class ConexaoComponent implements OnInit {
-  private id_conexao?: number;
+   id_conexao?: number;
+
+  arquivoValidado: boolean = false;
 
   public cloud = {
     db_cloud_host: '',
@@ -42,20 +49,24 @@ export class ConexaoComponent implements OnInit {
 
   service = inject(ConexaoService);
   router = inject(Router);
+  private eventService = inject(EventConexaoService);
 
   constructor() {}
 
   ngOnInit() {
     this.onShow();
+    this.eventService.reload$.subscribe(() => this.onShow());
   }
 
   onShow() {
     this.service.getConexao().subscribe({
       next: (res: any) => {
         if (res) {
+          this.arquivoValidado = res.cloud.fl_admin;
           this.id_conexao = res.id_conexao;
           this.cloud = res.cloud;
           this.local = res.local;
+
         }
       },
       error: (err) => {
