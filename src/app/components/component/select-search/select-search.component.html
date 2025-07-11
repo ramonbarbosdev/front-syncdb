@@ -1,5 +1,7 @@
-<div class="form-group">
-  <label [for]="inputId">{{ label }}</label>
+<div class=" flex  flex-col gap-2">
+ <label class="text-sm font-medium text-gray-700 dark:text-gray-300"
+          >{{label}}</label
+        >
 <ng-select
   [items]="options"
   bindLabel="nm_option"

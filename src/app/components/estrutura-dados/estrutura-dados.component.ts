@@ -6,6 +6,7 @@ import { ProgressoService } from '../../services/progresso.service';
 import { EstruturaCacheService } from '../../services/estruturacache.service';
 import { Router } from '@angular/router';
 import { WebsocketService } from '../../services/websocket.service';
+import { BaseService } from '../../services/base.service';
 
 @Component({
   selector: 'app-estrutura-dados',
@@ -32,8 +33,10 @@ export abstract class EstruturaDadosComponent<TService> {
 
   progressoService = inject(ProgressoService);
   wsService = inject(WebsocketService);
+  baseService = inject(BaseService);
 
   abstract ds_operacao: string;
+  protected abstract get endpoint(): string;
 
   protected constructor(@Inject('TService') protected service: TService) {
     this.inicializarComponente();
@@ -53,7 +56,7 @@ export abstract class EstruturaDadosComponent<TService> {
   }
 
   limparTabela() {
-    this.resultados = [{ tabela: '', acao: '', erro: '', querys: '' }];
+    this.resultados = [{ tabela: '', acao: '', erro: '' }];
   }
 
   processarBaseDados() {
@@ -73,45 +76,44 @@ export abstract class EstruturaDadosComponent<TService> {
   }
 
   carregarBases() {
-    (this.service as any).buscarBaseExistente().subscribe({
+    this.esquemaSelecionada = '';
+    this.tabelaSelecionada = '';
+
+    (this.baseService as any).buscarBaseExistente().subscribe({
       next: (item: string[]) => {
         this.selectBases = item.map((nm_option) => ({ nm_option }));
       },
-      error: (error: any) =>
-        exibirErro(`Erro ao carregar as bases de ${this.ds_operacao}.`, error),
     });
   }
 
   carregarEsquema() {
     if (!this.baseSelecionada) return;
 
-    (this.service as any)
+    (this.baseService as any)
       .buscarEsquemaExistente(this.baseSelecionada)
       .subscribe({
         next: (item: string[]) => {
           this.selectEsquema = item.map((nm_option) => ({ nm_option }));
         },
-        error: (error: any) =>
-          exibirErro(`Erro ao carregar os esquemas de ${this.ds_operacao}.`, error),
       });
   }
 
   carregarTabelas() {
     if (!this.esquemaSelecionada) return;
+    this.tabelaSelecionada = '';
 
-    (this.service as any)
+    (this.baseService as any)
       .buscarTabelaExistente(this.baseSelecionada, this.esquemaSelecionada)
       .subscribe({
         next: (item: string[]) => {
           this.selectTabelas = item.map((nm_option) => ({ nm_option }));
         },
-        error: (error: any) =>
-          exibirErro(`Erro ao carregar ${this.ds_operacao}.`, error),
       });
   }
 
   atualizarErrosNaTabela(tabelasAfetadas: TabelaEstrutura[]) {
     this.resultados = this.resultados.map((item) => {
+      console.log(item);
       const erro =
         tabelasAfetadas.find(
           (tab) => tab.tabela?.toLowerCase() === item.tabela.toLowerCase()
@@ -153,7 +155,7 @@ export abstract class EstruturaDadosComponent<TService> {
     baseSelecionada: string,
     esquemaSelecionada: string
   ) {
-    (this.service as any)
+    (this.baseService as any)
       .verificarExistenciaEsquema(baseSelecionada, esquemaSelecionada)
       .subscribe({
         next: () => {
@@ -161,10 +163,6 @@ export abstract class EstruturaDadosComponent<TService> {
             ? this.esquemaSelecionada
             : this.tabelaSelecionada;
           this.continuarVerificacao(tabelaEsquema);
-        },
-        error: (e: any) => {
-          this.iniciarProgresso();
-          exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
         },
       });
   }
@@ -174,8 +172,13 @@ export abstract class EstruturaDadosComponent<TService> {
     this.iniciarProgresso('Verificando');
     this.limparTabela();
 
-    (this.service as any)
-      .verificar(this.baseSelecionada, this.esquemaSelecionada, tabelaEsquema)
+    (this.baseService as any)
+      .verificar(
+        this.endpoint,
+        this.baseSelecionada,
+        this.esquemaSelecionada,
+        tabelaEsquema
+      )
       .subscribe({
         next: (resposta: any) => {
           this.setPermissaoOperacoes(false);
@@ -187,7 +190,7 @@ export abstract class EstruturaDadosComponent<TService> {
               (x: TabelaEstrutura) => ({
                 tabela: x.tabela,
                 acao: x.acao,
-                queris: x.querys,
+                // queris: x.querys,
                 erro: x.erro,
               })
             );
@@ -202,11 +205,6 @@ export abstract class EstruturaDadosComponent<TService> {
               null
             );
           }
-        },
-        error: (e: any) => {
-          this.setPermissaoOperacoes(false);
-          this.iniciarProgresso();
-          exibirErro(`Erro ao verificar ${this.ds_operacao}.`, e);
         },
       });
   }
@@ -230,27 +228,30 @@ export abstract class EstruturaDadosComponent<TService> {
 
     this.iniciarProgresso('Executando');
 
-    (this.service as any).sincronizacao(this.baseSelecionada).subscribe({
-      next: (resposta: any) => {
-        this.cancelarSincronizacao();
-        
-        if (resposta?.tabelas_afetadas?.length) {
-          this.atualizarErrosNaTabela(resposta.tabelas_afetadas);
-        } else {
-          Swal.fire({
-            icon: 'success',
-            title: 'Concluído',
-            text: resposta.mensagem,
-            confirmButtonText: 'OK',
-          });
-          this.router.navigate(['admin/dashboard']);
-        }
-      },
-      error: (e: any) => {
-        this.cancelarSincronizacao();
-        exibirErro(`Falha na sincronização ${this.ds_operacao}.`, e);
-      },
-    });
+    (this.baseService as any)
+      .sincronizacao(this.endpoint, this.baseSelecionada)
+      .subscribe({
+        next: (resposta: any) => {
+          this.cancelarSincronizacao();
+
+          if (resposta?.error?.length) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erros ao executar',
+              text: resposta.error,
+              confirmButtonText: 'OK',
+            });
+          } else {
+            Swal.fire({
+              icon: 'success',
+              title: 'Concluído',
+              text: resposta.mensagem,
+              confirmButtonText: 'OK',
+            });
+            this.router.navigate(['admin/dashboard']);
+          }
+        },
+      });
   }
 
   cancelarSincronizacao() {
@@ -258,15 +259,17 @@ export abstract class EstruturaDadosComponent<TService> {
     this.iniciarProgresso();
     this.limparTabela();
 
-    (this.service as any).cancelar(this.baseSelecionada).subscribe({
-      next: (resposta: any) => {
-        // Swal.fire({
-        //   icon: 'warning',
-        //   title: 'Cancelamento',
-        //   text: 'Operação cancelada pelo usuário.',
-        //   confirmButtonText: 'OK',
-        // });
-      },
-    });
+    (this.baseService as any)
+      .cancelar(this.endpoint, this.baseSelecionada)
+      .subscribe({
+        next: (resposta: any) => {
+          // Swal.fire({
+          //   icon: 'warning',
+          //   title: 'Cancelamento',
+          //   text: 'Operação cancelada pelo usuário.',
+          //   confirmButtonText: 'OK',
+          // });
+        },
+      });
   }
 }

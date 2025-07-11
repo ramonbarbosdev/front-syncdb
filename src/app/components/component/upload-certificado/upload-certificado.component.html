@@ -1,0 +1,8 @@
+<div class="upload-certificado p-4 border rounded shadow bg-white">
+  <h2 class="text-lg font-semibold mb-2">Upload de Certificado</h2>
+
+  <input title="titulo" type="file" (change)="onFileSelected($event)" accept=".enc" class="mb-2" />
+
+  <div *ngIf="carregando">⏳ Enviando...</div>
+  <div *ngIf="mensagem" class="mt-2">{{ mensagem }}</div>
+</div>

@@ -28,17 +28,41 @@ export class AuthService {
       .pipe(catchError((error) => throwError(() => error)));
   }
 
+  fazerLogout() {
+    return this.http.post(
+      `${this.apiUrl}/auth/logout`,
+      {},
+      {
+        headers: this.getHeaders(),
+      }
+    );
+  }
+
   logout() {
-    localStorage.removeItem('token');
-    this.router.navigate(['/login']);
+    this.fazerLogout().subscribe({
+      next: (res) => {
+        console.log( res);
+        this.clearToken();
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Erro no logout:', err);
+        this.clearToken();
+        this.router.navigate(['/login']);
+      },
+    });
   }
 
   setToken(token: string) {
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
+  }
+
+  clearToken() {
+    sessionStorage.removeItem('token');
   }
 
   isAuthenticated(): boolean {

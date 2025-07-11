@@ -1,19 +1,38 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { InputTextComponent } from '../component/input-text/input-text.component';
-import { ButtonComponent } from '../component/button/button.component';
+import { Router, RouterModule } from '@angular/router';
+
+import { HlmButtonDirective } from '@spartan-ng/helm/button';
+
 import Swal from 'sweetalert2';
 import { ConexaoService } from '../../services/conexao.service';
-import { HeaderComponent } from "../component/header/header.component";
+import { HeaderComponent } from '../component/header/header.component';
+import { InputCustomComponent } from '../input-custom/input-custom.component';
+import { BrnCommandImports } from '@spartan-ng/brain/command';
+import {  HlmCardImports } from '@spartan-ng/helm/card';
+import { FormsModule } from '@angular/forms';
+import { UploadCertificadoComponent } from '../component/upload-certificado/upload-certificado.component';
+import { CommonModule } from '@angular/common';
+import { EventConexaoService } from '../../services/event-conexao.service';
 
 @Component({
   selector: 'app-conexao',
-  imports: [RouterModule, InputTextComponent, ButtonComponent, HeaderComponent],
+  imports: [
+    BrnCommandImports,
+    HlmCardImports,
+    HeaderComponent,
+    InputCustomComponent,
+    HlmButtonDirective,
+    FormsModule,
+    UploadCertificadoComponent,
+    CommonModule,
+  ],
   templateUrl: './conexao.component.html',
   styleUrl: './conexao.component.scss',
 })
 export class ConexaoComponent implements OnInit {
-  private id_conexao?: number;
+   id_conexao?: number;
+
+  arquivoValidado: boolean = false;
 
   public cloud = {
     db_cloud_host: '',
@@ -29,20 +48,25 @@ export class ConexaoComponent implements OnInit {
   };
 
   service = inject(ConexaoService);
+  router = inject(Router);
+  private eventService = inject(EventConexaoService);
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.onShow();
+    this.eventService.reload$.subscribe(() => this.onShow());
   }
 
   onShow() {
     this.service.getConexao().subscribe({
       next: (res: any) => {
         if (res) {
+          this.arquivoValidado = res.cloud.fl_admin;
           this.id_conexao = res.id_conexao;
           this.cloud = res.cloud;
           this.local = res.local;
+
         }
       },
       error: (err) => {
@@ -53,7 +77,7 @@ export class ConexaoComponent implements OnInit {
           text: 'Não existe conexãos cadastradas',
           confirmButtonText: 'OK',
         });
-      }
+      },
     });
   }
 
@@ -64,8 +88,7 @@ export class ConexaoComponent implements OnInit {
       local: this.local,
     };
 
-    if (this.id_conexao)
-    {
+    if (this.id_conexao) {
       this.service.atualizarConexao(payload).subscribe({
         next: (res: any) => {
           Swal.fire({
@@ -74,6 +97,8 @@ export class ConexaoComponent implements OnInit {
             text: 'Conexões atualizadas com sucesso.',
             confirmButtonText: 'OK',
           });
+
+          this.router.navigate(['admin/dashboard']);
         },
         error: (err) => {
           console.error(err);
@@ -85,8 +110,7 @@ export class ConexaoComponent implements OnInit {
           });
         },
       });
-    }
-    else {
+    } else {
       this.service.criarConexao(payload).subscribe({
         next: (res: any) => {
           Swal.fire({

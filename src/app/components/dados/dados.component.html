@@ -1,104 +1,83 @@
-
-<div class="container">
-
-    <div class="card">
-
+ <section hlmCard class="w-6/6 md:w-200 bg-[#1f1f2e]">
+    <div hlmCardHeader>
       <app-header
-         [titulo]="'Sincronização '+ ds_operacao"
-         [form]=""
-         [fl_list]="false"
-          >
-        >
+        [titulo]="'Sincronização de ' + ds_operacao"
+        [form]=""
+        [fl_list]="false"
+      >
       </app-header>
+    </div>
 
-      <div class="row">
-        <div class="col-100">
-            <label for="base-select">Base de dados: (*)</label>
-            <app-select-search
-            [options]="selectBases"
-            [(selected)]="baseSelecionada"
-            (selectedChange)="processarBaseDados()">
-            >
-            </app-select-search>
+    <div hlmCardContent class="flex flex-col gap-3">
+      <app-select-search
+        [label]="'Banco de Dados: (*)'"
+        [options]="selectBases"
+        [(selected)]="baseSelecionada"
+        (selectedChange)="processarBaseDados()"
+      >
+      </app-select-search>
 
-        </div>
+      <app-select-search
+        [label]="'Esquema: (*)'"
+        [options]="selectEsquema"
+        [(selected)]="esquemaSelecionada"
+        (selectedChange)="processarEsquema()"
+      >
+      </app-select-search>
 
-      </div>
+      <app-select-search
+        [label]="'Tabela: (*)'"
+        [options]="selectTabelas"
+        [(selected)]="tabelaSelecionada"
+      >
+      </app-select-search>
 
-      <div class="row">
-        <div class="col-100">
-          <label for="base-select">Esquema:</label>
-
-          <app-select-search
-            [options]="selectEsquema"
-            [(selected)]="esquemaSelecionada"
-            (selectedChange)="processarEsquema()">
-          >
-          </app-select-search>
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-100">
-          <label for="base-select">Tabela:</label>
-          <app-select-search
-          [options]="selectTabelas"
-          [(selected)]="tabelaSelecionada"
-          >
-          </app-select-search>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-100">
-          <app-button
+      <div>
+        <app-button
           [text]="'Verificar ' + ds_operacao"
           [icon]="'bi bi-arrow-repeat'"
           [color]="''"
           [backgroundColor]="''"
           [disabled]="fl_operacaoVerificar"
-          (clickEvent)="verificar()">
+          (clickEvent)="verificar()"
+        >
         </app-button>
-        </div>
       </div>
 
-      <div class="row">
-        <div class="col-100">
-          <app-table-basic [resultados]="resultados"  [colunasVisiveis]="colunasVisiveis"></app-table-basic>
-        </div>
+      <div class="">
+        <app-table-basic
+          [resultados]="resultados"
+          [colunasVisiveis]="colunasVisiveis"
+        ></app-table-basic>
       </div>
 
-      <div class="row">
-        <div class="col-100">
-          <app-progresso-bar
+      <div>
+        <app-progresso-bar
           [progresso]="progressoService.progresso"
           [mensagem]="progressoService.status"
-          >
-          </app-progresso-bar>
-        </div>
+        >
+        </app-progresso-bar>
       </div>
 
-      <div class="row">
-        <div class="" style="  width: 100%;  justify-content: space-between;  display: flex; " >
-          <app-button
-            [text]="'Cancelar'"
-            [icon]="'bi bi-x-lg'"
-            [color]="''"
-            [backgroundColor]="'#ba1e1e'"
-            (clickEvent)="cancelarSincronizacao()">
-          </app-button>
-          <app-button
-            [text]="'Executar'"
-            [icon]="'bi bi-upload'"
-            [color]="''"
-            [backgroundColor]="''"
-            [disabled]="fl_operacaoSincronizar"
-            (clickEvent)="execultarSincronizacao()">
-          </app-button>
-        </div>
-      </div>
+      <div class="flex justify-between w-full gap-4">
+        <app-button
+          [text]="'Cancelar'"
+          [icon]="'bi bi-x-lg'"
+          [color]="''"
+          [backgroundColor]="'#ba1e1e'"
+          (clickEvent)="cancelarSincronizacao()"
+        >
+        </app-button>
 
+        <app-button
+          [text]="'Executar'"
+          [icon]="'bi bi-upload'"
+          [color]="''"
+          [backgroundColor]="''"
+          [disabled]="fl_operacaoSincronizar"
+          (clickEvent)="execultarSincronizacao()"
+        >
+        </app-button>
+      </div>
     </div>
-  </div>
-
+  </section>

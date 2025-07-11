@@ -1,112 +1,118 @@
-<div class="container">
+<section hlmCard class="w-6/6 md:w-200 bg-[#1f1f2e]">
+  <div hlmCardHeader>
+    <app-header [titulo]="'Conexão'" [form]="" [fl_list]="false"> </app-header>
+  </div>
 
-    <div class="card">
+  <div hlmCardContent class="">
+    <form (ngSubmit)="onSave()">
+      <div class="flex flex-col gap-6">
+        <h3 class="text-white">Configuração banco de dados CLOUD</h3>
 
-        <app-header
-         [titulo]="'Conexão'"
-         [form]=""
-         [fl_list]="false"
+        <div class="grid grid-cols-2 gap-2">
+          <app-input-custom
+            [type]="arquivoValidado ? 'password-secret' : 'password'"
+            [label]="'Host:'"
+            [inputId]="'db_cloud_host'"
+            [(model)]="cloud.db_cloud_host"
+            [required]="true"
+            placeholder=""
           >
-        >
-      </app-header>
+          </app-input-custom>
 
-        <h3>Configuração banco de dados CLOUD</h3>
-        <div class="row">
-
-           <div class="col-50-custom">
-                <app-input-text
-                    [label]="'Host:'"
-                    [inputId]="'db_cloud_host'"
-                    [(model)]="cloud.db_cloud_host"
-                    [required]="true"
-                    placeholder="">
-                </app-input-text>
-           </div>
-           <div class="col-50-custom">
-                <app-input-text
-                    [label]="'Porta:'"
-                    [inputId]="'db_cloud_port'"
-                    [(model)]="cloud.db_cloud_port"
-                    [required]="true"
-                    placeholder="">
-                </app-input-text>
-           </div>
+          <app-input-custom
+            [type]="arquivoValidado ? 'password-secret' : 'password'"
+            [label]="'Porta:'"
+            [inputId]="'db_cloud_port'"
+            [(model)]="cloud.db_cloud_port"
+            [required]="true"
+            placeholder=""
+          >
+          </app-input-custom>
         </div>
-        <div class="row">
-           <div class="col-50-custom">
-                <app-input-text
-                    [label]="'Nome de usuario:'"
-                    [inputId]="'db_cloud_user'"
-                    [(model)]="cloud.db_cloud_user"
-                    [required]="true"
-                    placeholder="">
-                </app-input-text>
-           </div>
-           <div class="col-50-custom">
-                <app-input-text
-                    [label]="'Senha:'"
-                    [inputId]="'db_cloud_password'"
-                    [(model)]="cloud.db_cloud_password"
-                    [required]="true"
-                    placeholder="">
-                </app-input-text>
-           </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <app-input-custom
+            [type]="arquivoValidado ? 'password-secret' : 'password'"
+            [label]="'Nome de usuario:'"
+            [inputId]="'db_cloud_user'"
+            [(model)]="cloud.db_cloud_user"
+            [required]="true"
+            placeholder=""
+          >
+          </app-input-custom>
+
+          <app-input-custom
+            [type]="arquivoValidado ? 'password-secret' : 'password'"
+            [label]="'Senha:'"
+            [inputId]="'db_cloud_password'"
+            [(model)]="cloud.db_cloud_password"
+            [required]="true"
+            placeholder=""
+          >
+          </app-input-custom>
         </div>
-        <h3>Configuração banco de dados LOCAL</h3>
-        <div class="row">
 
-            <div class="col-50-custom">
-                 <app-input-text
-                     [label]="'Host:'"
-                     [inputId]="'db_local_host'"
-                     [(model)]="local.db_local_host"
-                     [required]="true"
-                     placeholder="">
-                 </app-input-text>
-            </div>
-            <div class="col-50-custom">
-                 <app-input-text
-                     [label]="'Porta:'"
-                     [inputId]="'db_local_port'"
-                     [(model)]="local.db_local_port"
-                     [required]="true"
-                     placeholder="">
-                 </app-input-text>
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-50-custom">
-                 <app-input-text
-                     [label]="'Nome de usuario:'"
-                     [inputId]="'db_local_user'"
-                     [(model)]="local.db_local_user"
-                     [required]="true"
-                     placeholder="">
-                 </app-input-text>
-            </div>
-            <div class="col-50-custom">
-                 <app-input-text
-                     [label]="'Senha:'"
-                     [inputId]="'db_local_password'"
-                     [(model)]="local.db_local_password"
-                     [required]="true"
-                     placeholder="">
-                 </app-input-text>
-            </div>
-         </div>
+        <h3 class="text-white">Configuração banco de dados LOCAL</h3>
 
-         <div class="row">
-            <div class="" style="  width: 100%;  justify-content: flex-end;  display: flex; " >
-                <app-button
-                  [text]="'Salvar'"
-                  [icon]="'bi bi-floppy-fill'"
-                  [color]="''"
-                  [backgroundColor]="''"
-                  (clickEvent)="onSave()">
-                </app-button>
-              </div>
-         </div>
+        <div class="grid grid-cols-2 gap-2">
+          <app-input-custom
+            [type]="'text'"
+            [label]="'Host:'"
+            [inputId]="'db_local_host'"
+            [(model)]="local.db_local_host"
+            [required]="true"
+            placeholder=""
+          >
+          </app-input-custom>
 
+          <app-input-custom
+            [type]="'text'"
+            [label]="'Porta:'"
+            [inputId]="'db_local_port'"
+            [(model)]="local.db_local_port"
+            [required]="true"
+            placeholder=""
+          >
+          </app-input-custom>
+        </div>
 
-    </div>
-</div>
+        <div class="grid grid-cols-2 gap-2">
+          <app-input-custom
+            [type]="'text'"
+            [label]="'Nome de usuario:'"
+            [inputId]="'db_local_user'"
+            [(model)]="local.db_local_user"
+            [required]="true"
+            placeholder=""
+          >
+          </app-input-custom>
+
+          <app-input-custom
+            [type]="'text'"
+            [label]="'Senha:'"
+            [inputId]="'db_local_password'"
+            [(model)]="local.db_local_password"
+            [required]="true"
+            placeholder=""
+          >
+          </app-input-custom>
+        </div>
+
+        <div class="flex w-full justify-end">
+          <button
+            type="submit"
+            class="bg-[#4caf50] hover:bg-[#45a049] text-white"
+            hlmBtn
+          >
+            Salvar
+          </button>
+        </div>
+
+        <app-upload-certificado
+          [(arquivoValido)]="arquivoValidado"
+          [id_conexao]="id_conexao || 0"
+        ></app-upload-certificado>
+      </div>
+    </form>
+  </div>
+</section>

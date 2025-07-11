@@ -14,6 +14,9 @@ import { EstruturaDadosComponent } from '../estrutura-dados/estrutura-dados.comp
 import { HeaderComponent } from "../component/header/header.component";
 import { SelectSearchComponent } from "../component/select-search/select-search.component";
 
+import { BrnCommandImports } from '@spartan-ng/brain/command';
+import { HlmCardImports } from '@spartan-ng/helm/card';
+
 @Component({
   selector: 'app-estrutura',
   imports: [
@@ -24,8 +27,11 @@ import { SelectSearchComponent } from "../component/select-search/select-search.
     TableBasicComponent,
     RouterModule,
     HeaderComponent,
-    SelectSearchComponent
-],
+    SelectSearchComponent,
+    BrnCommandImports,
+    HlmCardImports,
+    HeaderComponent,
+  ],
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss',
 })
@@ -42,4 +48,7 @@ export class EstruturaComponent extends EstruturaDadosComponent<EstruturaService
   };
 
   ds_operacao = 'Estrutura';
+  protected override get endpoint(): string {
+    return 'estrutura';
+  }
 }

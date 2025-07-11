@@ -9,6 +9,8 @@ import { ProgressoBarComponent } from '../component/progresso-bar/progresso-bar.
 import { EstruturaDadosComponent } from '../estrutura-dados/estrutura-dados.component';
 import { HeaderComponent } from "../component/header/header.component";
 import { SelectSearchComponent } from '../component/select-search/select-search.component';
+import { BrnCommandImports } from '@spartan-ng/brain/command';
+import { HlmCardImports } from '@spartan-ng/helm/card';
 
 @Component({
   selector: 'app-dados',
@@ -20,6 +22,8 @@ import { SelectSearchComponent } from '../component/select-search/select-search.
     ProgressoBarComponent,
     HeaderComponent,
     SelectSearchComponent,
+    BrnCommandImports,
+    HlmCardImports,
   ],
   templateUrl: './dados.component.html',
   styleUrl: './dados.component.scss',
@@ -37,4 +41,7 @@ export class DadosComponent extends EstruturaDadosComponent<DadosService> {
   };
 
   ds_operacao = 'Dados';
+  protected override get endpoint(): string {
+    return 'dados';
+  }
 }

@@ -4,12 +4,14 @@ import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { environment } from '../environments/environment';
+import SockJS from 'sockjs-client';
 
 @Injectable({ providedIn: 'root' })
 export class WebsocketService {
-  private client!: Client;
   private isConnected = false;
-
+  private readonly API = `${environment.apiUrlWebSocket}`;
+  private stompClient!: Client;
   private auth = inject(AuthService);
   private route = inject(Router);
 
@@ -20,7 +22,6 @@ export class WebsocketService {
   private progressoSubject = new Subject<number>();
   progresso$ = this.progressoSubject.asObservable();
 
-  // Indica se há progresso (ex: progresso entre 1 e 99)
   private emProgressoSubject = new BehaviorSubject<boolean>(false);
   emProgresso$ = this.emProgressoSubject.asObservable();
 
@@ -28,107 +29,75 @@ export class WebsocketService {
   private readonly maxReconnectionAttempts = 5;
 
   constructor() {
-    this.initializeClient();
+    this.initConnectionSocket();
   }
 
-  private initializeClient() {
-    this.client = new Client({
-      brokerURL: 'ws://localhost:8080/syncdb/ws',
-      connectHeaders: {
-        Authorization: this.auth.getToken() ?? '',
-      },
+  private initConnectionSocket() {
+    const url = `${environment.apiUrlWebSocket}`;
+    this.stompClient = new Client({
+      webSocketFactory: () => new SockJS(url),
       reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
+      debug: (str) => console.log(),
+      onConnect: () => {
+        this.isConnected = true;
+        console.log('Conectado ao WebSocket');
+
+        // ⚠️ Aqui você pode chamar a subscription
+        this.subscribeProgress();
+      },
+      onStompError: (frame) => {
+        this.isConnected = false;
+        console.error('Erro STOMP:', frame);
+      },
+      onWebSocketClose: () => {
+        this.isConnected = false;
+        console.warn('WebSocket fechado');
+      },
     });
-
-    this.client.onConnect = (frame) => {
-      console.log('[WebSocket conectado]', frame);
-      this.isConnected = true;
-      this.reconnectionAttempts = 0;
-      this.startPing();
-      this.subscribeToPong();
-      this.subscribeProgress();
-    };
-
-    this.client.onDisconnect = () => {
-      console.log('[WebSocket desconectado]');
-      this.desconectarWebSocket();
-    };
-
-    this.client.onWebSocketClose = (event) => {
-      console.warn('[WebSocket fechadoo]', event.reason || event);
-      this.reconectWebSocket();
-    };
-
-    this.client.onStompError = (frame) => {
-      console.error('[Erro STOMP]', frame);
-      this.reconectWebSocket();
-    };
-
-    this.client.onWebSocketError = (error) => {
-      console.error('[Erro WebSocket]', error);
-      this.desconectarWebSocket();
-    };
   }
 
   connect(): Promise<void> {
-    if (this.isConnected) {
-      return Promise.resolve();
-    }
+    if (this.isConnected) return Promise.resolve();
 
-    this.client.connectHeaders = {
-      Authorization: this.auth.getToken() ?? '',
-    };
+    return new Promise((resolve, reject) => {
+      this.stompClient.activate();
 
-    return new Promise<void>((resolve, reject) => {
-      this.client.onConnect = (frame) => {
-        console.log('[WebSocket conectado]', frame);
-        this.isConnected = true;
-        this.reconnectionAttempts = 0;
-        this.startPing();
-        this.subscribeToPong();
-        this.subscribeProgress();
-        resolve();
-      };
-
-      this.client.activate();
+      setTimeout(() => {
+        if (this.isConnected) resolve();
+        else reject();
+      }, 3000);
     });
   }
 
   subscribe(topic: string, callback: (msg: any) => void): StompSubscription {
-    return this.client.subscribe(topic, (message: IMessage) => {
+    return this.stompClient.subscribe(topic, (message: IMessage) => {
       callback(JSON.parse(message.body));
     });
   }
 
   send(destination: string, body: any) {
-    if (!this.connected) {
+    if (!this.isConnected) {
       console.warn('WebSocket não está conectado. Ignorando envio.');
       return;
     }
 
-    this.client.publish({
+    this.stompClient.publish({
       destination,
       body: JSON.stringify(body),
     });
   }
 
   disconnect() {
-    if (this.client && this.isConnected) {
-      this.client.deactivate().then(() => {
+    if (this.stompClient && this.isConnected) {
+      this.stompClient.deactivate().then(() => {
         this.isConnected = false;
+        console.log('WebSocket desconectado');
       });
 
-      if (this.pingInterval) {
-        clearInterval(this.pingInterval);
-        this.pingInterval = null;
-      }
-
-      if (this.pongTimeout) {
-        clearTimeout(this.pongTimeout);
-        this.pongTimeout = null;
-      }
+      clearInterval(this.pingInterval);
+      clearTimeout(this.pongTimeout);
+      this.pingInterval = null;
+      this.pongTimeout = null;
     }
   }
 
@@ -148,42 +117,31 @@ export class WebsocketService {
       title: 'Erro ao conectar WebSocket',
       text: '[WebSocket desconectado] Não foi possível conectar ao WebSocket.',
     });
-    this.isConnected = false;
   }
 
   reconectWebSocket() {
     if (this.reconnectionAttempts < this.maxReconnectionAttempts) {
       this.reconnectionAttempts++;
-      console.log(
-        `Tentando reconectar... tentativa ${this.reconnectionAttempts}`
-      );
+      console.warn(`Tentativa de reconexão ${this.reconnectionAttempts}`);
       setTimeout(() => {
         this.connect().catch(() => {
           console.error('Erro ao tentar reconectar WebSocket');
         });
-      }, 3000); // espera 3 segundos para tentar de novo
+      }, 3000);
     } else {
-      console.error(
-        'Máximo de tentativas de reconexão alcançado. Desconectando.'
-      );
+      console.error('Máximo de tentativas alcançado');
       this.desconectarWebSocket();
-      this.isConnected = false;
     }
   }
 
   startPing(intervalMs: number = 5000) {
-    if (this.pingInterval) {
-      clearInterval(this.pingInterval);
-    }
+    clearInterval(this.pingInterval);
 
     this.pingInterval = setInterval(() => {
       if (this.connected) {
         this.send('/app/ping', { mensagem: 'ping' });
 
-        if (this.pongTimeout) {
-          clearTimeout(this.pongTimeout);
-        }
-
+        clearTimeout(this.pongTimeout);
         this.pongTimeout = setTimeout(() => {
           console.warn('Pong não recebido dentro do tempo limite!');
           this.desconectarWebSocket();
@@ -193,26 +151,21 @@ export class WebsocketService {
   }
 
   subscribeToPong() {
-    this.subscribe('/topic/pong', (msg) => {
-      if (this.pongTimeout) {
-        clearTimeout(this.pongTimeout);
-        this.pongTimeout = null;
-      }
+    this.subscribe('/topic/pong', (_) => {
+      clearTimeout(this.pongTimeout);
+      this.pongTimeout = null;
     });
   }
 
   subscribeProgress() {
     this.subscribe('/topic/sync/progress', (data) => {
-      if (this.pongTimeout) {
-        clearTimeout(this.pongTimeout);
-        this.pongTimeout = null;
-      }
-
+      clearTimeout(this.pongTimeout);
+      // console.log('Progresso recebido:', data); 
       const progresso = Number(data?.progresso ?? 0);
       this.progressoSubject.next(progresso);
 
-       const emAndamento = progresso > 0 && progresso < 100;
-       this.emProgressoSubject.next(emAndamento);
+      const emAndamento = progresso > 0 && progresso < 100;
+      this.emProgressoSubject.next(emAndamento);
     });
   }
 }

@@ -15,6 +15,8 @@ export class MenuComponent {
   private auth = inject(AuthService)
   menuAberto = false;
   termoBusca = '';
+
+  
   sair()
   {
     this.auth.logout();
