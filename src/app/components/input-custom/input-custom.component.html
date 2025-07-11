@@ -1,0 +1,28 @@
+<hlm-form-field class="flex flex-col gap-3 relative ">
+  <label class="text-white" hlmLabel>{{ label }}</label>
+
+  <input 
+  title="input-costumizado"
+    hlmInput
+    [type]="showPassword ? 'text' : type"
+    [id]="inputId" 
+    [name]="inputId" 
+    [placeholder]="placeholder"
+    class="w-full text-white pr-10" 
+    (input)="onInputChange($event)"
+    [value]="model ?? null"
+  />
+  
+  
+  <button 
+  title="esconder/exibir"
+    *ngIf="type === 'password'" 
+    type="button"
+    class="absolute right-3 top-[32px] text-white"
+    (click)="togglePasswordVisibility()"
+  >
+    <i [ngClass]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+  </button>
+
+
+</hlm-form-field>

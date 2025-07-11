@@ -1,14 +1,24 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { InputTextComponent } from '../component/input-text/input-text.component';
-import { ButtonComponent } from '../component/button/button.component';
+
 import Swal from 'sweetalert2';
 import { ConexaoService } from '../../services/conexao.service';
-import { HeaderComponent } from "../component/header/header.component";
+import { HeaderComponent } from '../component/header/header.component';
+import { InputCustomComponent } from '../input-custom/input-custom.component';
+
+
+import { BrnCommandImports } from '@spartan-ng/brain/command';
+import { HlmButtonDirective } from '@spartan-ng/helm/button';
+import { HlmCardFooterDirective, HlmCardImports } from '@spartan-ng/helm/card';
 
 @Component({
   selector: 'app-conexao',
-  imports: [RouterModule, InputTextComponent, ButtonComponent, HeaderComponent],
+  imports: [
+    BrnCommandImports,
+    HlmCardImports,
+    HeaderComponent,
+    InputCustomComponent
+],
   templateUrl: './conexao.component.html',
   styleUrl: './conexao.component.scss',
 })
@@ -30,7 +40,7 @@ export class ConexaoComponent implements OnInit {
 
   service = inject(ConexaoService);
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.onShow();
@@ -53,7 +63,7 @@ export class ConexaoComponent implements OnInit {
           text: 'Não existe conexãos cadastradas',
           confirmButtonText: 'OK',
         });
-      }
+      },
     });
   }
 
@@ -64,8 +74,7 @@ export class ConexaoComponent implements OnInit {
       local: this.local,
     };
 
-    if (this.id_conexao)
-    {
+    if (this.id_conexao) {
       this.service.atualizarConexao(payload).subscribe({
         next: (res: any) => {
           Swal.fire({
@@ -85,8 +94,7 @@ export class ConexaoComponent implements OnInit {
           });
         },
       });
-    }
-    else {
+    } else {
       this.service.criarConexao(payload).subscribe({
         next: (res: any) => {
           Swal.fire({

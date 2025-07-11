@@ -1,21 +1,24 @@
- <div class="row">
-        <div class="col-voltar">
-          <a (click)="onClose()">
-            <i class="bi bi-arrow-left-short"></i>
-          </a>
-          </div>
+<div class="flex justify-between  w-6/6 text-white  ">
 
-          <div class="col-titulo">
-            <h3>{{titulo}}</h3>
-          </div>
+  <div class=" text-[2rem]">
+    <a (click)="onClose()">
+      <i class="bi bi-arrow-left-short"></i>
+    </a>
+  </div>
 
+  <div class="flex  items-center">
+    <p>{{ titulo }}</p>
+  </div>
 
-          <div class="col-novo">
-            <a type="button" (click)="onNew()" title="novo" class="btn-novo" *ngIf="fl_list">
-              <i class="bi bi-plus-lg"></i>
-              <h3>Novo</h3>
-            </a>
-          </div>
+  <div class="flex  items-center ">
+    <ng-icon hlm size="base" name="lucideEllipsisVertical" />
+  </div>
 
+  <div class="" *ngIf="fl_list">
+    <a type="button" (click)="onNew()" title="novo"  >
+      <i class="bi bi-plus-lg"></i>
+      <h3>Novo</h3>
+    </a>
+  </div>
 
-      </div>
+</div>
