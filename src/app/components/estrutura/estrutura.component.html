@@ -1,80 +1,83 @@
-
-<div class="w-full h-full flex flex-col justify-content items-center p-4 bg-[#282c34]   ">
-
-    <div class="card  max-w-3xl space-y-6">
+<section hlmCard class="w-6/6 md:w-200   bg-[#1f1f2e] ">
+    <div hlmCardHeader>
       <app-header
-      [titulo]="'Sincronização ' + ds_operacao"
-      [form]=""
-      [fl_list]="false">
-    </app-header>
+        [titulo]="'Sincronização de ' + ds_operacao"
+        [form]=""
+        [fl_list]="false"
+      >
+      </app-header>
+    </div>
 
-    <div>
-      <label class=" mb-5 text-sm font-medium text-gray-700 dark:text-gray-300">Base de dados: (*)</label>
+    <div hlmCardContent class="flex flex-col gap-3">
       <app-select-search
+        [label]="'Banco de Dados: (*)'"
         [options]="selectBases"
         [(selected)]="baseSelecionada"
-        (selectedChange)="processarBaseDados()">
+        (selectedChange)="processarBaseDados()"
+      >
       </app-select-search>
-    </div>
 
-    <div>
-      <label class=" mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Esquema:</label>
       <app-select-search
+        [label]="'Esquema: (*)'"
         [options]="selectEsquema"
         [(selected)]="esquemaSelecionada"
-        (selectedChange)="processarEsquema()">
+        (selectedChange)="processarEsquema()"
+      >
       </app-select-search>
-    </div>
 
-    <div>
-      <label class=" mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">Tabela:</label>
       <app-select-search
+        [label]="'Tabela: (*)'"
         [options]="selectTabelas"
-        [(selected)]="tabelaSelecionada">
+        [(selected)]="tabelaSelecionada"
+      >
       </app-select-search>
+
+      <div>
+        <app-button
+          [text]="'Verificar ' + ds_operacao"
+          [icon]="'bi bi-arrow-repeat'"
+          [color]="''"
+          [backgroundColor]="''"
+          [disabled]="fl_operacaoVerificar"
+          (clickEvent)="verificar()"
+        >
+        </app-button>
+      </div>
+
+      <div class="">
+        <app-table-basic
+          [resultados]="resultados"
+          [colunasVisiveis]="colunasVisiveis"
+        ></app-table-basic>
+      </div>
+
+      <div>
+        <app-progresso-bar
+          [progresso]="progressoService.progresso"
+          [mensagem]="progressoService.status"
+        >
+        </app-progresso-bar>
+      </div>
+
+      <div class="flex justify-between w-full gap-4">
+        <app-button
+          [text]="'Cancelar'"
+          [icon]="'bi bi-x-lg'"
+          [color]="''"
+          [backgroundColor]="'#ba1e1e'"
+          (clickEvent)="cancelarSincronizacao()"
+        >
+        </app-button>
+
+        <app-button
+          [text]="'Executar'"
+          [icon]="'bi bi-upload'"
+          [color]="''"
+          [backgroundColor]="''"
+          [disabled]="fl_operacaoSincronizar"
+          (clickEvent)="execultarSincronizacao()"
+        >
+        </app-button>
+      </div>
     </div>
-
-    <div>
-      <app-button
-        [text]="'Verificar ' + ds_operacao"
-        [icon]="'bi bi-arrow-repeat'"
-        [color]="''"
-        [backgroundColor]="''"
-        [disabled]="fl_operacaoVerificar"
-        (clickEvent)="verificar()">
-      </app-button>
-    </div>
-
-    <div class="">
-      <app-table-basic [resultados]="resultados" [colunasVisiveis]="colunasVisiveis"></app-table-basic>
-    </div>
-
-    <div>
-      <app-progresso-bar
-        [progresso]="progressoService.progresso"
-        [mensagem]="progressoService.status">
-      </app-progresso-bar>
-    </div>
-
-    <div class="flex justify-between w-full gap-4">
-      <app-button
-        [text]="'Cancelar'"
-        [icon]="'bi bi-x-lg'"
-        [color]="''"
-        [backgroundColor]="'#ba1e1e'"
-        (clickEvent)="cancelarSincronizacao()">
-      </app-button>
-
-      <app-button
-        [text]="'Executar'"
-        [icon]="'bi bi-upload'"
-        [color]="''"
-        [backgroundColor]="''"
-        [disabled]="fl_operacaoSincronizar"
-        (clickEvent)="execultarSincronizacao()">
-      </app-button>
-    </div>
-
-    </div>
-  </div>
-
+  </section>

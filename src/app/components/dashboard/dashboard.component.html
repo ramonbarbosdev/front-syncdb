@@ -1,40 +1,35 @@
-<!-- <div class="container">
-    <div class="container-card">
-        <div class="card " style="background: linear-gradient(100deg, #5243d1, #2E268A); " (click)="abrirEstrutura()">
-            <h3>Sincronizar Estrutura</h3>
-            <p>Compare e sincronize tabelas entre local e nuvem.</p>
-            <div class="box-img">
-                <div class="img"></div>
-            </div>
-        </div>
-        <div class="card " style="background: linear-gradient(100deg, #55a0e6, #2a6ca5);" (click)="abrirDados()">
-            <h3>Sincronizar Dados</h3>
-            <p>Compare e sincronize dados das tabelas entre local e nuvem.</p>
-        </div>
+<div class="flex h-full w-150 gap-5">
+  <section
+    hlmCard
+    class="w-full max-w-sm bg-[#1f1f2e] transition delay-150 duration-200 ease-in-out hover:-translate-y-1 hover:scale-100"
+    (click)="abrirEstrutura()"
+  >
+    <div hlmCardHeader class="">
+      <h3 hlmCardTitle class="text-white">Sincronizar Estrutura</h3>
+      <p hlmCardDescription class="text-white">
+        Compare e sincronize tabelas entre local e nuvem.
+      </p>
     </div>
-</div> -->
 
-<div class="w-auto h-full flex justify-content p-4 bg-[#282c34]">
+    <!-- <div class="box-img">
+      <div class="img"></div>
+    </div> -->
+  </section>
 
-  <div class="container-card">
-    <div
-      class="card"
-      style="background: linear-gradient(100deg, #5243d1, #2e268a)"
-      (click)="abrirEstrutura()"
-    >
-      <h3>Sincronizar Estrutura</h3>
-      <p>Compare e sincronize tabelas entre local e nuvem.</p>
-      <div class="box-img">
-        <div class="img"></div>
-      </div>
+  <section
+    hlmCard
+    class="w-full max-w-sm bg-[#1f1f2e] transition delay-150 duration-200 ease-in-out hover:-translate-y-1 hover:scale-100"
+    (click)="abrirDados()"
+  >
+    <div hlmCardHeader class="">
+      <h3 hlmCardTitle class="text-white">Sincronizar Dados</h3>
+      <p hlmCardDescription class="text-white">
+        Compare e sincronize dados das tabelas entre local e nuvem.
+      </p>
     </div>
-    <div
-      class="card"
-      style="background: linear-gradient(100deg, #55a0e6, #2a6ca5)"
-      (click)="abrirDados()"
-    >
-      <h3>Sincronizar Dados</h3>
-      <p>Compare e sincronize dados das tabelas entre local e nuvem.</p>
-    </div>
-  </div>
+
+    <!-- <div class="box-img">
+      <div class="img"></div>
+    </div> -->
+  </section>
 </div>

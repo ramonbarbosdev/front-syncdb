@@ -1,15 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+
+import { HlmButtonDirective } from '@spartan-ng/helm/button';
 
 import Swal from 'sweetalert2';
 import { ConexaoService } from '../../services/conexao.service';
 import { HeaderComponent } from '../component/header/header.component';
 import { InputCustomComponent } from '../input-custom/input-custom.component';
-
-
 import { BrnCommandImports } from '@spartan-ng/brain/command';
-import { HlmButtonDirective } from '@spartan-ng/helm/button';
-import { HlmCardFooterDirective, HlmCardImports } from '@spartan-ng/helm/card';
+import {  HlmCardImports } from '@spartan-ng/helm/card';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-conexao',
@@ -17,8 +17,10 @@ import { HlmCardFooterDirective, HlmCardImports } from '@spartan-ng/helm/card';
     BrnCommandImports,
     HlmCardImports,
     HeaderComponent,
-    InputCustomComponent
-],
+    InputCustomComponent,
+    HlmButtonDirective,
+    FormsModule,
+  ],
   templateUrl: './conexao.component.html',
   styleUrl: './conexao.component.scss',
 })
@@ -39,6 +41,7 @@ export class ConexaoComponent implements OnInit {
   };
 
   service = inject(ConexaoService);
+  router = inject(Router);
 
   constructor() {}
 
@@ -83,6 +86,8 @@ export class ConexaoComponent implements OnInit {
             text: 'Conexões atualizadas com sucesso.',
             confirmButtonText: 'OK',
           });
+
+          this.router.navigate(['admin/dashboard']);
         },
         error: (err) => {
           console.error(err);

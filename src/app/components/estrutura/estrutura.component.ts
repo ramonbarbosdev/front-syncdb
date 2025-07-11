@@ -14,6 +14,9 @@ import { EstruturaDadosComponent } from '../estrutura-dados/estrutura-dados.comp
 import { HeaderComponent } from "../component/header/header.component";
 import { SelectSearchComponent } from "../component/select-search/select-search.component";
 
+import { BrnCommandImports } from '@spartan-ng/brain/command';
+import { HlmCardImports } from '@spartan-ng/helm/card';
+
 @Component({
   selector: 'app-estrutura',
   imports: [
@@ -25,6 +28,9 @@ import { SelectSearchComponent } from "../component/select-search/select-search.
     RouterModule,
     HeaderComponent,
     SelectSearchComponent,
+    BrnCommandImports,
+    HlmCardImports,
+    HeaderComponent,
   ],
   templateUrl: './estrutura.component.html',
   styleUrl: './estrutura.component.scss',
