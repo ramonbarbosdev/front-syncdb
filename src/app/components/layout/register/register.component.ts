@@ -9,16 +9,25 @@ import { Router, RouterModule } from '@angular/router';
 import { HeaderComponent } from '../../component/header/header.component';
 import { HlmSpinnerComponent } from '@spartan-ng/helm/spinner';
 import { CommonModule } from '@angular/common';
+import { BrnCommandImports } from '@spartan-ng/brain/command';
+import { HlmCardImports } from '@spartan-ng/helm/card';
+import { HlmButtonDirective, HlmButtonModule } from '@spartan-ng/helm/button';
+import { InputCustomComponent } from "../../input-custom/input-custom.component";
+import { FormsModule } from '@angular/forms';
+
+
 @Component({
   selector: 'app-register',
   imports: [
-    InputTextComponent,
-    InputPasswordComponent,
-    ButtonComponent,
     RouterModule,
     HeaderComponent,
     HlmSpinnerComponent,
     CommonModule,
+    HlmCardImports,
+    BrnCommandImports,
+    HlmButtonModule,
+    InputCustomComponent,
+    FormsModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -38,11 +47,11 @@ export class RegisterComponent {
 
   cadastrar() {
     this.loading = true;
-
+    
     if (!this.objeto.login || !this.objeto.senha) {
       exibirErro(`Necessario informar em todos os campos.`, null);
       this.loading = false;
-      return ;
+      return;
     }
 
     this.auth.cadastrar(this.objeto).subscribe({

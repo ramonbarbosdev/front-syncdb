@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 
 import { EstruturaService } from '../../services/estrutura.service';
 
-import { SelectBasicComponent } from '../component/select-basic/select-basic.component';
 import { ButtonComponent } from '../component/button/button.component';
 import { ProgressoBarComponent } from '../component/progresso-bar/progresso-bar.component';
 import { TableBasicComponent } from '../component/table-basic/table-basic.component';

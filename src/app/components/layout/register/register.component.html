@@ -1,56 +1,54 @@
+<div
+  class="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-[#1e1e2f] to-[#282c34]"
+>
+  <section hlmCard class="w-6/6 md:w-200 bg-[#1f1f2e]" *ngIf="loading == false">
+    <div hlmCardHeader>
+      <app-header [titulo]="'Registrar'" [form]="" [fl_list]="false">
+        >
+      </app-header>
+    </div>
 
-<div class="container">
-  <div class="card" *ngIf="loading == false">
-    
-    <app-header
-      [titulo]="'Registrar'"
-      [form]=""
-      [fl_list]="false"
-      >
-    >
-  </app-header>
+      <form  hlmCardContent class="flex flex-col gap-3" (ngSubmit)="cadastrar()">
 
-      <div class="form">
+        <app-input-custom
+          [label]="'Login'"
+          [inputId]="'login'"
+          [(model)]="objeto.login"
+          [required]="true"
+        >
+          </app-input-custom>
 
-          <app-input-text
-            [label]="'Login'"
-            [inputId]="'login'"
-            [(model)]="objeto.login"
-            [required]="true">
-          </app-input-text>
-
-        <app-input-text
+        <app-input-custom
             [label]="'Nome'"
-            [inputId]="'nome'"
-            [(model)]="objeto.nome"
-            [required]="true">
-        </app-input-text>
+          [inputId]="'nome'"
+          [(model)]="objeto.nome"
+          [required]="true"
+        >
+        </app-input-custom>
+      
+        <app-input-custom
+          [label]="'Senha'"
+          [type]="'password'"
+          [inputId]="'senha'"
+          [(model)]="objeto.senha"
+          [required]="true"
+        >
+        </app-input-custom>
 
-        <app-input-password
-            [label]="'Senha'"
-            [inputId]="'senha'"
-            [(model)]="objeto.senha"
-            [required]="true">
-        </app-input-password>
+        <div class="flex justify-end" >
+          <button
+            type="submit"
+            class="bg-[#4caf50] hover:bg-[#45a049] text-white"
+            hlmBtn
+          >
+            Cadastrar
+          </button>
+        </div>
 
-        <app-button
-          [text]="'Cadastar'"
-          [type]="'button'"
-          [icon]="'bi bi-box-arrow-in-right'"
-          [color]="''"
-          [backgroundColor]="''"
-          (clickEvent)="cadastrar()">
-        </app-button>
-
-      </div>
-
-  </div>
+      </form>
+  </section>
 
   <div *ngIf="loading == true">
     <hlm-spinner class="text-white" />
   </div>
-
-
-  </div>
-
-
+</div>
