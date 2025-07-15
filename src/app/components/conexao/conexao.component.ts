@@ -33,7 +33,7 @@ import { AuthService } from '../../auth/auth.service';
   styleUrl: './conexao.component.scss',
 })
 export class ConexaoComponent implements OnInit {
-  id_conexao?: number;
+  id_conexao?: string;
 
   arquivoValidado: boolean = false;
 
@@ -60,9 +60,9 @@ export class ConexaoComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.eventService.reload$.subscribe(() => this.onShow());
     this.id_usuario = this.auth.getUser().id_usuario ?? "";
     this.onShow();
+    this.eventService.reload$.subscribe(() => this.onShow());
 
   }
 
