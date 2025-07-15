@@ -41,7 +41,7 @@ export class AuthService {
   logout() {
     this.fazerLogout().subscribe({
       next: (res) => {
-        console.log( res);
+        console.log(res);
         this.clearToken();
         this.router.navigate(['/login']);
       },
@@ -59,6 +59,21 @@ export class AuthService {
 
   getToken(): string | null {
     return sessionStorage.getItem('token');
+  }
+
+  setUser(info: any) {
+    let objeto = {
+      id_usuario: info.id_usuario,
+      nm_usuario: info.nm_usuario,
+      login: info.login,
+    };
+    sessionStorage.setItem('user', JSON.stringify(objeto));
+  }
+
+  getUser() {
+    let user = sessionStorage.getItem('user');
+    let objeto = user !== null ? JSON.parse(user) : null;
+    return objeto;
   }
 
   clearToken() {

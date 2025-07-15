@@ -14,6 +14,7 @@ import { UploadCertificadoComponent } from '../component/upload-certificado/uplo
 import { CommonModule } from '@angular/common';
 import { EventConexaoService } from '../../services/event-conexao.service';
 import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-conexao',
@@ -41,7 +42,7 @@ export class ConexaoComponent implements OnInit {
     db_cloud_port: '',
     db_cloud_user: '',
     db_cloud_password: '',
-    fl_admin: false
+    fl_admin: false,
   };
   public local = {
     db_local_host: '',
@@ -50,23 +51,27 @@ export class ConexaoComponent implements OnInit {
     db_local_password: '',
   };
 
+  id_usuario = "";
   service = inject(ConexaoService);
   router = inject(Router);
   private eventService = inject(EventConexaoService);
+  private auth = inject(AuthService);
 
   constructor() {}
 
   ngOnInit() {
-    this.onShow();
     this.eventService.reload$.subscribe(() => this.onShow());
+    this.id_usuario = this.auth.getUser().id_usuario ?? "";
+    this.onShow();
+
   }
 
   onShow() {
-    this.service.getConexao().subscribe({
+    this.service.getConexao(this.id_usuario).subscribe({
       next: (res: any) => {
         if (res) {
           this.arquivoValidado = res.cloud.fl_admin;
-          this.id_conexao = res.id_conexao;
+          this.id_conexao = res.id;
           this.cloud = res.cloud;
           this.local = res.local;
         }
@@ -85,31 +90,21 @@ export class ConexaoComponent implements OnInit {
 
   onSave() {
     const payload = {
-      id_conexao: this.id_conexao,
+      id: this.id_conexao,
       cloud: this.cloud,
       local: this.local,
+      idUsuario: this.id_usuario,
     };
+
 
     if (this.id_conexao) {
       this.service.atualizarConexao(payload).subscribe({
         next: (res: any) => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Sucesso!',
-            text: 'Conexões atualizadas com sucesso.',
-            confirmButtonText: 'OK',
-          });
-
+    
           this.router.navigate(['admin/dashboard']);
         },
         error: (err) => {
-          console.error(err);
-          Swal.fire({
-            icon: 'error',
-            title: 'Erro ao atualizar',
-            text: 'Verifique os dados de conexão.',
-            confirmButtonText: 'OK',
-          });
+         
         },
       });
     } else {
@@ -122,9 +117,11 @@ export class ConexaoComponent implements OnInit {
             confirmButtonText: 'OK',
           });
           this.id_conexao = res.id_conexao;
+
+          this.router.navigate(['admin/dashboard']);
+
         },
         error: (err) => {
-          console.error(err);
           Swal.fire({
             icon: 'error',
             title: 'Erro ao criar',

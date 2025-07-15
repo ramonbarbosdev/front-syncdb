@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { WebsocketService } from './websocket.service';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -29,19 +30,39 @@ export class ConexaoService {
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  getConexao(): Observable<any> {
+  getConexao(idUsuario:string): Observable<any> {
     this.verificarConexaoWebSocket();
-    const url = `${this.API}/`;
+    const url = `${this.API}/${idUsuario}`;
     return this.http
       .get(url)
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  atualizarConexao(payload: any) {
-     const url = `${this.API}/`;
+  atualizarConexao(data: any) {
 
-     return this.http
-       .put(url, payload)
-       .pipe(catchError((error) => throwError(() => error)));
+    const url = `${this.API}/`;
+
+    return this.http.put<any>(url, data).pipe(
+      tap((res) => {
+             Swal.fire({
+               icon: 'success',
+               title: 'Sucesso!',
+               text: 'Conexões atualizadas com sucesso.',
+               confirmButtonText: 'OK',
+             });
+        return res;
+      }),
+      catchError((e) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Erro ao atualizar',
+          text: 'Verifique os dados de conexão.',
+          confirmButtonText: 'OK',
+        });
+        return throwError(() => e);
+      })
+    );
   }
+
+ 
 }
