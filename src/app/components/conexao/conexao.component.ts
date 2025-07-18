@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { EventConexaoService } from '../../services/event-conexao.service';
 import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
 import { AuthService } from '../../auth/auth.service';
+import { BaseService } from '../../services/base.service';
 
 @Component({
   selector: 'app-conexao',
@@ -37,6 +38,8 @@ export class ConexaoComponent implements OnInit {
 
   arquivoValidado: boolean = false;
 
+  public baseService = inject(BaseService);
+
   public cloud = {
     db_cloud_host: '',
     db_cloud_port: '',
@@ -51,7 +54,7 @@ export class ConexaoComponent implements OnInit {
     db_local_password: '',
   };
 
-  id_usuario = "";
+  id_usuario = '';
   service = inject(ConexaoService);
   router = inject(Router);
   private eventService = inject(EventConexaoService);
@@ -60,10 +63,10 @@ export class ConexaoComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.id_usuario = this.auth.getUser().id_usuario ?? "";
+    this.cancelarSincronizacao();
+    this.id_usuario = this.auth.getUser().id_usuario ?? '';
     this.onShow();
     this.eventService.reload$.subscribe(() => this.onShow());
-
   }
 
   onShow() {
@@ -96,16 +99,12 @@ export class ConexaoComponent implements OnInit {
       idUsuario: this.id_usuario,
     };
 
-
     if (this.id_conexao) {
       this.service.atualizarConexao(payload).subscribe({
         next: (res: any) => {
-    
           this.router.navigate(['admin/dashboard']);
         },
-        error: (err) => {
-         
-        },
+        error: (err) => {},
       });
     } else {
       this.service.criarConexao(payload).subscribe({
@@ -119,7 +118,6 @@ export class ConexaoComponent implements OnInit {
           this.id_conexao = res.id_conexao;
 
           this.router.navigate(['admin/dashboard']);
-
         },
         error: (err) => {
           Swal.fire({
@@ -131,5 +129,23 @@ export class ConexaoComponent implements OnInit {
         },
       });
     }
+  }
+
+  cancelarSincronizacao() {
+
+
+    this.baseService.cancelar('estrutura').subscribe({
+      next: (resposta: any) => {
+       
+      },
+    });
+
+    this.baseService
+      .cancelar('dados')
+      .subscribe({
+        next: (resposta: any) => {
+        
+        },
+      });
   }
 }
