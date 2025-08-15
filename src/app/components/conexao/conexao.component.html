@@ -32,7 +32,7 @@
 
         <div class="grid grid-cols-2 gap-2">
           <app-input-custom
-            [type]="arquivoValidado ? 'password-secret' : 'password'"
+            [type]="'password-secret'"
             [label]="'Nome de usuario:'"
             [inputId]="'db_cloud_user'"
             [(model)]="cloud.db_cloud_user"
@@ -42,7 +42,7 @@
           </app-input-custom>
 
           <app-input-custom
-            [type]="arquivoValidado ? 'password-secret' : 'password'"
+             [type]="'password-secret'"
             [label]="'Senha:'"
             [inputId]="'db_cloud_password'"
             [(model)]="cloud.db_cloud_password"

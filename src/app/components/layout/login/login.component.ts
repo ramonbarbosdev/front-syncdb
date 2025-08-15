@@ -50,10 +50,7 @@ export class LoginComponent {
         this.websocketService
           .connect()
           .then(() => {
-            this.auth.setUser(res);
-            console.log('[Login OK + WebSocket conectado]');
             this.loading = false;
-            this.auth.setToken(res.Authorization);
             this.router.navigate(['admin/dashboard']);
           })
           .catch((err) => {

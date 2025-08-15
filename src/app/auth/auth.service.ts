@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { WebsocketService } from '../services/websocket.service';
 import { environment } from '../environments/environment';
-import { catchError, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,12 +12,28 @@ export class AuthService {
   private readonly apiUrl = `${environment.apiUrl}`;
 
   private router = inject(Router);
-  constructor(private http: HttpClient) {}
 
-  login(credenciais: { login: string; senha: string }) {
-    return this.http.post(`${this.apiUrl}/auth/login`, credenciais, {
-      withCredentials: true, // <- permite receber e enviar cookies
-    });
+  private userSubject = new BehaviorSubject<any | null>(null);
+  user$ = this.userSubject.asObservable();
+
+  constructor(private http: HttpClient) {
+    const userJson = sessionStorage.getItem('user');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      this.userSubject.next(user);
+    }
+  }
+
+  login(credenciais: any): Observable<any> {
+    return this.http
+      .post(`${this.apiUrl}/auth/login`, credenciais, { withCredentials: true })
+      .pipe(
+        tap((user) => {
+          this.userSubject.next(user);
+          sessionStorage.setItem('user', JSON.stringify(user));
+        }),
+        catchError((error) => throwError(() => error))
+      );
   }
 
   cadastrar(data: any): Observable<any> {
@@ -28,66 +44,31 @@ export class AuthService {
       .pipe(catchError((error) => throwError(() => error)));
   }
 
-  fazerLogout() {
-    return this.http.post(
-      `${this.apiUrl}/auth/logout`,
-      {},
-      {
-        headers: this.getHeaders(),
-      }
-    );
-  }
-
   logout() {
-    this.fazerLogout().subscribe({
-      next: (res) => {
-        console.log(res);
-        this.clearToken();
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Erro no logout:', err);
-        this.clearToken();
-        this.router.navigate(['/login']);
-      },
-    });
-  }
-
-  setToken(token: string) {
-    sessionStorage.setItem('token', token);
-  }
-
-  getToken(): string | null {
-    return sessionStorage.getItem('token');
-  }
-
-  setUser(info: any) {
-    let objeto = {
-      id_usuario: info.id_usuario,
-      nm_usuario: info.nm_usuario,
-      login: info.login,
-    };
-    sessionStorage.setItem('user', JSON.stringify(objeto));
+    this.http
+      .post(`${this.apiUrl}/auth/logout`, {}, { withCredentials: true })
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/login']);
+          this.userSubject.next(null);
+          sessionStorage.removeItem('user');
+        },
+        error: () => {
+          this.router.navigate(['/login']);
+          this.userSubject.next(null);
+          sessionStorage.removeItem('user');
+        },
+      });
   }
 
   getUser() {
-    let user = sessionStorage.getItem('user');
-    let objeto = user !== null ? JSON.parse(user) : null;
-    return objeto;
+    return this.userSubject.value;
   }
 
-  clearToken() {
-    sessionStorage.removeItem('token');
+  getUserSubbject() {
+    return this.userSubject.value;
   }
-
   isAuthenticated(): boolean {
-    return !!this.getToken();
-  }
-
-  getHeaders() {
-    const token = this.getToken();
-    return new HttpHeaders({
-      Authorization: `${token}`,
-    });
+    return !!this.userSubject.value;
   }
 }
