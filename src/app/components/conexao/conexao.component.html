@@ -42,7 +42,7 @@
           </app-input-custom>
 
           <app-input-custom
-             [type]="'password-secret'"
+            [type]="'password-secret'"
             [label]="'Senha:'"
             [inputId]="'db_cloud_password'"
             [(model)]="cloud.db_cloud_password"
@@ -98,7 +98,7 @@
           </app-input-custom>
         </div>
 
-        <div class="flex w-full justify-between ">
+        <div class="flex w-full justify-between">
           <div
             *ngIf="arquivoValidado == true"
             class="flex items-center space-x-2 gap-2 text-white"
@@ -111,15 +111,25 @@
             <label hlmLabel for="fl_admin">Acesso Administrador</label>
           </div>
 
-          <div  *ngIf="arquivoValidado == false"></div>
+          <div *ngIf="arquivoValidado == false"></div>
 
-          <button
-            type="submit"
-            class="bg-[#4caf50] hover:bg-[#45a049] text-white"
-            hlmBtn
-          >
-            Salvar
-          </button>
+          <div class="flex flex-row gap-2">
+            <button
+              type="button"
+              (click)="limparFormulario()"
+              class="bg-[#ebb134] hover:bg-[#eb9b34] text-white"
+              hlmBtn
+            >
+              Limpar Formulario
+            </button>
+            <button
+              type="submit"
+              class="bg-[#4caf50] hover:bg-[#45a049] text-white"
+              hlmBtn
+            >
+              Salvar
+            </button>
+          </div>
         </div>
 
         <div *ngIf="arquivoValidado == false">
@@ -127,7 +137,6 @@
             [(arquivoValido)]="arquivoValidado"
           ></app-upload-certificado>
         </div>
-
       </div>
     </form>
   </div>

@@ -18,7 +18,7 @@ import { AuthService } from '../../../auth/auth.service';
   styleUrl: './upload-certificado.component.scss',
 })
 export class UploadCertificadoComponent implements OnInit {
-  id_usuario = '';
+  login = '';
 
   @Input() arquivoValido: boolean = false;
   @Output() arquivoValidoChange = new EventEmitter<boolean>(); // <- necessário para two-way binding
@@ -33,7 +33,7 @@ export class UploadCertificadoComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.id_usuario = this.auth.getUser().id_usuario ?? '';
+    this.login = this.auth.getUser().login ?? '';
   }
 
   onFileSelected(event: Event) {
@@ -47,16 +47,12 @@ export class UploadCertificadoComponent implements OnInit {
 
     this.carregando = true;
 
-    if (this.id_usuario) {
+    if (this.login) {
       setTimeout(() => {
         this.http
-          .post(
-            `${this.APISync}/certificado/upload/${this.id_usuario}`,
-            formData,
-            {
-              responseType: 'text',
-            }
-          )
+          .post(`${this.APISync}/certificado/upload/${this.login}`, formData, {
+            responseType: 'text',
+          })
           .subscribe({
             next: (res) => {
               this.mensagem = `${res}`;

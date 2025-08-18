@@ -54,7 +54,7 @@ export class ConexaoComponent implements OnInit {
     db_local_password: '',
   };
 
-  id_usuario = '';
+  login = '';
   service = inject(ConexaoService);
   router = inject(Router);
   private eventService = inject(EventConexaoService);
@@ -64,13 +64,13 @@ export class ConexaoComponent implements OnInit {
 
   ngOnInit() {
     this.cancelarSincronizacao();
-    this.id_usuario = this.auth.getUser().id_usuario ?? '';
+    this.login = this.auth.getUser().login ?? '';
     this.onShow();
     this.eventService.reload$.subscribe(() => this.onShow());
   }
 
   onShow() {
-    this.service.getConexao(this.id_usuario).subscribe({
+    this.service.getConexao(this.login).subscribe({
       next: (res: any) => {
         if (res) {
           this.arquivoValidado = res.cloud.fl_admin;
@@ -91,12 +91,30 @@ export class ConexaoComponent implements OnInit {
     });
   }
 
+  limparFormulario()
+  {
+    this.cloud = {
+      db_cloud_host: '',
+      db_cloud_port: '',
+      db_cloud_user: '',
+      db_cloud_password: '',
+      fl_admin: false,
+    };
+
+    this.local = {
+      db_local_host: '',
+      db_local_port: '',
+      db_local_user: '',
+      db_local_password: '',
+    };
+  }
+
   onSave() {
     const payload = {
       id: this.id_conexao,
       cloud: this.cloud,
       local: this.local,
-      idUsuario: this.id_usuario,
+      login: this.login,
     };
 
     if (this.id_conexao) {
